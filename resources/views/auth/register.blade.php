@@ -39,7 +39,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="car" class="col-md-4 col-form-label text-md-right">{{ __('Personal Car Type') }}</label>
 
                             <div class="col-md-6">
@@ -51,7 +51,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
