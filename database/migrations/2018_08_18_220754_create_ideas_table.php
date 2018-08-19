@@ -14,7 +14,9 @@ class CreateIdeasTable extends Migration
     public function up()
     {
         Schema::create('ideas', function (Blueprint $table) {
-            $table->integer('user_id')->references('id')->on('users');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            
             $table->increments('id');
             $table->string('title');
             $table->mediumText('pitch');

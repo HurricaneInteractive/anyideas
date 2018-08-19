@@ -14,9 +14,15 @@ class CreateDiscussionReplyTable extends Migration
     public function up()
     {
         Schema::create('discussion_reply', function (Blueprint $table) {
-            $table->integer('user_id')->references('id')->on('users');
-            $table->integer('idea_id')->references('id')->on('ideas');
-            $table->integer('discussion_id')->references('id')->on('discussion_entry');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            
+            $table->unsignedInteger('idea_id');
+            $table->foreign('idea_id')->references('id')->on('ideas');
+
+            $table->unsignedInteger('discussion_id');
+            $table->foreign('discussion_id')->references('id')->on('discussion_entry');
+
             $table->increments('id');
             $table->mediumText('message');
             $table->mediumInteger('darts')->default('0');

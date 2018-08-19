@@ -14,7 +14,8 @@ class CreateUserMetaTable extends Migration
     public function up()
     {
         Schema::create('user_meta', function (Blueprint $table) {
-            $table->integer('user_id')->references('id')->on('users');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->increments('id');
             $table->string('occupation')->nullable($value = true);
             $table->string('website')->nullable($value = true);
