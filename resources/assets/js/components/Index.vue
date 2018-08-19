@@ -3,10 +3,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header">Example Component</div>
+                    <div class="card-header">App.vue Component</div>
 
                     <div class="card-body">
-                        I'm an example component.
+                        <p> weirdo, you own a .... car</p>
+
                     </div>
                 </div>
             </div>
@@ -15,11 +16,19 @@
 </template>
 
 <script>
-    // import App from './App.vue';
-
     export default {
+        data() {
+            return {
+                
+            }
+        },
         mounted() {
-            console.log('Component mounted.')
+
         }
+        // data() {
+        //     return {
+        //         car_name: 'Nissan Cube'
+        //     }
+        // }
     }
 </script>

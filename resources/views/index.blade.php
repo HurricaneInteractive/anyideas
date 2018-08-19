@@ -77,7 +77,7 @@
                 </div>
             @endif
 
-            <div class="content">
+            <!-- <div class="content">
                 <div class="title m-b-md">
                     any.ideas
                 </div>
@@ -85,7 +85,8 @@
                 <div class="links">
                     <p>Welcome to any.ideas</p>
                 </div>
-            </div>
+            </div> -->
+            <script src="js/app.js"></script>
         </div>
     </body>
 </html>
