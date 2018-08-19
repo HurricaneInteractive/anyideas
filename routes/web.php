@@ -12,14 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 // Route::get('/test', function() {
 //     return 'Hello World';
 // });
 
-Route::get('/test/{name}', 'Test@show');
+Route::get('/test', function() {
+    return view('test');
+});
+
+// Route::get('/test/{name}', 'Test@show');
 
 Auth::routes();
 
