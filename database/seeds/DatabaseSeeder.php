@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => env('SEED_USER'),
             'username' => env('SEED_USER'),
             'email' => env('SEED_EMAIL'),
-            'password' => env('SEED_PASS')
+            'password' => bcrypt(env('SEED_PASS'))
         ]);
 
         // creates an idea for the dev

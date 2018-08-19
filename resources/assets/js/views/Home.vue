@@ -3,12 +3,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header">Index.vue Component</div>
+                    <div class="card-header">Home.vue Component</div>
 
                     <div class="card-body">
-                        <p> gday gday {{ this.user.name }}</p>
-                        <p> gday gday </p>
-
+                        <h1>Home page boi</h1>
                     </div>
                 </div>
             </div>
