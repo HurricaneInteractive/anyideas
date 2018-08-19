@@ -19,11 +19,11 @@
     export default {
         data() {
             return {
-                
+
             }
         },
         mounted() {
-
+            console.log('index.vue mounted');
         }
         // data() {
         //     return {
