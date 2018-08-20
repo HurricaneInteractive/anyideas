@@ -4,12 +4,6 @@
             <div class="col-md-8">
                 <div class="card card-default">
                     <div class="card-header">Index.vue Component</div>
-
-                    <div class="card-body">
-                        <p> gday gday {{ this.user.name }}</p>
-                        <p> gday gday </p>
-
-                    </div>
                 </div>
             </div>
         </div>
@@ -34,20 +28,20 @@
         },
         // figure out passing MySQL data to Vue
         mounted() {
-            this.readIdeas();
-            console.log('index.vue mounted');
+            // this.readIdeas();
+            // console.log('index.vue mounted');
         },
         methods: {
-            initIdea() {
-                $("add_task_model").modal("show");
-            },
+            // initIdea() {
+            //     $("add_task_model").modal("show");
+            // },
 
-            readIdeas() {
-            axios.get('http://127.0.0.1:8000/idea')
-                .then(response => {
-                    this.ideas = response.data.ideas;
-                });
-            }
+            // readIdeas() {
+            // axios.get('http://127.0.0.1:8000/idea')
+            //     .then(response => {
+            //         this.ideas = response.data.ideas;
+            //     });
+            // }
         }
 
     }

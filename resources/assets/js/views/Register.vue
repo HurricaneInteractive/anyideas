@@ -6,7 +6,7 @@
                         <div class="card-header">Register</div>
 
                         <div class="card-body">
-                            <form method="POST" action="/register">
+                            <form method="POST" action="{route('register') }">
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
@@ -39,6 +39,14 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label for="password_confirmation" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+
+                                    <div class="col-md-6">
+                                        <input id="password_confirmation" type="password" class="form-control" v-model="password_confirmation" required>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="submit" class="btn btn-primary" @click="handleSubmit">
@@ -61,25 +69,29 @@
                     name : "",
                     username: "",
                     email : "",
-                    password : ""
+                    password : "",
+                    password_confirmation: ""
                 }
             },
             methods : {
                 handleSubmit(e) {
                     e.preventDefault()
 
-                    if (this.password === this.password_confirmation && this.password.length > 0) {
+                    if (this.password === this.password_confirmation && this.password.length > 5) {
                         axios({
                             method: 'POST',
                             data: {
                                 name: this.name,
                                 username: this.username,
                                 email: this.email,
-                                password: this.password
+                                password: this.password,
+                                password_confirmation: this.password_confirmation
                             },
                             url: '/register'
                         })
                         .then(response => {
+                            console.log("register response")
+                            console.log(response)
                             if (response.status === 200) {
                                 window.location = '/';
                             }
@@ -89,9 +101,9 @@
                         });
                     } else {
                         this.password = ""
-                        this.passwordConfirm = ""
+                        this.password_confirmation = ""
 
-                        return alert('Passwords do not match')
+                        return alert('Password is not long enough')
                     }
                 }
             }

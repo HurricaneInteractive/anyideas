@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-default">
-                    <div class="card-header">Home.vue Component</div>
+                    <div class="card-header">Home.vue View</div>
 
                     <div class="card-body">
                         <h1>Home page boi</h1>
@@ -16,12 +16,8 @@
 
 <script>
     export default {
-        name: 'Index',
         data() {
             return {
-                user: {
-                    name: 'name_of_user'
-                },
                 idea: {
                     title: '',
                     description: ''
@@ -32,20 +28,20 @@
         },
         // figure out passing MySQL data to Vue
         mounted() {
-            this.readIdeas();
-            console.log('index.vue mounted');
+            // this.readIdeas();
+            console.log('home.vue page');
         },
         methods: {
-            initIdea() {
-                $("add_task_model").modal("show");
-            },
+            // initIdea() {
+            //     $("add_task_model").modal("show");
+            // },
 
-            readIdeas() {
-            axios.get('http://127.0.0.1:8000/idea')
-                .then(response => {
-                    this.ideas = response.data.ideas;
-                });
-            }
+            // readIdeas() {
+            // axios.get('http://127.0.0.1:8000/idea')
+            //     .then(response => {
+            //         this.ideas = response.data.ideas;
+            //     });
+            // }
         }
 
     }
