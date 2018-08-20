@@ -49,32 +49,27 @@
         methods : {
             handleSubmit(e){
                 e.preventDefault()
-
+                console.log(this.email);
+                console.log(this.password);
                 if (this.password.length > 0) {
-                    axios.post('api/login', {
-                        email: this.email,
-                        password: this.password
-                        })
-                        .then(response => {
-                        localStorage.setItem('user',response.data.success.name)
-                        localStorage.setItem('jwt',response.data.success.token)
-
-                        if (localStorage.getItem('jwt') != null){
-                            this.$router.go('/board')
+                    axios({
+                        method: 'POST',
+                        data: {
+                            email: this.email,
+                            password: this.password
+                        },
+                        url: '/login'
+                    })
+                    .then(response => {
+                        if (response.status === 200) {
+                            window.location = '/';
                         }
-                        })
-                        .catch(function (error) {
+                    })
+                    .catch(function (error) {
                         console.error(error);
-                        });
+                    });
                 }
             }
-        },
-        beforeRouteEnter (to, from, next) { 
-            if (localStorage.getItem('jwt')) {
-                return next('board');
-            }
-
-            next();
         }
     }
 </script>

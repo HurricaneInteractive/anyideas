@@ -11,22 +11,20 @@
 |
 */
 
+
+
 Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
-
-Route::get('/', function () {
-    return view('index');
-});
-
-// Route::get('/test', function() {
-//     return 'Hello World';
-// });
-
-Route::get('/test', function() {
-    return view('test');
-});
-
-// Route::get('/test/{name}', 'Test@show');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/', function () {
+//     return view('index');
+// });
+
+// Route::get('/test', function() {
+//     return view('test');
+// });
+
+// Route::get('/test/{name}', 'Test@show');
+
+// Route::get('/home', 'HomeController@index')->name('home');

@@ -16,6 +16,14 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
+
+                                    <div class="col-md-6">
+                                        <input id="username" type="text" class="form-control" v-model="username" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                     <div class="col-md-6">
@@ -28,14 +36,6 @@
 
                                     <div class="col-md-6">
                                         <input id="password" type="password" class="form-control" v-model="password" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-
-                                    <div class="col-md-6">
-                                        <input id="password-confirm" type="password" class="form-control" v-model="password_confirmation" required>
                                     </div>
                                 </div>
 
@@ -59,34 +59,34 @@
             data(){
                 return {
                     name : "",
+                    username: "",
                     email : "",
-                    password : "",
-                    password_confirmation : ""
+                    password : ""
                 }
             },
             methods : {
                 handleSubmit(e) {
                     e.preventDefault()
 
-                    if (this.password === this.password_confirmation && this.password.length > 0)
-                    {
-                        axios.post('api/register', {
-                            name: this.name,
-                            email: this.email,
-                            password: this.password,
-                            c_password : this.password_confirmation
-                          })
-                          .then(response => {
-                            localStorage.setItem('user',response.data.success.name)
-                            localStorage.setItem('jwt',response.data.success.token)
-
-                            if (localStorage.getItem('jwt') != null){
-                                this.$router.go('/board')
+                    if (this.password === this.password_confirmation && this.password.length > 0) {
+                        axios({
+                            method: 'POST',
+                            data: {
+                                name: this.name,
+                                username: this.username,
+                                email: this.email,
+                                password: this.password
+                            },
+                            url: '/register'
+                        })
+                        .then(response => {
+                            if (response.status === 200) {
+                                window.location = '/';
                             }
-                          })
-                          .catch(error => {
+                        })
+                        .catch(error => {
                             console.error(error);
-                          });
+                        });
                     } else {
                         this.password = ""
                         this.passwordConfirm = ""
@@ -94,13 +94,6 @@
                         return alert('Passwords do not match')
                     }
                 }
-            },
-            beforeRouteEnter (to, from, next) { 
-                if (localStorage.getItem('jwt')) {
-                    return next('board');
-                }
-
-                next();
             }
         }
     </script>

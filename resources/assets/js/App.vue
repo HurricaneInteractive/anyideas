@@ -22,22 +22,29 @@
                 </div>
             </nav>
             <main class="py-4">
-                <router-view></router-view>
+                <router-view>
+                    <!-- App.vue component runs here -->
+                </router-view>
             </main>
         </div>
     </template>
 
+<!-- App.vue is imported into app.blade.php -->
+
 <script>
     export default {
         data(){
+            // if (window.user_id === undefined) {
+            //     console.log('undefined user')
+            // }
             return {
                 isLoggedIn : null,
                 name : null
             }
         },
         mounted(){
-            this.isLoggedIn = localStorage.getItem('jwt')
-            this.name = localStorage.getItem('user')
+            this.isLoggedIn = window.user_data.id,
+            this.name = window.user_data.name
         }
     }
 </script>

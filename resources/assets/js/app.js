@@ -3,9 +3,10 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import App from './views/App'
+import App from './App.vue'
 import Home from './views/Home'
 import Login from './views/Login'
+import Register from './views/Register'
 
 require('./bootstrap');
 
@@ -23,6 +24,11 @@ const router = new VueRouter({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
         },
         // add more pages here
     ]
