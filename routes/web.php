@@ -17,6 +17,12 @@ Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
 Auth::routes();
 
+Route::get('/logout', function() {
+    Auth::logout();
+    return Redirect::to('/');
+});
+// Auth::get('logout', 'LoginController@logout');
+
 // Route::get('/', function () {
 //     return view('index');
 // });

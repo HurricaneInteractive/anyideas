@@ -16,7 +16,7 @@
             not logged in
         @endauth
         <div id="app">
-            <app></app> <!-- vue here m8 -->
+            <app :user-data='{!! json_encode($userData) !!}'></app> <!-- vue here m8 -->
         </div>
         @include ('footer')
         <script src="{{ mix('js/App.js') }}"></script>

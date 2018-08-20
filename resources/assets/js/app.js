@@ -9,7 +9,6 @@ import Login from './views/Login'
 import Register from './views/Register'
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
 const router = new VueRouter({
@@ -29,7 +28,7 @@ const router = new VueRouter({
             path: '/register',
             name: 'register',
             component: Register
-        },
+        }
         // add more pages here
     ]
 });
@@ -39,8 +38,6 @@ const router = new VueRouter({
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-Vue.component('index', require('./components/Index.vue'));
 
 const app = new Vue({
     el: '#app',

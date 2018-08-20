@@ -16,13 +16,16 @@
                             <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
                             <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
                             <li class="nav-link" v-if="isLoggedIn"> Hi, {{name}}</li>
-                            <router-link :to="{ name: 'board' }" class="nav-link" v-if="isLoggedIn">Board</router-link>
+                            <form method="POST" action="/logout" class="nav-link" v-if="isLoggedIn"><button @click="handleLogout" type="submit">Logout</button></form>
+                            <!-- <button v-on:click="handleLogout" class="nav-link" v-if="isLoggedIn">Logout</button> -->
+                            <!-- <router-link :to="{ name: 'logout' }" class="nav-link" v-if="isLoggedIn">Logout</router-link> -->
                         </ul>
                     </div>
                 </div>
             </nav>
             <main class="py-4">
                 <router-view>
+                    
                     <!-- App.vue component runs here -->
                 </router-view>
             </main>
@@ -34,17 +37,44 @@
 <script>
     export default {
         data(){
-            // if (window.user_id === undefined) {
-            //     console.log('undefined user')
-            // }
             return {
                 isLoggedIn : null,
                 name : null
             }
         },
+        props: [
+            'userData'
+        ],
         mounted(){
+            console.log("this.userData");
+            console.log(this.userData);
+            if (window.user_date !== undefined) {
+                console.log('user_data undefined')
+
+            }
             this.isLoggedIn = window.user_data.id,
             this.name = window.user_data.name
+        },
+        methods: {
+            // user logout function
+            handleLogout(e) {
+                e.preventDefault()
+                console.log("clicked logout");
+                axios({
+                    method: 'POST',
+                    url: '/logout'
+                })
+                .then(response => {
+                    console.log(response)
+                    if (response.status === 200) {
+                        window.location = '/';
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            },
+
         }
     }
 </script>

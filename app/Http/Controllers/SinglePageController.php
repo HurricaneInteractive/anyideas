@@ -20,6 +20,6 @@ class SinglePageController extends Controller
             'user_data' => $user_data
         ]);
 
-        return view('/index');
+        return view('/index', ['userData' => $user_data]);
     }
 }
