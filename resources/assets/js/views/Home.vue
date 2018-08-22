@@ -6,7 +6,7 @@
                     <div class="card-header">Home.vue View</div>
 
                     <div class="card-body">
-                        <h1>Home page</h1>
+                        <h1>Home page boi</h1>
                     </div>
                 </div>
             </div>
@@ -26,12 +26,23 @@
                 ideas: []
             }
         },
-        // components: {
-
-        // },
+        // figure out passing MySQL data to Vue
         mounted() {
             // this.readIdeas();
             console.log('home.vue page');
         },
+        methods: {
+            // initIdea() {
+            //     $("add_task_model").modal("show");
+            // },
+
+            // readIdeas() {
+            // axios.get('http://127.0.0.1:8000/idea')
+            //     .then(response => {
+            //         this.ideas = response.data.ideas;
+            //     });
+            // }
+        }
+
     }
 </script>
