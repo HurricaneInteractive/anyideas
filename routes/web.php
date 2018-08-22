@@ -17,6 +17,9 @@ Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
 Auth::routes();
 
+Route::post('/idea-add-new', 'IdeasController@createIdea');
+Route::get('/idea-get-all', 'IdeasController@index');
+
 Route::get('/logout', function() {
     Auth::logout();
     return Redirect::to('/');

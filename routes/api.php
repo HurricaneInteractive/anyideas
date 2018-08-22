@@ -17,5 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/ideas', 'IdeasController');
-Route::get('/ideas/{idea}');
+Route::post('/idea-add-new', 'IdeasController@createIdea');
+Route::get('/idea-get-all', 'IdeasController@index');
+
+// Route::resource('/ideas', 'IdeasController');
+// Route::get('/ideas/{idea}');

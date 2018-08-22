@@ -15,6 +15,7 @@
                             <!-- Authentication Links -->
                             <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
                             <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
+                            <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="isLoggedIn">Add New Idea</router-link>
                             <li class="nav-link" v-if="isLoggedIn"> Hi, {{name}}</li>
                             <form method="POST" action="/logout" class="nav-link" v-if="isLoggedIn"><button @click="handleLogout" type="submit">Logout</button></form>
                         </ul>
