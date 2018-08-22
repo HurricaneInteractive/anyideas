@@ -33,7 +33,7 @@ class IdeasController extends Controller
         $allOfTheIdeas[] = array(); 
 
         foreach ($ideas as $idea) {
-            $allOfTheIdeas[] = $idea->title;
+            $allOfTheIdeas[] = $idea;
         }
 
         JavaScript::put([
