@@ -6,7 +6,7 @@
                     <div class="card-header">Login</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/login">
+                        <form method="POST" action="/api/login">
                             <div class="form-group row">
                                 <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
 
@@ -58,7 +58,7 @@
                             email: this.email,
                             password: this.password
                         },
-                        url: '/login'
+                        url: '/api/login'
                     })
                     .then(response => {
                         if (response.status === 200) {

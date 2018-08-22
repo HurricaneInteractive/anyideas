@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-import App from './App.vue'
-import Home from './views/Home'
-import Login from './views/Login'
-import Register from './views/Register'
+import App from './App.vue';
+import Home from './views/Home';
+import Login from './views/Login';
+import Register from './views/Register';
+import AddIdea from './views/Add-Idea.vue';
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -28,6 +29,11 @@ const router = new VueRouter({
             path: '/register',
             name: 'register',
             component: Register
+        },
+        {
+            path: '/add-idea',
+            name: 'add-idea',
+            component: AddIdea
         }
         // add more pages here
     ]

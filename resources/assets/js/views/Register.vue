@@ -73,7 +73,7 @@
                     password_confirmation: ""
                 }
             },
-            methods : {
+            methods: {
                 handleSubmit(e) {
                     e.preventDefault()
 

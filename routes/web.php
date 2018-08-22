@@ -11,26 +11,16 @@
 |
 */
 
-
-
 Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/logout', function() {
-    Auth::logout();
-    return Redirect::to('/');
-});
-// Auth::get('logout', 'LoginController@logout');
-
-// Route::get('/', function () {
-//     return view('index');
+// Route::get('/logout', function() {
+//     Auth::logout();
+//     return Redirect::to('/');
 // });
 
-// Route::get('/test', function() {
-//     return view('test');
+// Route::push('/idea-add-func', function() {
+
+//     return Redirect::to('/');
 // });
-
-// Route::get('/test/{name}', 'Test@show');
-
-// Route::get('/home', 'HomeController@index')->name('home');

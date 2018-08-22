@@ -2,10 +2,10 @@
         <div>
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
-                    <router-link :to="{name: 'home'}" class="navbar-brand">Treclon</router-link>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <router-link :to="{name: 'home'}" class="navbar-brand">Logo</router-link>
+                    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
-                    </button>
+                    </button> -->
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
@@ -44,35 +44,32 @@
             'userData'
         ],
         mounted(){
-            // console.log(this.userData); get all user data (name, email, username etc.)
             this.isLoggedIn = null;
             this.name = null;
             // check if user_data exists (user is logged in)
+            this.checkForUserAPIData();
             this.checkForUserData();
-            
-                // console.dir('run checkForUserData');
-                // console.dir(window);
-                // || window.user_data.id === undefined || window.user_data.name === undefined
-                // if (typeof window.user_data === undefined) {
-                //     console.log('user_data is present')
-                //     this.isLoggedIn = window.user_data.id,
-                //     this.name = window.user_data.name
-                // }
-                // console.log('no user data?');
             
         },
         methods: {
+            checkForUserAPIData() {
+                axios.get('/user')
+                .then(response => {
+                    console.log(response.data);
+                    console.log(response);
+                });
+            },
             checkForUserData() {
+                console.log(window.user_data);
                 if (window.user_data === null) {
-                    console.log('no user_data here');
                     this.isLoggedIn = null,
-                    this.name = null
+                    this.name = null,
+                    console.log(window.user_data);
                 } else {
-                    console.log('all you can eat of user_data');
                     this.isLoggedIn = window.user_data.id,
-                    this.name = window.user_data.name
+                    this.name = window.user_data.name,
+                    console.log(window.user_data);
                 }
-                console.log('no user data?');
             },
             // user logout function
             handleLogout(e) {
@@ -87,7 +84,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.log('​handleLogout -> error', error);
                 });
             },
 

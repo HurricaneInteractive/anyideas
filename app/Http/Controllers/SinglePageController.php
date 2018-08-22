@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use Auth;
 use JavaScript;
 
 class SinglePageController extends Controller
 {
-    //
+
+    
+    
     public function index() {
 
         $user_data = null;
@@ -22,4 +25,5 @@ class SinglePageController extends Controller
 
         return view('/index', ['userData' => $user_data]);
     }
+    
 }
