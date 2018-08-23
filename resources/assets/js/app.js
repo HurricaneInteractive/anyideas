@@ -7,6 +7,8 @@ import App from './App.vue'
 import Home from './views/Home'
 import Login from './views/Login'
 import Register from './views/Register'
+import AddNewIdea from './views/AddNewIdea'
+import IdeaPage from './views/IdeaPage'
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -28,6 +30,16 @@ const router = new VueRouter({
             path: '/register',
             name: 'register',
             component: Register
+        },
+        {
+            path: '/add-new-idea',
+            name: 'add-new-idea',
+            component: AddNewIdea
+        },
+        {
+            path: '/idea-view',
+            name: 'idea-view',
+            component: IdeaPage
         }
         // add more pages here
     ]

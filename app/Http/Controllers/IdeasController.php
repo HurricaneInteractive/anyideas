@@ -10,13 +10,15 @@
 // }
 
 namespace App\Http\Controllers;
+
+use App\Ideas;
 use Illuminate\Http\Request;
-use App\Curd;
-
+use Auth;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers;
+use JavaScript;
 
-class Ideas extends Controller
+class IdeasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +27,29 @@ class Ideas extends Controller
      */
     public function index()
     {
-        return response()->json(Ideas::all()->toArray());
+        // Eloquent shizzle
+        $ideas = Ideas::all();
+
+        // $allOfTheIdeas[] = array();
+
+        // foreach ($ideas as $idea) {
+        //     $allOfTheIdeas[] = $idea;
+        // }
+
+        JavaScript::put([
+            'ideas' => $ideas
+        ]);
+
+        return (['idea_data' => $ideas]);
+    }
+
+    public function indexSingle($id) {
+        $idea = Ideas::all()->where('id', $id)->first();
+
+        // JavaScript::put([
+        //     'data_of_idea' => $idea
+        // ]);
+        return $idea;
     }
 
     /**
@@ -33,9 +57,20 @@ class Ideas extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function createIdea(Request $request)
     {
-        return 'create idea here'
+
+        $idea = new Ideas([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'pitch' => $request->pitch,
+            'status' => $request->status,
+            'description' => $request->description
+        ]);
+
+        $idea->save();
+
+        return $idea;
     }
 
     /**
@@ -47,21 +82,21 @@ class Ideas extends Controller
     public function store(Request $request)
     {
 
-        $idea = Idea::create([
-            'user_id' => $request->user_id,
-            'title' => $request->title,
-            'pitch' => $request->pitch,
-            'status' => $request->status,
-            'description' => $request->description
-        ]);
+        // $idea = Idea::create([
+        //     'title' => $request->title,
+        //     'pitch' => $request->pitch,
+        //     'status' => $request->status,
+        //     'description' => $request->description
+        // ]);
 
-        $data = [
-            'data' => $idea,
-            'status' => (bool) $idea,
-            'message' => $idea ? 'Idea Created' : 'Error Creating Idea',
-        ];
+        // $data = [
+        //     'data' => $idea,
+        //     'status' => (bool) $idea,
+        //     'message' => $idea ? 'Idea Created' : 'Error Creating Idea',
+        // ];
 
-        return response()->json($data);
+        // return response()->json($data);
+        return 'store function goes here';
     }
 
     /**
@@ -70,7 +105,7 @@ class Ideas extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($title)
+    public function show($idea)
     {
         // return view('ideas',array('title' => $title));
         return response()->json($idea);
@@ -82,7 +117,7 @@ class Ideas extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($idea)
     {
         //
     }
@@ -94,7 +129,7 @@ class Ideas extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $idea)
     {
         //
     }
@@ -105,7 +140,7 @@ class Ideas extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($idea)
     {
         //
         $status = $idea->delete();
