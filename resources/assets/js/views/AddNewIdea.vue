@@ -83,6 +83,7 @@
         },
         methods: {
             // on click gets titles of all ideas and console logs them
+            
             handleGetIdeaData() {
                 axios.get('/api/idea-get-all').then( (response) => {
                     this.ideaData = response.data

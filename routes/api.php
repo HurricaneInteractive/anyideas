@@ -19,6 +19,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/idea-add-new', 'IdeasController@createIdea');
 Route::get('/idea-get-all', 'IdeasController@index');
+Route::get('/idea-get-single/{id}', 'IdeasController@indexSingle');
+
+// Route::get('/idea-single-idea/{id}', function($id) {
+    
+//     return array(data => $id);
+// });
+
+
+
+
+// Route::get('user/profile', 'UserProfileController@show')->name('profile');
+
+// Route::get('user/{id}', function ($id) {
+//     return 'User '.$id;
+// });
+
 
 // Route::resource('/ideas', 'IdeasController');
 // Route::get('/ideas/{idea}');

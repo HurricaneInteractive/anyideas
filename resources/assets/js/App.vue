@@ -49,18 +49,7 @@
             this.isLoggedIn = null;
             this.name = null;
             // check if user_data exists (user is logged in)
-            this.checkForUserData();
-            
-                // console.dir('run checkForUserData');
-                // console.dir(window);
-                // || window.user_data.id === undefined || window.user_data.name === undefined
-                // if (typeof window.user_data === undefined) {
-                //     console.log('user_data is present')
-                //     this.isLoggedIn = window.user_data.id,
-                //     this.name = window.user_data.name
-                // }
-                // console.log('no user data?');
-            
+            this.checkForUserData();            
         },
         methods: {
             checkForUserData() {

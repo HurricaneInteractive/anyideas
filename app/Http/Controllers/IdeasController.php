@@ -40,30 +40,16 @@ class IdeasController extends Controller
             'ideas' => $ideas
         ]);
 
-        // return response()->json(Ideas::all()->toArray());
-        // return response()->json($ideas);
         return (['idea_data' => $ideas]);
     }
 
-    public function indexSingle(Request $request) {
+    public function indexSingle($id) {
+        $idea = Ideas::all()->where('id', $id)->first();
 
-
-        // $idea = Ideas::where('id', '5678');
-
-        
-        $listOfIdeas = Ideas::all();
-
-        $ideaed = $listOfIdeas->where('id', $request);
-        
-        $ideaed->all();
-
-        JavaScript::put([
-            'data_of_idea' => $ideaed
-        ]);
-
-        // return response()->json(Ideas::all()->toArray());
-        // return response()->json($ideas);
-        return (['data_of_idea' => $ideaed]);
+        // JavaScript::put([
+        //     'data_of_idea' => $idea
+        // ]);
+        return $idea;
     }
 
     /**
