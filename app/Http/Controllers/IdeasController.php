@@ -30,19 +30,40 @@ class IdeasController extends Controller
         // Eloquent shizzle
         $ideas = Ideas::all();
 
-        $allOfTheIdeas[] = array(); 
+        // $allOfTheIdeas[] = array();
 
-        foreach ($ideas as $idea) {
-            $allOfTheIdeas[] = $idea;
-        }
+        // foreach ($ideas as $idea) {
+        //     $allOfTheIdeas[] = $idea;
+        // }
 
         JavaScript::put([
-            'allOfTheIdeas' => $allOfTheIdeas
+            'ideas' => $ideas
         ]);
 
         // return response()->json(Ideas::all()->toArray());
         // return response()->json($ideas);
-        return (['idea_data' => $allOfTheIdeas]);
+        return (['idea_data' => $ideas]);
+    }
+
+    public function indexSingle(Request $request) {
+
+
+        // $idea = Ideas::where('id', '5678');
+
+        
+        $listOfIdeas = Ideas::all();
+
+        $ideaed = $listOfIdeas->where('id', $request);
+        
+        $ideaed->all();
+
+        JavaScript::put([
+            'data_of_idea' => $ideaed
+        ]);
+
+        // return response()->json(Ideas::all()->toArray());
+        // return response()->json($ideas);
+        return (['data_of_idea' => $ideaed]);
     }
 
     /**
