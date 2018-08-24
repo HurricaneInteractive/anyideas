@@ -94,11 +94,6 @@
                 e.preventDefault()
 
                 if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null && this.image !== null) {
-                    console.log(this.idea.title)
-                    console.log(this.idea.description)
-                    console.log(this.idea.pitch)
-                    console.log(this.idea.status)
-                    console.log(this.idea.image)
                     axios({
                         method: 'POST',
                         data: {
@@ -108,7 +103,7 @@
                             status: this.idea.status,
                             image: this.idea.image
                         },
-                        url: '/idea-add-new'
+                        url: '/api/idea/create'
                     })
                     .then(response => {
                         console.log('​handleSubmit -> response', response);

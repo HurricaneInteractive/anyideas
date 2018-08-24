@@ -42,6 +42,15 @@ class DatabaseSeeder extends Seeder
             'darts' => '42'
         ]);
 
+        DB::table('timelines')->insert([
+            'user_id' => '1234',
+            'idea_id' => '5678',
+            'id' => '9876',
+            'title' => 'any.ideas.v2',
+            'message' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
+            'darts' => '7'
+        ]);
+
         DB::table('user_meta')->insert([
             'user_id' => '1234',
             'id' => '4321',
