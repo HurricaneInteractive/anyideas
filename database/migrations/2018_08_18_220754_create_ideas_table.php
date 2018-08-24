@@ -21,6 +21,7 @@ class CreateIdeasTable extends Migration
             $table->string('title');
             $table->mediumText('pitch');
             $table->string('status');
+            $table->string('category');
             $table->mediumText('tags')->nullable($value = true);
             $table->longText('description');
             $table->mediumInteger('darts')->default('0');

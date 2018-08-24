@@ -29,10 +29,12 @@ Route::post('/idea/{id}/delete', 'IdeasController@deleteIdea');
 Route::post('/idea/{id}/update', 'IdeasController@updateIdea');
 
 Route::get('/idea/{id}/get', 'IdeasController@getById');
-Route::get('/idea/{title}/get', 'IdeasController@getByTitle');
-Route::get('/idea/{category}/get', 'IdeasController@getByCategory'); // should be an array[]
-Route::get('/idea/{tags}/get', 'IdeasController@getByTags'); // should be an array[]
+Route::get('/idea/{title}/get-by-title', 'IdeasController@getByTitle');
+Route::get('/idea/{category}/get-by-category', 'IdeasController@getByCategory');
+Route::get('/idea/{tags}/get-by-tags', 'IdeasController@getByTags');
 Route::get('/idea/{title}/get-by-title', 'IdeasController@getByTitle');
 
 // timeline routes
 Route::get('/idea/timeline/{idea_id}/get', 'TimelineController@getAll');
+
+// darts routes 

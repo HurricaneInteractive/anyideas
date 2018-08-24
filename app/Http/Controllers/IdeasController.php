@@ -1,14 +1,5 @@
 <?php
 
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-
-// class Users extends Controller
-// {
-    
-// }
-
 namespace App\Http\Controllers;
 
 use App\Ideas;
@@ -29,15 +20,22 @@ class IdeasController extends Controller
         return $ideas;
     }
 
-    public function getByTitle($id) {
+    public function getByTitle($title)
+    {
+        $ideas = Ideas::all()->where('title', $title);
+
+        return $ideas;
+
         return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
-    public function getByCategory($id) {
+    public function getByCategory($id)
+    {
         return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
-    public function getByTags($id) {
+    public function getByTags($id)
+    {
         return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
@@ -68,7 +66,7 @@ class IdeasController extends Controller
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
 
-        $edit_this_idea = Ideas::all()->where('id', $id)->first()->update($filtered_idea_data);
+        $edit_this_idea = Ideas::find($id)->first()->update($filtered_idea_data);
 
         $new_idea_data = $this->getById($id);
 

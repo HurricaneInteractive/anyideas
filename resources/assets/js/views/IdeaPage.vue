@@ -29,6 +29,7 @@
                   <button @click="handleIdeaDelete">delete idea data (pre filled data)</button><br/><br/>
                   <button @click="handleIdeaUpdate">update idea data (with pre filled data to update with)</button><br/><br/>
                   <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
+                  <button @click="hanldeGetIdeaByTitle">get ideas by title (pre filled) idea_id</button><br/><br/>
                 </div>
             </div>
         </div>
@@ -56,6 +57,16 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      hanldeGetIdeaByTitle(e) {
+        e.preventDefault();
+        let idea_title = 'any.ideas.v2';
+        axios({
+          method: 'GET',
+          url: '/api/idea/' + idea_title + '/get-by-title',
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
       hanldeGetTimelineData(e) {
         e.preventDefault();
         let idea_id = '5678';
