@@ -13,28 +13,26 @@ use Illuminate\Http\Request;
 |
 */
 
+// CURD - Create / Update / Retrieve / Destroy
+
+
+// user routes
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/idea-add-new', 'IdeasController@createIdea');
-Route::get('/idea-get-all', 'IdeasController@index');
-Route::get('/idea-get-single/{id}', 'IdeasController@indexSingle');
+// idea routes
+Route::get('/idea/all/get', 'IdeasController@getAll');
 
-// Route::get('/idea-single-idea/{id}', function($id) {
-    
-//     return array(data => $id);
-// });
+Route::post('/idea/create', 'IdeasController@createIdea');
+Route::post('/idea/{id}/delete', 'IdeasController@deleteIdea');
+Route::post('/idea/{id}/update', 'IdeasController@updateIdea');
 
+Route::get('/idea/{id}/get', 'IdeasController@getById');
+Route::get('/idea/{title}/get', 'IdeasController@getByTitle');
+Route::get('/idea/{category}/get', 'IdeasController@getByCategory'); // should be an array[]
+Route::get('/idea/{tags}/get', 'IdeasController@getByTags'); // should be an array[]
+Route::get('/idea/{title}/get-by-title', 'IdeasController@getByTitle');
 
-
-
-// Route::get('user/profile', 'UserProfileController@show')->name('profile');
-
-// Route::get('user/{id}', function ($id) {
-//     return 'User '.$id;
-// });
-
-
-// Route::resource('/ideas', 'IdeasController');
-// Route::get('/ideas/{idea}');
+// timeline routes
+Route::get('/idea/timeline/{idea_id}/get', 'TimelineController@getAll');

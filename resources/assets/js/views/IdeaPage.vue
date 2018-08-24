@@ -24,8 +24,11 @@
                   <h1>{{this.ideaSingle}}</h1>
 
                   <h1>{{this.idea.title}}</h1>
-                  <button @click="handldeGetSingleIdeaData">get single idea data</button>
-                  <button @click="handleGetIdeaData">get all idea data</button>
+                  <button @click="handldeGetSingleIdeaData">get single idea data</button><br/><br/>
+                  <button @click="handleGetIdeaData">get all idea data</button><br/><br/>
+                  <button @click="handleIdeaDelete">delete idea data (pre filled data)</button><br/><br/>
+                  <button @click="handleIdeaUpdate">update idea data (with pre filled data to update with)</button><br/><br/>
+                  <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
                 </div>
             </div>
         </div>
@@ -53,12 +56,46 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      hanldeGetTimelineData(e) {
+        e.preventDefault();
+        let idea_id = '5678';
+        axios({
+          method: 'GET',
+          url: '/api/idea/timeline/' + idea_id + '/get',
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
+      handleIdeaUpdate(e) {
+        e.preventDefault();
+        let updateThis = '5678';
+        axios({
+          method: 'POST',
+          url: '/api/idea/' + updateThis + '/update',
+          data: {
+              title: 'back 2 any ideas',
+              pitch: 're-name pitch here'
+          },
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
+      handleIdeaDelete(e) {
+        e.preventDefault();
+        let deleteThis = '1234';
+        axios({
+          method: 'POST',
+          url: '/api/idea/' + deleteThis + '/delete',
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
       handleIdeaFinder(e) {
         e.preventDefault();
         let goHere = this.idea_id;
         axios({
           method: 'GET',
-          url: '/api/idea-get-single/' + goHere,
+          url: '/api/idea/' + goHere + '/get',
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
           if (response.data === "") {
@@ -71,7 +108,7 @@
         let goHere = '5678';
         axios({
           method: 'GET',
-          url: '/api/idea-get-single/' + goHere,
+          url: '/api/idea/' + goHere + '/get',
         }).then( (response) => {
           this.ideaSingleData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaSingleData);
@@ -82,7 +119,7 @@
       // on click gets ideas data and console logs them
       handleGetIdeaData(e) {
         e.preventDefault()
-        axios.get('/api/idea-get-all').then( (response) => {
+        axios.get('/api/idea/all/get').then( (response) => {
           this.ideaData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
         })
