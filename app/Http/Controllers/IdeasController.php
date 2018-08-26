@@ -25,28 +25,23 @@ class IdeasController extends Controller
         $ideas = Ideas::all()->where('title', $title);
 
         return $ideas;
-
-        return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
-    public function getByCategory($category_data)
+    public function getByCategory($category)
     {
-        // $category_data
+        $ideas_with_category = Ideas::all()->where('category', $category);
 
-        // $images = Image::whereHas('tags', function ($q) use($tag_id) {
-        //     $q->where('id', $tag_id);
-        // })->get();
-
-        $ideas_with_category = Ideas::whereHas('category', function ($q) use($tag_id) {
-            $q->where('id', $tag_id);
-        })->get();
-
-        return 'Im sorry, it looks like our developer hasnt created this route yet';
+        return $ideas_with_category;
     }
 
-    public function getByTags($id)
+    public function getByTags($tag_query)
     {
-        return 'Im sorry, it looks like our developer hasnt created this route yet';
+        $tags_of_all_ideas = Ideas::all()->where('tags', $tag_query);
+
+        // work some magic to loop through both arrays and match strings
+        // then return array of idea id's
+
+        return $tags_of_all_ideas;
     }
 
     // single idea functions

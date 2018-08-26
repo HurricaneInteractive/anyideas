@@ -29,7 +29,8 @@
                   <button @click="handleIdeaUpdate">update idea data (with pre filled data to update with)</button><br/><br/>
                   <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
                   <button @click="hanldeGetIdeaByTitle">get ideas by title (pre filled) idea_id</button><br/><br/>
-                  <button @click="handleGetIdeaByCategories">get ideas by categotires (pre filled array of data)</button><br/><br/>
+                  <button @click="handleGetIdeaByCategories">get ideas by category (pre filled data)</button><br/><br/>
+                  <button @click="handleGetIdeaByTags">get ideas by tags (pre filled array of data)</button><br/><br/>
                 </div>
             </div>
         </div>
@@ -57,9 +58,19 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      handleGetIdeaByTags(e) {
+        e.preventDefault();
+        let tag_data = ['vue','photography','cheese'];
+        axios({
+          method: 'GET',
+          url: '/api/idea/' + tag_data + '/get-by-tags',
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
       handleGetIdeaByCategories(e) {
         e.preventDefault();
-        let category_data = ['Web App', 'interactive', 'development'];
+        let category_data = 'Web App' ;
         axios({
           method: 'GET',
           url: '/api/idea/' + category_data + '/get-by-category',
