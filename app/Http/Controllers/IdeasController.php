@@ -29,8 +29,18 @@ class IdeasController extends Controller
         return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
-    public function getByCategory($id)
+    public function getByCategory($category_data)
     {
+        // $category_data
+
+        // $images = Image::whereHas('tags', function ($q) use($tag_id) {
+        //     $q->where('id', $tag_id);
+        // })->get();
+
+        $ideas_with_category = Ideas::whereHas('category', function ($q) use($tag_id) {
+            $q->where('id', $tag_id);
+        })->get();
+
         return 'Im sorry, it looks like our developer hasnt created this route yet';
     }
 
@@ -49,9 +59,16 @@ class IdeasController extends Controller
 
     public function createIdea(Request $request)
     {
+        $user = '1234';
+
+        $category_array = json_encode($request->category);
+        $tags_array = json_encode($request->tags);
+
         $idea = new Ideas([
-            'user_id' => Auth::id(),
+            'user_id' => $user,
             'title' => $request->title,
+            'category' => $category_array,
+            'tags' => $tags_array,
             'pitch' => $request->pitch,
             'status' => $request->status,
             'description' => $request->description

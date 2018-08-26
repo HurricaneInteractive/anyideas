@@ -23,13 +23,13 @@
 
                   <h1>{{this.ideaSingle}}</h1>
 
-                  <h1>{{this.idea.title}}</h1>
                   <button @click="handldeGetSingleIdeaData">get single idea data</button><br/><br/>
                   <button @click="handleGetIdeaData">get all idea data</button><br/><br/>
                   <button @click="handleIdeaDelete">delete idea data (pre filled data)</button><br/><br/>
                   <button @click="handleIdeaUpdate">update idea data (with pre filled data to update with)</button><br/><br/>
                   <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
                   <button @click="hanldeGetIdeaByTitle">get ideas by title (pre filled) idea_id</button><br/><br/>
+                  <button @click="handleGetIdeaByCategories">get ideas by categotires (pre filled array of data)</button><br/><br/>
                 </div>
             </div>
         </div>
@@ -57,6 +57,16 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      handleGetIdeaByCategories(e) {
+        e.preventDefault();
+        let category_data = ['Web App', 'interactive', 'development'];
+        axios({
+          method: 'GET',
+          url: '/api/idea/' + category_data + '/get-by-category',
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
       hanldeGetIdeaByTitle(e) {
         e.preventDefault();
         let idea_title = 'any.ideas.v2';
