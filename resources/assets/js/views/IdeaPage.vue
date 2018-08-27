@@ -60,10 +60,13 @@
     methods: {
       handleGetIdeaByTags(e) {
         e.preventDefault();
-        let tag_data = ['vue','photography','cheese'];
+        let tag_data = ['photography'];
         axios({
           method: 'GET',
           url: '/api/idea/' + tag_data + '/get-by-tags',
+          data: {
+            tags: ['photography']
+          }
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });

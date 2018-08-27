@@ -8,6 +8,7 @@ use Auth;
 use App\Http\Requests;
 use App\Http\Controllers;
 use JavaScript;
+use Illuminate\Support\Facades\DB;
 
 class IdeasController extends Controller
 {
@@ -34,14 +35,41 @@ class IdeasController extends Controller
         return $ideas_with_category;
     }
 
-    public function getByTags($tag_query)
+    public function getByTags(Request $request)
     {
-        $tags_of_all_ideas = Ideas::all()->where('tags', $tag_query);
 
-        // work some magic to loop through both arrays and match strings
-        // then return array of idea id's
+        $decoded_tags = preg_split("/[,]/",$request->tags);
 
-        return $tags_of_all_ideas;
+        $return_ideas = [''];
+
+        // for ($i = 0; $i < count($decoded_tags); $i++) {
+        //     $idea_thing = Ideas::where('tags', 'LIKE', '%'.$decoded_tags[$i].'%')->get();
+        //     $return_ideas[] = array_push($return_ideas, $idea_thing);
+        // }
+
+        $collection = DB::Table('ideas')->select('*');
+        foreach($decoded_tags as $key => $tag) {
+            if($key == 0) {
+                $collection->where('tags', 'like', '%'.$tag.'%');
+            }
+            $collection->orWhere('tags', 'like', '%'.$tag.'%');
+        }
+        $ideas = $collection->get();
+
+        // $return_merged_ideas = [];
+
+        // array_merge
+
+        // for ($i = 0; $i < count($return_ideas); $i++) {
+        //     // $a = 0;
+        //     $mergre_this = $return_ideas[$i];
+        //     $return_merged_ideas = array_merge($return_merged_ideas, $mergre_this);
+        // }
+
+        // $tags_of_all_ideas = Ideas::where('tags', 'LIKE', '%'.$decoded_tags[0].'%')->get();
+        // $tags_of_all_ideas_two = Ideas::where('tags', 'LIKE', '%'.$decoded_tags[1].'%')->get();
+        
+        return ['ideas' => $ideas, 'return_ideas' => $return_ideas];
     }
 
     // single idea functions
