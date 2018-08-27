@@ -56,7 +56,7 @@ class IdeasController extends Controller
     // single idea functions
 
     public function getById($id) {
-        $idea = Ideas::find($id)->first();
+        $idea = Ideas::all()->where('id', $id)->first();
 
         return $idea;
     }
