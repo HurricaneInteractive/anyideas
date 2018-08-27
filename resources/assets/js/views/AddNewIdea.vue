@@ -16,12 +16,17 @@
                                 </div>
                             </div>
 
-                            <!-- get array out of data... somehow -->
                             <div class="form-group row">
                                 <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
 
                                 <div class="col-md-6">
-                                    <input id="category" type="text" class="form-control" v-model="idea.category">
+                                    <!-- <input type="text" class="form-control" > -->
+                                    <select id="category" v-model="idea.category" name="cars">
+                                        <option value="aec">Arts, Entertainment & Culture</option>
+                                        <option value="law">Life & Well-being</option>
+                                        <option value="ib">Industry & Business</option>
+                                        <option value="its">Innovation, Technology & Science</option>
+                                    </select>
                                 </div>
                             </div>
 
