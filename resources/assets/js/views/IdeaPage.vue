@@ -66,8 +66,8 @@
       getUser(e) {
         e.preventDefault();
         axios({
-          method: 'GET',
-          url: '/api/user/get',
+          method: 'POST',
+          url: '/ai/user/get',
           headers: {
             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
           }
@@ -79,8 +79,8 @@
         e.preventDefault();
         let userID = 1234;
         axios({
-          method: 'GET',
-          url: '/api/idea/get-by-user/' + userID
+          method: 'POST',
+          url: '/ai/idea/get-by-user/' + userID
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -89,8 +89,8 @@
         e.preventDefault();
         let tag_data = ['vue', 'cheese'];
         axios({
-          method: 'GET',
-          url: '/api/idea/get-by-tags',
+          method: 'POST',
+          url: '/ai/idea/get-by-tags',
           data: {
             tags: tag_data
           }
@@ -102,8 +102,8 @@
         e.preventDefault();
         let category_data = 'Web App' ;
         axios({
-          method: 'GET',
-          url: '/api/idea/get-by-category/' + category_data,
+          method: 'POST',
+          url: '/ai/idea/get-by-category/' + category_data,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -112,8 +112,8 @@
         e.preventDefault();
         let idea_title = 'any.ideas.v2';
         axios({
-          method: 'GET',
-          url: '/api/idea/get-by-title/' + idea_title,
+          method: 'POST',
+          url: '/ai/idea/get-by-title/' + idea_title,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -122,8 +122,8 @@
         e.preventDefault();
         let idea_id = '5678';
         axios({
-          method: 'GET',
-          url: '/api/idea/timeline/get/' + idea_id,
+          method: 'POST',
+          url: '/ai/idea/timeline/get/' + idea_id,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -133,7 +133,7 @@
         let updateThis = '5678';
         axios({
           method: 'POST',
-          url: '/api/idea/update/' + updateThis,
+          url: '/ai/idea/update/' + updateThis,
           data: {
               title: 'back 2 any ideas',
               pitch: 're-name pitch here'
@@ -147,7 +147,7 @@
         let deleteThis = '1234';
         axios({
           method: 'POST',
-          url: '/api/idea/delete/' + deleteThis,
+          url: '/ai/idea/delete/' + deleteThis,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -156,8 +156,8 @@
         e.preventDefault();
         let goHere = this.idea_id;
         axios({
-          method: 'GET',
-          url: '/api/idea/get/' + goHere,
+          method: 'POST',
+          url: '/ai/idea/get/' + goHere,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
           if (response.data === "") {
@@ -169,8 +169,8 @@
       handldeGetSingleIdeaData(e) {
         let goHere = '5678';
         axios({
-          method: 'GET',
-          url: '/api/idea/get/' + goHere,
+          method: 'POST',
+          url: '/ai/idea/get/' + goHere,
         }).then( (response) => {
           this.ideaSingleData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaSingleData);
@@ -181,7 +181,7 @@
       // on click gets ideas data and console logs them
       handleGetIdeaData(e) {
         e.preventDefault()
-        axios.get('/api/idea/get/all').then( (response) => {
+        axios.get('/ai/idea/get/all').then( (response) => {
           this.ideaData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
         })

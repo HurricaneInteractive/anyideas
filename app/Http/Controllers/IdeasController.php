@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ideas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as Auth;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers;
@@ -15,22 +15,23 @@ class IdeasController extends Controller
 {
     // multiple idea functions
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api'); 
+    // }
 
-    public function getUser(Request $request) {
-        // if (Auth::check()) {
+    public function getUser(Request $request) { 
+        // if (Auth::guard('api')->check()) {
         //     $id = Auth::user()->getUserId();
         // };
 
-        $ids = Auth::user();
-        $user = Auth::id();
+        // $ids = Auth::user();
+        $user = Auth::user();
+        $id = Auth::id();
         $req = $request->user();
         // $auth = User::id(
 
-        return ['ids' => $ids, 'user' =>  $user,'req' =>  $req];
+        return ['req' => $req, 'user' => $user, 'id' => $id];
     }
 
     public function getAll()
