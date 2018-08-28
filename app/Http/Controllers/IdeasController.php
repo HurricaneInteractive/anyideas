@@ -21,16 +21,16 @@ class IdeasController extends Controller
     }
 
     public function getUser(Request $request) {
-        if (Auth::check()) {
-            $id = Auth::user()-getUserId();
-        };
+        // if (Auth::check()) {
+        //     $id = Auth::user()->getUserId();
+        // };
 
         $ids = Auth::user();
         $user = Auth::id();
         $req = $request->user();
         // $auth = User::id(
 
-        return ['id' => $id, 'ids' => $ids, 'user' =>  $user,'req' =>  $req];
+        return ['ids' => $ids, 'user' =>  $user,'req' =>  $req];
     }
 
     public function getAll()

@@ -11,7 +11,7 @@
     </head>
     <body>
         @auth
-            user logged in
+            user logged in blade
         @else
             guest user
         @endauth

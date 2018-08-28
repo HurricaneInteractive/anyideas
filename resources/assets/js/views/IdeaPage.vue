@@ -67,7 +67,10 @@
         e.preventDefault();
         axios({
           method: 'GET',
-          url: '/api/idea/user/get'
+          url: '/api/user/get',
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+          }
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });

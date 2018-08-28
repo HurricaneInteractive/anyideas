@@ -13,6 +13,8 @@
 
 Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
+// Route::get('/idea/user/get', 'IdeasController@getUser');
+
 Auth::routes();
 
 Route::get('/logout', function() {

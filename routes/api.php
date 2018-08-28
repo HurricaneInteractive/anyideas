@@ -22,11 +22,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => ['auth:api']], function () {
+	Route::get('/idea/user/get', 'IdeasController@getUser');
+});
 
 
 // idea routes
 Route::get('/idea/get/all', 'IdeasController@getAll');
-Route::get('/idea/user/get', 'IdeasController@getUser');
+// Route::get('/idea/user/get', 'IdeasController@getUser');
 
 // put id/params at the end
 
