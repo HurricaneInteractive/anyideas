@@ -10,11 +10,11 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- @auth
-            user logged in
+        @auth
+            user logged in blade
         @else
             guest user
-        @endauth -->
+        @endauth
         <div id="app">
             <app :user-data='{!! json_encode($userData) !!}'></app> <!-- vue here m8 -->
         </div>

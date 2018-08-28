@@ -17,6 +17,29 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
+
+                                <div class="col-md-6">
+                                    <!-- <input type="text" class="form-control" > -->
+                                    <select id="category" v-model="idea.category" name="cars">
+                                        <option value="aec">Arts, Entertainment & Culture</option>
+                                        <option value="law">Life & Well-being</option>
+                                        <option value="ib">Industry & Business</option>
+                                        <option value="its">Innovation, Technology & Science</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- get array out of data... somehow -->
+                            <div class="form-group row">
+                                <label for="tags" class="col-md-4 col-form-label text-md-right">Tags</label>
+
+                                <div class="col-md-6">
+                                    <input id="tags" type="text" class="form-control" v-model="idea.tags">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="pitch" class="col-md-4 col-form-label text-md-right">Pitch</label>
 
                                 <div class="col-md-6">
@@ -35,8 +58,8 @@
                             <div class="form-group row">
                                 <label for="description" class="col-md-4 col-form-label text-md-right">Description.md</label>
 
-                                <div class="col-md-6">
-                                    <input value="idea description goes here" id="description" type="text" class="form-control" v-model="idea.description" required>
+                                <div id="editor" class="col-md-6">
+                                    <textarea :value="idea.description" @input="update" id="description" type="text" class="form-control" required/>
                                 </div>
                             </div>
 
@@ -55,6 +78,9 @@
                                     </button>
                                 </div>
                             </div>
+
+                            
+                            <div v-html="compiledMarkdown"></div>
                         </form>
                     </div>
                 </div>
@@ -64,12 +90,18 @@
 </template>
 
 <script>
+    // import lodash from 'lodash'
+    import marked from 'marked'
+
+    var debounce = require('lodash.debounce');
     export default {
         data() {
             return {
                 idea: {
                     title: '',
-                    description: '',
+                    category: ['development', 'photography', 'cooking'],
+                    tags: ['vue', 'nikon', 'cheese'],
+                    description: '# hello',
                     pitch: '',
                     status: '',
                     image: '',
@@ -78,12 +110,23 @@
                 ideas: []
             }
         },
+        computed: {
+            // handles the description input as markdown
+            compiledMarkdown: function () {
+                return marked(this.idea.description, { sanitize: true })
+            }
+        },
         mounted() {
             console.log('AddNewIdea.vue page');
+            // console.log(this.idea.tags);
         },
         methods: {
+            // delays updating the rendered markdown input
+            update: debounce(function (e) {
+                this.idea.description = e.target.value
+            }, 300),
+
             // on click gets titles of all ideas and console logs them
-            
             handleGetIdeaData() {
                 axios.get('/api/idea-get-all').then( (response) => {
                     this.ideaData = response.data
@@ -98,6 +141,8 @@
                         method: 'POST',
                         data: {
                             title: this.idea.title,
+                            category: this.idea.category,
+                            tags: this.idea.tags,
                             description: this.idea.description,
                             pitch: this.idea.pitch,
                             status: this.idea.status,

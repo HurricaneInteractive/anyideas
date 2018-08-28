@@ -18,6 +18,10 @@ class User extends Authenticatable
         'name', 'username', 'email', 'password',
     ];
 
+    public function getId()
+    {
+        return $this->id;
+    }
     /**
      * The attributes that should be hidden for arrays.
      *

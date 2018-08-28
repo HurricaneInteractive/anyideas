@@ -23,6 +23,7 @@ class CreateUserMetaTable extends Migration
             $table->mediumText('following')->nullable($value = true);
             $table->mediumText('followers')->nullable($value = true);
             $table->mediumText('social_media')->nullable($value = true);
+            $table->mediumText('interests')->nullable($value = true);
             $table->timestamps();
         });
     }
