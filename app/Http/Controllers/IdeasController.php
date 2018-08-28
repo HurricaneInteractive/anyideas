@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Ideas;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth as Auth;
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers;
 use JavaScript;
@@ -13,6 +14,24 @@ use Illuminate\Support\Facades\DB;
 class IdeasController extends Controller
 {
     // multiple idea functions
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function getUser(Request $request) {
+        if (Auth::check()) {
+            $id = Auth::user()-getUserId();
+        };
+
+        $ids = Auth::user();
+        $user = Auth::id();
+        $req = $request->user();
+        // $auth = User::id(
+
+        return ['id' => $id, 'ids' => $ids, 'user' =>  $user,'req' =>  $req];
+    }
 
     public function getAll()
     {
@@ -33,6 +52,13 @@ class IdeasController extends Controller
         $ideas_with_category = Ideas::all()->where('category', $category);
 
         return $ideas_with_category;
+    }
+
+    public function getByUser($id)
+    {
+        $ideas = Ideas::all()->where('user_id', $id);
+
+        return $ideas;
     }
 
     public function getByTags(Request $request)
@@ -63,13 +89,11 @@ class IdeasController extends Controller
 
     public function createIdea(Request $request)
     {
-        $user = '1234';
-
         $category_array = json_encode($request->category);
         $tags_array = json_encode($request->tags);
 
         $idea = new Ideas([
-            'user_id' => $user,
+            'user_id' => Auth::id(),
             'title' => $request->title,
             'category' => $category_array,
             'tags' => $tags_array,

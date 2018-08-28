@@ -4,6 +4,9 @@
             <div class="col-md-8">
                 <div class="card card-default">
                   <div class="card-header">IdeaPage.vue</div>
+
+                  <button @click="getUser">get user data</button><br/><br/>
+
                   <form method="GET">
                     <div class="form-group row">
                       <label for="idea_id" class="col-md-4 col-form-label text-md-right">find Idea by id (e.g. 5678)</label>
@@ -20,9 +23,11 @@
                       </div>
                     </div>
                   </form>
+                  
 
                   <h1>{{this.ideaSingle}}</h1>
 
+                  <button @click="getIdeaByUser">get idea by user</button><br/><br/>
                   <button @click="handldeGetSingleIdeaData">get single idea data</button><br/><br/>
                   <button @click="handleGetIdeaData">get all idea data</button><br/><br/>
                   <button @click="handleIdeaDelete">delete idea data (pre filled data)</button><br/><br/>
@@ -58,14 +63,33 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      getUser(e) {
+        e.preventDefault();
+        axios({
+          method: 'GET',
+          url: '/api/idea/user/get'
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
+      getIdeaByUser(e) {
+        e.preventDefault();
+        let userID = 1234;
+        axios({
+          method: 'GET',
+          url: '/api/idea/get-by-user/' + userID
+        }).then( (response) => {
+          console.log('​handleIdeaFinder -> response', response);
+        });
+      },
       handleGetIdeaByTags(e) {
         e.preventDefault();
         let tag_data = ['vue', 'cheese'];
         axios({
           method: 'GET',
-          url: '/api/idea/' + tag_data + '/get-by-tags',
+          url: '/api/idea/get-by-tags',
           data: {
-            tags: ['vue', 'cheese']
+            tags: tag_data
           }
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
@@ -76,7 +100,7 @@
         let category_data = 'Web App' ;
         axios({
           method: 'GET',
-          url: '/api/idea/' + category_data + '/get-by-category',
+          url: '/api/idea/get-by-category/' + category_data,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -86,7 +110,7 @@
         let idea_title = 'any.ideas.v2';
         axios({
           method: 'GET',
-          url: '/api/idea/' + idea_title + '/get-by-title',
+          url: '/api/idea/get-by-title/' + idea_title,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -96,7 +120,7 @@
         let idea_id = '5678';
         axios({
           method: 'GET',
-          url: '/api/idea/timeline/' + idea_id + '/get',
+          url: '/api/idea/timeline/get/' + idea_id,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -106,7 +130,7 @@
         let updateThis = '5678';
         axios({
           method: 'POST',
-          url: '/api/idea/' + updateThis + '/update',
+          url: '/api/idea/update/' + updateThis,
           data: {
               title: 'back 2 any ideas',
               pitch: 're-name pitch here'
@@ -120,7 +144,7 @@
         let deleteThis = '1234';
         axios({
           method: 'POST',
-          url: '/api/idea/' + deleteThis + '/delete',
+          url: '/api/idea/delete/' + deleteThis,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
         });
@@ -130,7 +154,7 @@
         let goHere = this.idea_id;
         axios({
           method: 'GET',
-          url: '/api/idea/' + goHere + '/get',
+          url: '/api/idea/get/' + goHere,
         }).then( (response) => {
           console.log('​handleIdeaFinder -> response', response);
           if (response.data === "") {
@@ -143,7 +167,7 @@
         let goHere = '5678';
         axios({
           method: 'GET',
-          url: '/api/idea/' + goHere + '/get',
+          url: '/api/idea/get/' + goHere,
         }).then( (response) => {
           this.ideaSingleData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaSingleData);
@@ -154,7 +178,7 @@
       // on click gets ideas data and console logs them
       handleGetIdeaData(e) {
         e.preventDefault()
-        axios.get('/api/idea/all/get').then( (response) => {
+        axios.get('/api/idea/get/all').then( (response) => {
           this.ideaData = response.data
           console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
         })
