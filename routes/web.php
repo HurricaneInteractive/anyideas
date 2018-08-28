@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
+
+// Route::get('/idea/user/get', 'IdeasController@getUser');
+
+Auth::routes();
+
+Route::get('/logout', function() {
+    Auth::logout();
+    return Redirect::to('/');
 });
