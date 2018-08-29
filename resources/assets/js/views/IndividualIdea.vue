@@ -9,11 +9,81 @@
                         <h1>{{idea_data.title}}</h1>
                         <h4>Category: {{idea_data.category}}</h4>
                         <div>Tags: {{idea_data.tags}}</div>
-                        <button>{{idea_data.status}}</button>
+                        <i>{{idea_data.status}}</i>
                         <hr/>
                         <p>Pitch: {{idea_data.pitch}}</p>
                         <hr/>
                         <div>{{idea_data.description}}</div>
+                    </div>
+
+                    <div>
+                        <h3>Timeline data</h3>
+                        <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
+                        <form method="POST">
+                            <div class="form-group row">
+                                <label for="timeline.title" class="col-md-4 col-form-label text-md-right">Title</label>
+
+                                <div class="col-md-6">
+                                <input id="timeline.title" type="text" class="form-control" v-model="timeline.title" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="timeline.message" class="col-md-4 col-form-label text-md-right">Message</label>
+
+                                <div class="col-md-6">
+                                <input id="timeline.message" type="text" class="form-control" v-model="timeline.message" required>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" @click="handleTimelineSubmit">
+                                    Post timeline update
+                                </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="timeline_data">
+                            <!-- @{{ timeline_data }} -->
+                            <ul v-for="(value, key) in this.timeline_data" :key="key">
+                                <li key={{key}}>
+                                    <h4>{{value.title}}</h4>
+                                    <p>{{value.message}}</p>
+                                    <button @click="handleTimelineDelete(value.id)">Delete entry</button>
+                                    <button @click="handleDartsAdd(value.id)">{{value.darts}}</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <form method="POST">
+                            <div class="form-group row">
+                                <label for="timeline_update.id" class="col-md-4 col-form-label text-md-right">Timeline item to update (ID)</label>
+
+                                <div class="col-md-6">
+                                <input id="timeline_update.id" type="text" class="form-control" v-model="timeline_update.id" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="timeline_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
+
+                                <div class="col-md-6">
+                                <input id="timeline_update.title" type="text" class="form-control" v-model="timeline_update.title" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="timeline_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
+
+                                <div class="col-md-6">
+                                <input id="timeline_update.message" type="text" class="form-control" v-model="timeline_update.message" required>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" @click="handleTimelineUpdate">
+                                    Update timeline item
+                                </button>
+                                </div>
+                            </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -29,30 +99,107 @@
             return {
                 idea_data: '',
                 idea_id: '5678',
+                timeline: {
+                    title: '',
+                    message: ''
+                },
+                timeline_update: {
+                    id: '',
+                    title: '',
+                    message: '',
+                },
+                timeline_data: '',
                 errors: [],
                 ideas: []
             }
         },
         mounted() {
             console.log('home.vue page');
-            axios.get('/api/idea/' + this.$route.params.id + '/get')
+            console.log('this.$route.params.id => ', this.$route.params.id);
+            axios.post('/ai/idea/get/' + this.$route.params.id)
                 .then(response => {
                     console.log('got ideas', response.data);
                     this.idea_data = response.data;
             });
         },
         methods: {
-            // initIdea() {
-            //     $("add_task_model").modal("show");
-            // },
-
-            // readIdeas() {
-            // axios.get('/api/idea/5678/get')
-            //     .then(response => {
-            //       console.log('got ideas')
-            //       this.ideas = response.data.ideas;
-            //     });
-            // }
+            handleTimelineUpdate(e){
+                e.preventDefault();
+                let idea_id = this.timeline_update.id;
+                console.log('​handleTimelineUpdate -> timeline_update', this.timeline_update);
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/update/' + idea_id,
+                    data: {
+                        title: this.timeline_update.title,
+                        message: this.timeline_update.message,
+                    },
+                }).then( (response) => {
+                    console.log('handleTimelineSubmit -> response', response);
+                    if (response.data === "") {
+                        alert('error creating timeline entry');
+                    }
+                });
+            },
+            handleDartsAdd(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/darts/add/' + value,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then( (response) => {
+                    console.log('handleDartsAdd -> response.data', response.data);
+                });
+            },
+            handleTimelineDelete(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/delete/' + value,
+                }).then( (response) => {
+                    console.log('getTimelineData -> response', response);
+                    this.timeline_data = response.data;
+                });
+            },
+            getTimelineData(e) {
+                e.preventDefault();
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/get/' + this.$route.params.id,
+                }).then( (response) => {
+                    console.log('getTimelineData -> response', response);
+                    this.timeline_data = response.data;
+                });
+            },
+            // timeline functions
+            hanldeGetTimelineData(e) {
+                e.preventDefault();
+                let idea_id = this.$route.params.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/get/' + idea_id,
+                }).then( (response) => {
+                    console.log('hanldeGetTimelineData -> response', response);
+                    this.timeline_data = response.data;
+                });
+            },
+            handleTimelineSubmit(e){
+                e.preventDefault();
+                let idea_id = this.$route.params.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/create/' + idea_id,
+                    data: {
+                        title: this.timeline.title,
+                        message: this.timeline.message,
+                    },
+                }).then( (response) => {
+                    console.log('handleTimelineSubmit -> response', response);
+                    if (response.data === "") {
+                        alert('error creating timeline entry');
+                    }
+                });
+            },
         }
 
     }

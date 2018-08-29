@@ -16,8 +16,12 @@ Auth::routes();
 Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
 Route::group(['prefix' => 'ai/'], function() {
-    Route::post('/idea/get/all', 'IdeasController@getAll');
+    //user routes
     Route::post('/user/get', 'IdeasController@getUser');
+    Route::post('/user/get/{id}', 'IdeasController@getUserById');
+
+    //idea routes
+    Route::post('/idea/get/all', 'IdeasController@getAll');
 
     Route::post('/idea/create', 'IdeasController@createIdea');
     Route::post('/idea/delete/{id}', 'IdeasController@deleteIdea');
@@ -28,10 +32,16 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/idea/get-by-title/{title}', 'IdeasController@getByTitle');
     Route::post('/idea/get-by-category/{category}', 'IdeasController@getByCategory');
     Route::post('/idea/get-by-tags', 'IdeasController@getByTags');
+
+    // timeline routes
+    Route::post('/idea/timeline/get/{id}', 'TimelineController@getAll'); // parameter passed is idea_id
+    Route::post('/idea/timeline/create/{id}', 'TimelineController@create');
+    Route::post('/idea/timeline/delete/{id}', 'TimelineController@deleteEntry');
+    Route::post('/idea/timeline/update/{id}', 'TimelineController@updateEntry');
+    Route::post('/idea/timeline/darts/add/{id}', 'TimelineController@dartAdd');
 });
 
-// timeline routes
-Route::post('/idea/timeline/{idea_id}/get', 'TimelineController@getAll');
+
 
 Route::post('/logout', function() {
     Auth::logout();

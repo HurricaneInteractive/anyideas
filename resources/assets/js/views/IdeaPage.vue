@@ -6,6 +6,7 @@
                   <div class="card-header">IdeaPage.vue</div>
 
                   <button @click="getUser">get user data</button><br/><br/>
+                  <button @click="getUserById">get user data by id (pre-filled)</button><br/><br/>
 
                   <form method="GET">
                     <div class="form-group row">
@@ -26,16 +27,15 @@
                   
 
                   <h1>{{this.ideaSingle}}</h1>
-
-                  <button @click="getIdeaByUser">get idea by user</button><br/><br/>
+                  <button @click="getIdeaByUser">get ideas by user id</button><br/><br/>
                   <button @click="handldeGetSingleIdeaData">get single idea data</button><br/><br/>
                   <button @click="handleGetIdeaData">get all idea data</button><br/><br/>
                   <button @click="handleIdeaDelete">delete idea data (pre filled data)</button><br/><br/>
                   <button @click="handleIdeaUpdate">update idea data (with pre filled data to update with)</button><br/><br/>
-                  <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
                   <button @click="hanldeGetIdeaByTitle">get ideas by title (pre filled) idea_id</button><br/><br/>
                   <button @click="handleGetIdeaByCategories">get ideas by category (pre filled data)</button><br/><br/>
                   <button @click="handleGetIdeaByTags">get ideas by tags (pre filled array of data)</button><br/><br/>
+                  <hr/>
                 </div>
             </div>
         </div>
@@ -63,6 +63,20 @@
       console.log('AddNewIdea.vue page');
     },
     methods: {
+      // idea functions
+      getUserById(e) {
+        e.preventDefault();
+        let user_id = '1235'
+        axios({
+          method: 'POST',
+          url: '/ai/user/get/' + user_id,
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+          }
+        }).then( (response) => {
+          console.log('​getUser -> response.data', response.data); 
+        });
+      },
       getUser(e) {
         e.preventDefault();
         axios({
@@ -72,7 +86,7 @@
             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
           }
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
+          console.log('​getUser -> response', response); 
         });
       },
       getIdeaByUser(e) {
@@ -82,7 +96,6 @@
           method: 'POST',
           url: '/ai/idea/get-by-user/' + userID
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       handleGetIdeaByTags(e) {
@@ -95,7 +108,6 @@
             tags: tag_data
           }
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       handleGetIdeaByCategories(e) {
@@ -105,7 +117,6 @@
           method: 'POST',
           url: '/ai/idea/get-by-category/' + category_data,
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       hanldeGetIdeaByTitle(e) {
@@ -115,17 +126,6 @@
           method: 'POST',
           url: '/ai/idea/get-by-title/' + idea_title,
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
-        });
-      },
-      hanldeGetTimelineData(e) {
-        e.preventDefault();
-        let idea_id = '5678';
-        axios({
-          method: 'POST',
-          url: '/ai/idea/timeline/get/' + idea_id,
-        }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       handleIdeaUpdate(e) {
@@ -139,7 +139,6 @@
               pitch: 're-name pitch here'
           },
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       handleIdeaDelete(e) {
@@ -149,7 +148,6 @@
           method: 'POST',
           url: '/ai/idea/delete/' + deleteThis,
         }).then( (response) => {
-          console.log('​handleIdeaFinder -> response', response);
         });
       },
       handleIdeaFinder(e) {
@@ -173,7 +171,6 @@
           url: '/ai/idea/get/' + goHere,
         }).then( (response) => {
           this.ideaSingleData = response.data
-          console.log('​handleGetIdeaData -> this.ideaData', this.ideaSingleData);
         });
 
       },
@@ -181,10 +178,11 @@
       // on click gets ideas data and console logs them
       handleGetIdeaData(e) {
         e.preventDefault()
-        axios.get('/ai/idea/get/all').then( (response) => {
-          this.ideaData = response.data
-          console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
-        })
+        axios({
+          method: 'POST',
+          url: '/ai/idea/get/all',
+        }).then( (response) => {
+        });
       },
     }
   }

@@ -103,6 +103,18 @@ class DatabaseSeeder extends Seeder
 
         DB::table('ideas')->insert([
             'user_id' => '1234',
+            'id' => '5679',
+            'title' => 'lyrical',
+            'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
+            'status' => 'Creating',
+            'category' => 'Industry & Business',
+            'tags' => "['react','music','lyrics']",
+            'description' => "** Desc can have data pushed using the same schema**",
+            'darts' => '5'
+        ]);
+
+        DB::table('ideas')->insert([
+            'user_id' => '1234',
             'id' => '1234',
             'title' => 'any.ideas.v2',
             'pitch' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
@@ -204,9 +216,9 @@ class DatabaseSeeder extends Seeder
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '9876',
-            'title' => 'any.ideas.v2',
+            'title' => 'Initial Idea',
             'message' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'darts' => '7'
+            'darts' => '8'
         ]);
 
         DB::table('user_meta')->insert([
