@@ -39,6 +39,12 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/idea/timeline/delete/{id}', 'TimelineController@deleteEntry');
     Route::post('/idea/timeline/update/{id}', 'TimelineController@updateEntry');
     Route::post('/idea/timeline/darts/add/{id}', 'TimelineController@dartAdd');
+
+    // discussion routes
+    Route::post('/idea/discussion/get/{idea_id}', 'DiscussionController@getAll'); // parameter passed is idea_id
+    Route::post('/idea/discussion/create/{idea_id}', 'DiscussionController@create'); // parameter passed is idea_id
+    Route::post('/idea/discussion/delete/{id}', 'DiscussionController@deleteEntry'); // pass id of discussion
+    Route::post('/idea/discussion/update/{id}', 'DiscussionController@updateEntry'); // pass id of discussion
 });
 
 

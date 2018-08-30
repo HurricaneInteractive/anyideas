@@ -15,5 +15,7 @@ class Ideas extends Model
     public function timeline() {
         return $this->hasMany(Timeline::class);
     }
-    
+    public function discussion() {
+        return $this->hasMany(Discussion::class);
+    }
 }
