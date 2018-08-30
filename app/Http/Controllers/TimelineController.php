@@ -15,7 +15,7 @@ use App\Ideas;
 use App\User;
 use App\Timeline;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as Auth;
 use App\Http\Requests;
 use App\Http\Controllers;
 use JavaScript;
@@ -53,9 +53,8 @@ class TimelineController extends Controller
         return $timeline;
     }
 
-    public function updateEntry(Request $request)
+    public function updateEntry(Request $request, $id)
     {
-        $id = $request->id;
         $filtered_idea_data = collect(request()->all())->filter()->all();
 
         $status = Timeline::find($id)->first()->update($filtered_idea_data);

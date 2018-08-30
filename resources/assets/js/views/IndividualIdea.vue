@@ -5,7 +5,7 @@
                 <div class="card card-default">
                     <div class="card-header"></div>
 
-                    <div class="card-body">
+                    <!-- <div class="card-body">
                         <h1>{{idea_data.title}}</h1>
                         <h4>Category: {{idea_data.category}}</h4>
                         <div>Tags: {{idea_data.tags}}</div>
@@ -14,7 +14,83 @@
                         <p>Pitch: {{idea_data.pitch}}</p>
                         <hr/>
                         <div>{{idea_data.description}}</div>
+                    </div> -->
+
+                    <!-- update_post -->
+                    <div>
+                        <h3>Updates data</h3>
+                        <button @click="hanldeGetUpdatesData">get update_posts data from (pre filled) idea_id</button><br/><br/>   
+                    
+                        <form method="POST">
+                            <div class="form-group row">
+                                <label for="update_post.title" class="col-md-4 col-form-label text-md-right">Title</label>
+
+                                <div class="col-md-6">
+                                <input id="update_post.title" type="text" class="form-control" v-model="update_post.title" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="update_post.message" class="col-md-4 col-form-label text-md-right">Message</label>
+
+                                <div class="col-md-6">
+                                <input id="update_post.message" type="text" class="form-control" v-model="update_post.message" required>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" @click="handleUpdatePostSubmit">
+                                    Post update_post update
+                                </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="update_post">
+                            <!-- @{{ update_post }} -->
+                            <ul v-for="(value, key) in this.update_post" :key="key">
+                                <li key={{key}}>
+                                    <h4>{{value.title}}</h4>
+                                    <p>{{value.message}}</p>
+                                    <button @click="handleDiscussionDelete(value.id)">Delete entry</button>
+                                    <button>display no of replies</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h4>update_post item</h4>
+                        <form method="POST">
+                            <div class="form-group row">
+                                <label for="update_post_update.id" class="col-md-4 col-form-label text-md-right">update_post id to update</label>
+
+                                <div class="col-md-6">
+                                <input id="update_post_update.id" type="text" class="form-control" v-model="update_post_update.id" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="update_post_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
+
+                                <div class="col-md-6">
+                                <input id="update_post_update.title" type="text" class="form-control" v-model="update_post_update.title" required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="update_post_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
+
+                                <div class="col-md-6">
+                                <input id="update_post_update.message" type="text" class="form-control" v-model="update_post_update.message" required>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" @click="handleUpdateUpdatePost">
+                                    Update updates_item
+                                </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+
+                    <hr/>
 
                     <!-- discussion data -->
                     <div>
@@ -90,6 +166,7 @@
                         </form>
                     </div>
 
+                    <hr/>
 
                     <!-- timeline data -->
                     <div>
@@ -129,9 +206,10 @@
                                 </li>
                             </ul>
                         </div>
+
                         <form method="POST">
                             <div class="form-group row">
-                                <label for="timeline_update.id" class="col-md-4 col-form-label text-md-right">Timeline item to update (ID)</label>
+                                <label for="timeline_update.id" class="col-md-4 col-form-label text-md-right">Id of discussion to update</label>
 
                                 <div class="col-md-6">
                                 <input id="timeline_update.id" type="text" class="form-control" v-model="timeline_update.id" required autofocus>
@@ -141,7 +219,7 @@
                                 <label for="timeline_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
 
                                 <div class="col-md-6">
-                                <input id="timeline_update.title" type="text" class="form-control" v-model="timeline_update.title" required autofocus>
+                                <input id="timeline_update.title" type="text" class="form-control" v-model="timeline_update.title" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -184,7 +262,6 @@
                     message: ''
                 },
                 timeline_update: {
-                    id: '',
                     title: '',
                     message: '',
                 },
@@ -193,8 +270,18 @@
                     title: '',
                     message: '',
                 },
+                update_post: {
+                    title: '',
+                    message: ''
+                },
+                update_post_update: {
+                    id: '',
+                    title: '',
+                    message: ''
+                },
                 timeline_data: '',
                 discussion_data: '',
+                update_post_data: '',
                 errors: [],
                 ideas: []
             }
@@ -209,19 +296,31 @@
             });
         },
         methods: {
+            // updates post functions
+            hanldeGetUpdatesData(e) {
+                e.preventDefault();
+                let idea_id = this.$route.params.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/update_post/get/' + idea_id
+                }).then( (response) => {
+                    this.discussion_data = response.data;
+                }); 
+            },
+
+
+            // discussion functions
             handleDiscussionDelete(value) {
                 axios({
                     method: 'POST',
                     url: '/ai/idea/discussion/delete/' + value,
                 }).then( (response) => {
-                    console.log('getDiscussionData -> response', response);
                     this.discussion_data = response.data;
                 });
             },
             handleDiscussionUpdate(e){
                 e.preventDefault();
                 let discussion_id = this.discussion_update.id;
-                console.log('​handleTimelineUpdate -> discussion_update', this.discussion_update);
                 axios({
                     method: 'POST',
                     url: '/ai/idea/discussion/update/' + discussion_id,
@@ -230,7 +329,6 @@
                         message: this.discussion_update.message,
                     },
                 }).then( (response) => {
-                    console.log('handleTimelineSubmit -> response', response);
                     if (response.data === "") {
                         alert('error creating timeline entry');
                     }
@@ -240,37 +338,37 @@
                 e.preventDefault();
                 axios({
                     method: 'POST',
-                    url: '/ai/idea/discussion/get/' + this.$route.params.id,
+                    url: '/ai/idea/discussion/create/' + this.$route.params.id,
+                    data: {
+                        title: this.discussion.title,
+                        message: this.discussion.message
+                    }
                 }).then( (response) => {
-                    console.log('getTimelineData -> response', response);
                     this.discussion_data = response.data;
                 });
             },
             hanldeGetDiscussionData(e) {
                 e.preventDefault();
                 let idea_id = this.$route.params.id;
-                console.log('TCL: hanldeGetDiscussionData -> idea_id ', idea_id );
                 axios({
                     method: 'POST',
                     url: '/ai/idea/discussion/get/' + idea_id
                 }).then( (response) => {
-                    console.log('handleTimelineSubmit -> response', response);
                     this.discussion_data = response.data;
                 });   
             },
+
+            // timeline functions
             handleTimelineUpdate(e){
-                e.preventDefault();
-                let idea_id = this.timeline_update.id;
-                console.log('​handleTimelineUpdate -> timeline_update', this.timeline_update);
+                let value = this.timeline_update.id;
                 axios({
                     method: 'POST',
-                    url: '/ai/idea/timeline/update/' + idea_id,
+                    url: '/ai/idea/timeline/update/' + value,
                     data: {
                         title: this.timeline_update.title,
                         message: this.timeline_update.message,
                     },
                 }).then( (response) => {
-                    console.log('handleTimelineSubmit -> response', response);
                     if (response.data === "") {
                         alert('error creating timeline entry');
                     }
@@ -292,7 +390,6 @@
                     method: 'POST',
                     url: '/ai/idea/timeline/delete/' + value,
                 }).then( (response) => {
-                    console.log('getTimelineData -> response', response);
                     this.timeline_data = response.data;
                 });
             },
@@ -302,7 +399,6 @@
                     method: 'POST',
                     url: '/ai/idea/timeline/get/' + this.$route.params.id,
                 }).then( (response) => {
-                    console.log('getTimelineData -> response', response);
                     this.timeline_data = response.data;
                 });
             },
@@ -314,7 +410,6 @@
                     method: 'POST',
                     url: '/ai/idea/timeline/get/' + idea_id,
                 }).then( (response) => {
-                    console.log('hanldeGetTimelineData -> response', response);
                     this.timeline_data = response.data;
                 });
             },
@@ -329,7 +424,6 @@
                         message: this.timeline.message,
                     },
                 }).then( (response) => {
-                    console.log('handleTimelineSubmit -> response', response);
                     if (response.data === "") {
                         alert('error creating timeline entry');
                     }

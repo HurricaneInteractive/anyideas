@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\DB;
 
 class DiscussionReplyController extends Controller
 {
+    // get all discussion replies from an idea_id
+    public function getAllByDiscId($id)
+    {
+        $discussion_replies = DiscussionReply::all()->where('discussions_id', $id)->get();
+
+        return $discussion_replies;
+    }
+
     // get single discussion reply from an id
     public function getById($id)
     {
@@ -25,7 +33,7 @@ class DiscussionReplyController extends Controller
 
     public function createDiscussionReply(Request $request)
     {
-        $new_discussion_reply = new Discussionreply([
+        $new_discussion_reply = new DiscussionReply([
             'user_id' => Auth::id(),
             'idea_id' => $request->idea_id,
             'discussion_id' => $request->discussion_id,
@@ -48,6 +56,22 @@ class DiscussionReplyController extends Controller
         return response()->json([
             'status' => $status,
             'message' => $new_discussion_reply_data ? 'Discussion Reply updated' : 'Error updating Discussion Reply'
+        ]);
+    }
+
+    public function dartAdd(Request $request, $id)
+    {
+        $new_darts = $this->getById($id)->darts + 1;
+
+        $reply_item = $this->getById($id);
+
+        DB::table('discussion_reply')
+            ->where('id', $id)
+            ->update(['darts' => $new_darts]);
+
+        return response()->json([
+            'reply_item' => $reply_item,
+            'message' => $new_darts ? 'Idea updated' : 'Error updating Idea'
         ]);
     }
 
