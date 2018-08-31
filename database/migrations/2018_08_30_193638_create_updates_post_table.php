@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimelineEntryTable extends Migration
+class CreateUpdatesPostTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTimelineEntryTable extends Migration
      */
     public function up()
     {
-        Schema::create('timeline_entry', function (Blueprint $table) {
+        Schema::create('updates_post', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
@@ -35,6 +35,6 @@ class CreateTimelineEntryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('timeline_entry');
+        Schema::dropIfExists('updates_post');
     }
 }

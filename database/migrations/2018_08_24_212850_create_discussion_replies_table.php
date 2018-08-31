@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDiscussionReplyTable extends Migration
+class CreateDiscussionRepliesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateDiscussionReplyTable extends Migration
      */
     public function up()
     {
-        Schema::create('discussion_reply', function (Blueprint $table) {
+        Schema::create('discussion_replies', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             
             $table->unsignedInteger('idea_id');
             $table->foreign('idea_id')->references('id')->on('ideas');
 
-            $table->unsignedInteger('discussion_id');
-            $table->foreign('discussion_id')->references('id')->on('discussion_entry');
+            $table->unsignedInteger('discussions_id');
+            $table->foreign('discussions_id')->references('id')->on('discussions');
 
             $table->increments('id');
             $table->mediumText('message');
@@ -37,6 +37,6 @@ class CreateDiscussionReplyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discussion_reply');
+        Schema::dropIfExists('discussion_replies');
     }
 }
