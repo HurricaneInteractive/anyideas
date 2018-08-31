@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Ideas;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as Auth;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Http\Controllers;
 use JavaScript;
@@ -13,24 +13,24 @@ use Illuminate\Support\Facades\DB;
 
 class IdeasController extends Controller
 {
-    // multiple idea functions
+    // user functions getUserById
 
-    public function __construct()
-    {
-        $this->middleware('auth');
+    // get currently logged in user
+    public function getUser(Request $request) { 
+        $user = Auth::user();
+        $id = Auth::id();
+
+        if ($user === null) {
+            return alert('no logged in user - please login');
+        };
+
+        return ['user' => $user, 'id' => $id];
     }
 
-    public function getUser(Request $request) {
-        // if (Auth::check()) {
-        //     $id = Auth::user()->getUserId();
-        // };
+    public function getUserById(Request $request, $id) { 
+        $user = User::all()->where('id', $id)->first();
 
-        $ids = Auth::user();
-        $user = Auth::id();
-        $req = $request->user();
-        // $auth = User::id(
-
-        return ['ids' => $ids, 'user' =>  $user,'req' =>  $req];
+        return ['user' => $user];
     }
 
     public function getAll()
@@ -111,12 +111,12 @@ class IdeasController extends Controller
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
 
-        $edit_this_idea = Ideas::find($id)->first()->update($filtered_idea_data);
+        $status = Ideas::find($id)->first()->update($filtered_idea_data);
 
         $new_idea_data = $this->getById($id);
 
         return response()->json([
-            'status' => $edit_this_idea,
+            'status' => $status,
             'message' => $new_idea_data ? 'Idea updated' : 'Error updating Idea'
         ]);
     }

@@ -40,11 +40,8 @@ class DatabaseSeeder extends Seeder
             'category' => 'Industry & Business',
             'tags' => "['vue','cooking','rabbits']",
             'description' => "## SEED Data
-
             To push the seed table data run  `php artisan migrate:refresh --seed` *running this will clear any data currently in the tables*
-            
             ------
-            
             for testing purposes, we can add data to the `/database/seeds/DatabaseSeeder.php` file. This allows us to create database entries automatically.
             
             The below code provides an example of how to push test data to the database. The `users` table is defined, and then the corresponding fields are outlined within the `insert([])` array.
@@ -65,40 +62,20 @@ class DatabaseSeeder extends Seeder
             }
             ...
             ```
-            
-            
-            By default, the `users` table pulls in the `SEED_*` environment files in the `.env` file. You may either add the below variables to your `.env` file, or choose to change the `DB:table` with plain string data.
-            
-            ```
-            SEED_USER=user_name
-            SEED_EMAIL=user_email
-            SEED_PASS=user_password
-            ```
-            ---
-            
-            
-            here is another example used to create an idea within the `ideas` table in the DB.
-            ```
-            ...
-            public function run()
-            {
-                ...
-                DB::table('ideas')->insert([
-                    'user_id' => '1234',
-                    'id' => '5678',
-                    'title' => 'any.ideas',
-                    'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche.',
-                    'status' => 'In Development',
-                    'description' => 'Lorem ipsum dolor amet brooklyn slow-carb pabst vexillologist skateboard',
-                    'darts' => '3'
-                ]);    
-                // add more entries below
-            }
-            ...
-            ```
-            
             any table can have data pushed using the same schema",
             'darts' => '3'
+        ]);
+
+        DB::table('ideas')->insert([
+            'user_id' => '1234',
+            'id' => '5679',
+            'title' => 'lyrical',
+            'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
+            'status' => 'Creating',
+            'category' => 'Industry & Business',
+            'tags' => "['react','music','lyrics']",
+            'description' => "** Desc can have data pushed using the same schema**",
+            'darts' => '5'
         ]);
 
         DB::table('ideas')->insert([
@@ -204,9 +181,9 @@ class DatabaseSeeder extends Seeder
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '9876',
-            'title' => 'any.ideas.v2',
+            'title' => 'Initial Idea',
             'message' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'darts' => '7'
+            'darts' => '8'
         ]);
 
         DB::table('user_meta')->insert([
@@ -220,6 +197,22 @@ class DatabaseSeeder extends Seeder
                 "instagram": "instagram",
                 "youtube": "youtube.com"
             }'
+        ]);
+
+        DB::table('updates_posts')->insert([
+            'user_id' => '1234',
+            'idea_id' => '5678',
+            'id' => '1120',
+            'message' => 'updates message',
+            'title' => 'semi update post'
+        ]);
+
+        DB::table('updates_posts')->insert([
+            'user_id' => '1234',
+            'idea_id' => '5678',
+            'id' => '1121',
+            'message' => 'updates message number two',
+            'title' => 'semi update post number two'
         ]);
 
         DB::table('discussions')->insert([
