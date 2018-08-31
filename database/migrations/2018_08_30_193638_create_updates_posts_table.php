@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUpdatesPostTable extends Migration
+class CreateUpdatesPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUpdatesPostTable extends Migration
      */
     public function up()
     {
-        Schema::create('updates_post', function (Blueprint $table) {
+        Schema::create('updates_posts', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
@@ -35,6 +35,6 @@ class CreateUpdatesPostTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('updates_post');
+        Schema::dropIfExists('updates_posts');
     }
 }

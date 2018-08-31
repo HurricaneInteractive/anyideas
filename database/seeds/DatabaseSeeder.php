@@ -199,6 +199,22 @@ class DatabaseSeeder extends Seeder
             }'
         ]);
 
+        DB::table('updates_posts')->insert([
+            'user_id' => '1234',
+            'idea_id' => '5678',
+            'id' => '1120',
+            'message' => 'updates message',
+            'title' => 'semi update post'
+        ]);
+
+        DB::table('updates_posts')->insert([
+            'user_id' => '1234',
+            'idea_id' => '5678',
+            'id' => '1121',
+            'message' => 'updates message number two',
+            'title' => 'semi update post number two'
+        ]);
+
         DB::table('discussions')->insert([
             'user_id' => '1234',
             'idea_id' => '5678',

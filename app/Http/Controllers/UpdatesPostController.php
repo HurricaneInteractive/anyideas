@@ -16,59 +16,76 @@ use Illuminate\Support\Facades\DB;
 class UpdatesPostController extends Controller
 {
     // get all discussions from an idea_id
-    public function getAll($idea_id)
+    public function getAllByIdeaId($idea_id)
     {
-        $discussions = UpdatesPost::all()->where('idea_id', $idea_id);
+        // $test = UpdatesPost::all()-;
+        $updates_posts = UpdatesPost::all()->where('idea_id', $idea_id);
 
-        return $discussions;
+        return $updates_posts;
     }
 
-    public function getById($discussion_id)
+    public function getById($updates_post_id)
     {
-        $discussion_item = UpdatesPost::all()->where('id', $discussion_id)->first();
+        $updates_post = UpdatesPost::all()->where('id', $updates_post_id)->first();
 
-        return $discussion_item;
+        return $updates_post;
     }
 
     public function create(Request $request, $id)
     {
 
-        $new_discussion = new UpdatesPost([
+        $new_updates_post = new UpdatesPost([
             'user_id' => Auth::id(),
             'idea_id' => $id,
             'title' => $request->title,
             'message' => $request->message
         ]);
 
-        $new_discussion->save();
+        $new_updates_post->save();
 
-        return $new_discussion;
+        return $new_updates_post;
     }
 
-    public function updateIdea(Request $request, $id)
+    public function updateEntry(Request $request, $id)
     {
-        $filtered_discussion_data = collect(request()->all())->filter()->all();
+        $filtered_updates_post_data = collect(request()->all())->filter()->all();
 
-        $status = UpdatesPost::find($id)->first()->update($filtered_discussion_data);
+        $status = UpdatesPost::find($id)->first()->update($filtered_updates_post_data);
 
-        $new_idea_data = $this->getById($id);
+        $new_updates_post_data = $this->getById($id);
 
         return response()->json([
             'status' => $status,
-            'message' => $new_idea_data ? 'Idea updated' : 'Error updating Idea'
+            'message' => $new_updates_post_data ? 'Updates Post updated' : 'Error updating Updates Post'
+        ]);
+    }
+
+    public function dartAdd(Request $request, $id)
+    {
+        $new_darts = $this->getById($id)->darts + 1;
+
+        $updates_post_item = $this->getById($id);
+
+        DB::table('updates_posts')
+            ->where('id', $id)
+            ->update(['darts' => $new_darts]);
+
+        return response()->json([
+            'timeline_item' => $updates_post_item,
+            'message' => $new_darts ? 'Idea updated' : 'Error updating Idea'
         ]);
     }
 
     public function deleteEntry($id)
     {
-        $discussion_id = $this->getById($id);
+        $updates_post_id = $this->getById($id);
 
-        $status = $discussion_id->delete();
+        $status = $updates_post_id->delete();
 
         return response()->json([
             'status' => $status,
             'id' => $id,
-            'message' => $id ? 'Idea Deleted!' : 'Error Deleting Idea'
+            'message' => $id ? 'Updates Post Deleted!' : 'Error Deleting Updates Post'
         ]);
 
     }

@@ -18,4 +18,7 @@ class Ideas extends Model
     public function discussion() {
         return $this->hasMany(Discussion::class);
     }
+    public function update_post() {
+        return $this->hasMany(UpdatesPost::class);
+    }
 }

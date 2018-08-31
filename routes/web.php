@@ -54,11 +54,12 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/idea/discussion/reply/update/{id}', 'DiscussionReplyController@updateEntry'); // pass id of discussion
     
     // updates_post routes
-    Route::post('/idea/update_post/get/{id}', 'UpdatesController@getById'); // parameter passed is idea_id
-    Route::post('/idea/update_post/get/all/{idea_id}', 'UpdatesController@getAllByDiscId'); // parameter passed is idea_id
-    Route::post('/idea/update_post/create/{idea_id}', 'UpdatesController@create'); // parameter passed is idea_id
-    Route::post('/idea/update_post/delete/{id}', 'UpdatesController@deleteEntry'); // pass id of discussion
-    Route::post('/idea/update_post/update/{id}', 'UpdatesController@updateEntry'); // pass id of discussion
+    Route::post('/idea/update_post/get/{id}', 'UpdatesPostController@getById'); // parameter passed is idea_id
+    Route::post('/idea/update_post/get/all/{idea_id}', 'UpdatesPostController@getAllByIdeaId'); // parameter passed is idea_id
+    Route::post('/idea/update_post/create/{idea_id}', 'UpdatesPostController@create'); // parameter passed is idea_id
+    Route::post('/idea/update_post/delete/{id}', 'UpdatesPostController@deleteEntry'); // pass id of discussion
+    Route::post('/idea/update_post/update/{id}', 'UpdatesPostController@updateEntry'); // pass id of discussion
+    Route::post('/idea/update_post/darts/add/{id}', 'UpdatesPostController@dartAdd');
     
 });
 
