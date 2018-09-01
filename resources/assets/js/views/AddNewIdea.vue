@@ -7,7 +7,7 @@
                     <button @click="handleGetIdeaData">get all idea data</button>
 
                     <div class="card-body">
-                        <form method="POST" action="{route('idea-add-new') }">
+                        <form method="POST">
                             <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
 
@@ -98,13 +98,13 @@
         data() {
             return {
                 idea: {
-                    title: '',
+                    title: 'filler title',
                     category: ['development', 'photography', 'cooking'],
                     tags: ['vue', 'nikon', 'cheese'],
                     description: '# hello',
-                    pitch: '',
-                    status: '',
-                    image: '',
+                    pitch: 'filler pitch',
+                    status: 'filler status',
+                    image: 'filler image',
                 },
                 errors: [],
                 ideas: []
@@ -128,7 +128,7 @@
 
             // on click gets titles of all ideas and console logs them
             handleGetIdeaData() {
-                axios.get('/api/idea-get-all').then( (response) => {
+                axios.get('/ai/idea-get-all').then( (response) => {
                     this.ideaData = response.data
                     console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
                 })
@@ -139,6 +139,7 @@
                 if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null && this.image !== null) {
                     axios({
                         method: 'POST',
+                        url: '/ai/idea/create',
                         data: {
                             title: this.idea.title,
                             category: this.idea.category,
@@ -148,7 +149,9 @@
                             status: this.idea.status,
                             image: this.idea.image
                         },
-                        url: '/api/idea/create'
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                        }
                     })
                     .then(response => {
                         console.log('​handleSubmit -> response', response);

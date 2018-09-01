@@ -19,18 +19,14 @@ class DiscussionReplyController extends Controller
     public function getAllByDiscId($discussions_id)
     {
         $replies = DiscussionReply::all()->where('discussions_id', $discussions_id);
-
         return $replies;
     }
-
     // get single discussion reply from an id
     public function getById($id)
     {
         $discussion_reply = DiscussionReply::all()->where('id', $id)->first();
-
         return $discussion_reply;
     }
-
     public function createDiscussionReply(Request $request)
     {
         $new_discussion_reply = new DiscussionReply([
@@ -41,24 +37,19 @@ class DiscussionReplyController extends Controller
         ]);
 
         $new_discussion_reply->save();
-
         return $new_discussion_reply;
     }
-
     public function updateIdea(Request $request, $id)
     {
         $filtered_discussion_reply_data = collect(request()->all())->filter()->all();
-
         $status = DiscussionReply::find($id)->first()->update($filtered_discussion_reply_data);
 
         $new_discussion_reply_data = $this->getById($id);
-
         return response()->json([
             'status' => $status,
             'message' => $new_discussion_reply_data ? 'Discussion Reply updated' : 'Error updating Discussion Reply'
         ]);
     }
-
     public function upDownVote($reply_id, $vote)
     {
         if ($vote === 'down') {
@@ -75,7 +66,6 @@ class DiscussionReplyController extends Controller
         }
 
         $reply_item = $this->getById($reply_id);
-
         return response()->json([
             'reply_item' => $reply_item,
             'reply_id' => $reply_id,
@@ -83,17 +73,14 @@ class DiscussionReplyController extends Controller
             'message' => $reply_item ? 'Vote updated' : 'Error updating Vote'
         ]);
     }
-
     public function deleteEntry($id)
     {
         $id = $this->getById($id);
-        //get discussion replies here + delete them before deleting the discussion
         $status = $id->delete();
 
         return response()->json([
             'status' => $status,
             'message' => $status ? 'Discussion Reply Deleted!' : 'Error Deleting Discussion Reply'
         ]);
-
     }
 }

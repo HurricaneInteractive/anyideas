@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DiscussionReply extends Model
 {
-    //
     protected $fillable = [
         'user_id',
         'idea_id',
@@ -26,5 +25,4 @@ class DiscussionReply extends Model
     public function discussion() {
         return $this->belongsTo(Discussion::class, 'discussion_id');
     }
-    
 }

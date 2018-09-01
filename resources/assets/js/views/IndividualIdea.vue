@@ -5,7 +5,7 @@
                 <div class="card card-default">
                     <div class="card-header"></div>
 
-                    <!-- <div class="card-body">
+                    <div class="card-body">
                         <h1>{{idea_data.title}}</h1>
                         <h4>Category: {{idea_data.category}}</h4>
                         <div>Tags: {{idea_data.tags}}</div>
@@ -14,7 +14,8 @@
                         <p>Pitch: {{idea_data.pitch}}</p>
                         <hr/>
                         <div>{{idea_data.description}}</div>
-                    </div> -->
+                        <button @click="handleDeleteIdea">DELETE IDEA</button>
+                    </div>
 
                     <!-- update_post -->
                     <div>
@@ -305,9 +306,18 @@
             axios.post('/ai/idea/get/' + this.$route.params.id)
                 .then(response => {
                     this.idea_data = response.data;
+                    console.log('TCL: mounted -> this.idea_data', this.idea_data);
             });
         },
         methods: {
+            handleDeleteIdea(e) {
+                e.preventDefault();
+                axios.post('/ai/idea/delete/' + this.$route.params.id)
+                    .then(response => {
+                        console.log('TCL: handleDeleteIdea -> response', response);
+                });
+            },
+
             // updates post functions
             handleUpdatePostDarts(value) {
                 axios({

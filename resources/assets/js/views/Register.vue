@@ -32,6 +32,14 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="interests" class="col-md-4 col-form-label text-md-right">Interests</label>
+
+                                <div class="col-md-6">
+                                    <input id="interests" type="text" class="form-control" v-model="interests" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                 <div class="col-md-6">
@@ -68,7 +76,8 @@
                 return {
                     name : "",
                     username: "",
-                    email : "",
+                    email: "",
+                    interests: "",
                     password : "",
                     password_confirmation: ""
                 }
@@ -84,6 +93,7 @@
                                 name: this.name,
                                 username: this.username,
                                 email: this.email,
+                                interests: this.interests,
                                 password: this.password,
                                 password_confirmation: this.password_confirmation
                             },
