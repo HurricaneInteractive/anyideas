@@ -24,16 +24,9 @@ class DiscussionController extends Controller
         return $discussions;
     }
 
-    // public function getAllReplies($id)
-    // {
-    //     $discussion_replies = DiscussionReply::all()->where('discussion_id', $id)->get();
-
-    //     return $discussion_replies;
-    // }
-
-    public function getById($discussion_id)
+    public function getById($discussions_id)
     {
-        $discussion_item = Discussion::all()->where('id', $discussion_id)->first();
+        $discussion_item = Discussion::all()->where('id', $discussions_id)->first();
 
         return $discussion_item;
     }

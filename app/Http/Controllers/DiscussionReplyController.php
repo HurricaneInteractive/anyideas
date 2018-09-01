@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\DB;
 class DiscussionReplyController extends Controller
 {
     // get all discussion replies from an idea_id
-    public function getAllByDiscId($id)
+    public function getAllByDiscId($discussions_id)
     {
-        $discussion_replies = DiscussionReply::all()->where('discussions_id', $id)->get();
+        $replies = DiscussionReply::all()->where('discussions_id', $discussions_id);
 
-        return $discussion_replies;
+        return $replies;
     }
 
     // get single discussion reply from an id
@@ -36,7 +36,7 @@ class DiscussionReplyController extends Controller
         $new_discussion_reply = new DiscussionReply([
             'user_id' => Auth::id(),
             'idea_id' => $request->idea_id,
-            'discussion_id' => $request->discussion_id,
+            'discussions_id' => $request->discussions_id,
             'message' => $request->message
         ]);
 
@@ -59,19 +59,28 @@ class DiscussionReplyController extends Controller
         ]);
     }
 
-    public function dartAdd(Request $request, $id)
+    public function upDownVote($reply_id, $vote)
     {
-        $new_darts = $this->getById($id)->darts + 1;
+        if ($vote === 'down') {
+            $new_votes = $this->getById($reply_id)->down_votes + 1;
+            DB::table('discussion_replies')
+            ->where('id', $reply_id)
+            ->update(['down_votes' => $new_votes]);
+        }
+        else {
+            $new_votes = $this->getById($reply_id)->up_votes + 1;
+            DB::table('discussion_replies')
+            ->where('id', $reply_id)
+            ->update(['up_votes' => $new_votes]);
+        }
 
-        $reply_item = $this->getById($id);
-
-        DB::table('discussion_reply')
-            ->where('id', $id)
-            ->update(['darts' => $new_darts]);
+        $reply_item = $this->getById($reply_id);
 
         return response()->json([
             'reply_item' => $reply_item,
-            'message' => $new_darts ? 'Idea updated' : 'Error updating Idea'
+            'reply_id' => $reply_id,
+            'vote' => $vote,
+            'message' => $reply_item ? 'Vote updated' : 'Error updating Vote'
         ]);
     }
 

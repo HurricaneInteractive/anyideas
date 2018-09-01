@@ -126,11 +126,24 @@
                             <ul v-for="(value, key) in this.discussion_data" :key="key">
                                 <li key={{key}}>
                                     <h4>{{value.title}}</h4>
+                                    <h6>{{value.id}}</h6>
                                     <p>{{value.message}}</p>
                                     <button @click="handleDiscussionDelete(value.id)">Delete entry</button>
-                                    <button>display no of replies</button>
+                                    <button @click="handleDiscussionRepliesGet(value.id)">display no of replies</button>
                                 </li>
                             </ul>
+                            <div v-bind:style="{ paddingLeft: '48px'}">
+                                <ul v-for="(value, key) in this.discussion_replies_data" :key="key">
+                                    <li key={{key}}>
+                                        <h4>{{value.title}}</h4>
+                                        <h6>{{value.id}}</h6>
+                                        <p>{{value.message}}</p>
+                                        <button @click="handleDiscussionReplyVote(value.id)">Delete entry</button>
+                                        <button @click="handleDiscussionReplyVote(value.id, 'down')">{{value.down_votes}} | Down</button>
+                                        <button @click="handleDiscussionReplyVote(value.id, 'up')">{{value.up_votes}} | Up</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                         <h4>update discussion item</h4>
@@ -282,20 +295,20 @@
                 timeline_data: '',
                 discussion_data: '',
                 updates_post_data: '',
+                discussion_replies_data: '',
                 errors: [],
                 ideas: []
             }
         },
         mounted() {
-            console.log('home.vue page');
             console.log('this.$route.params.id => ', this.$route.params.id);
             axios.post('/ai/idea/get/' + this.$route.params.id)
                 .then(response => {
-                    console.log('got ideas', response.data);
                     this.idea_data = response.data;
             });
         },
         methods: {
+            // updates post functions
             handleUpdatePostDarts(value) {
                 axios({
                     method: 'POST',
@@ -303,11 +316,8 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                     }
-                }).then( (response) => {
-                    console.log('handleDartsAdd -> response.data', response.data);
                 });
             },
-            // updates post functions
             hanldeGetUpdateData(e) {
                 e.preventDefault();
                 axios({
@@ -355,6 +365,31 @@
                 });
             },
 
+            // discussion replies functions
+            handleDiscussionReplyVote(reply_id, vote) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/vote/' + reply_id + '/' + vote
+                }).then( (response) => {
+                    this.discussion_replies_data = response.data;
+                });
+            },
+            handleDiscussionReplyiesDelete(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/delete/' + value,
+                }).then( (response) => {
+                    this.discussion_replies_data = response.data;
+                });
+            },
+            handleDiscussionRepliesGet(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/get/all/' + value
+                }).then( (response) => {
+                    this.discussion_replies_data = response.data;
+                }); 
+            },
 
             // discussion functions
             handleDiscussionDelete(value) {
@@ -367,10 +402,10 @@
             },
             handleDiscussionUpdate(e){
                 e.preventDefault();
-                let discussion_id = this.discussion_update.id;
+                let discussions_id = this.discussion_update.id;
                 axios({
                     method: 'POST',
-                    url: '/ai/idea/discussion/update/' + discussion_id,
+                    url: '/ai/idea/discussion/update/' + discussions_id,
                     data: {
                         title: this.discussion_update.title,
                         message: this.discussion_update.message,
@@ -428,8 +463,6 @@
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                     }
-                }).then( (response) => {
-                    console.log('handleDartsAdd -> response.data', response.data);
                 });
             },
             handleTimelineDelete(value) {

@@ -13,7 +13,8 @@ class DiscussionReply extends Model
         'discussion_id',
         'id',
         'message',
-        'darts'
+        'up_votes',
+        'down_votes'
     ];
 
     public function user() {
