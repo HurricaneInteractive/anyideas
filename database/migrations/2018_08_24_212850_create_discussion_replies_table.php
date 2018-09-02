@@ -25,7 +25,8 @@ class CreateDiscussionRepliesTable extends Migration
 
             $table->increments('id');
             $table->mediumText('message');
-            $table->mediumInteger('darts')->default('0');
+            $table->mediumInteger('up_votes')->default('0');
+            $table->mediumInteger('down_votes')->default('0');
             $table->timestamps();
         });
     }

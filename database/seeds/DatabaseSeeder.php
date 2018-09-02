@@ -229,7 +229,8 @@ class DatabaseSeeder extends Seeder
             'discussions_id' => '2120',
             'id' => '5555',
             'message' => 'sick idea man - have you tried turning it around?',
-            'darts' => '4'
+            'up_votes' => '2',
+            'down_votes' => '12'
         ]);
 
         DB::table('discussion_replies')->insert([
@@ -237,8 +238,9 @@ class DatabaseSeeder extends Seeder
             'idea_id' => '5678',
             'discussions_id' => '2120',
             'id' => '5556',
-            'message' => 'sick idea man - have you tried turning it around?',
-            'darts' => '2'
+            'message' => 'super dooper, have you tried green?',
+            'up_votes' => '48',
+            'down_votes' => '1'
         ]);
     }
 }
