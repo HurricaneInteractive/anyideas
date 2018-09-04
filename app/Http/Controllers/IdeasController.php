@@ -10,9 +10,6 @@ use App\Http\Requests;
 use App\Http\Controllers;
 use JavaScript;
 use Illuminate\Support\Facades\DB;
-use DiscussionController;
-use UpdatesPostController;
-use TimelineController;
 
 class IdeasController extends Controller
 {
@@ -26,10 +23,19 @@ class IdeasController extends Controller
         };
         return ['user' => $user, 'id' => $id];
     }
-    public function getUserById(Request $request, $id) { 
+    public function getUserById($id) { 
         $user = User::all()->where('id', $id)->first();
-        return ['user' => $user];
+        $meta = DB::table('user_meta_datas')->where('user_id', $user);
+        $interests = json_decode($user->interests);
+
+        return response()->json([
+            'user' => $user,
+            'interests' => $interests,
+            'user_meta' => $meta
+        ]);
     }
+
+    // mass GET ideas
     public function getAll()
     {
         $ideas = Ideas::all();
@@ -80,6 +86,7 @@ class IdeasController extends Controller
 
         $idea = new Ideas([
             'user_id' => $user_id,
+            'success' => false,
             'title' => $request->title,
             'category' => $category_array,
             'tags' => $tags_array,

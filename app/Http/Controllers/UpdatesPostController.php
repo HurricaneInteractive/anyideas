@@ -37,7 +37,6 @@ class UpdatesPostController extends Controller
         $new_updates_post = new UpdatesPost([
             'user_id' => Auth::id(),
             'idea_id' => $id,
-            'title' => $request->title,
             'message' => $request->message
         ]);
 

@@ -50,27 +50,27 @@ class DiscussionReplyController extends Controller
             'message' => $new_discussion_reply_data ? 'Discussion Reply updated' : 'Error updating Discussion Reply'
         ]);
     }
-    public function upDownVote($reply_id, $vote)
+    public function darts(Request $request, $reply_id)
     {
-        if ($vote === 'down') {
-            $new_votes = $this->getById($reply_id)->down_votes + 1;
-            DB::table('discussion_replies')
-            ->where('id', $reply_id)
-            ->update(['down_votes' => $new_votes]);
-        }
-        else {
-            $new_votes = $this->getById($reply_id)->up_votes + 1;
-            DB::table('discussion_replies')
-            ->where('id', $reply_id)
-            ->update(['up_votes' => $new_votes]);
-        }
+        $user_req_id = $request->user();
+        // if ($vote === 'down') {
+        //     $new_votes = $this->getById($reply_id)->down_votes + 1;
+        //     DB::table('discussion_replies')
+        //     ->where('id', $reply_id)
+        //     ->update(['down_votes' => $new_votes]);
+        // }
+        // else {
+        //     $new_votes = $this->getById($reply_id)->up_votes + 1;
+        //     DB::table('discussion_replies')
+        //     ->where('id', $reply_id)
+        //     ->update(['up_votes' => $new_votes]);
+        // }
 
-        $reply_item = $this->getById($reply_id);
+        // $reply_item = $this->getById($reply_id);
         return response()->json([
-            'reply_item' => $reply_item,
+            'user_req_id' => $user_req_id,
             'reply_id' => $reply_id,
-            'vote' => $vote,
-            'message' => $reply_item ? 'Vote updated' : 'Error updating Vote'
+            'message' => $reply_id ? 'Vote updated' : 'Error updating Vote'
         ]);
     }
     public function deleteEntry($id)
