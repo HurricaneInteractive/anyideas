@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Ideas as Ideas;
+use Illuminate\Http\Request;
 
 Auth::routes();
 
@@ -17,8 +19,14 @@ Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
 Route::group(['prefix' => 'ai/'], function() {
     //user routes
-    Route::post('/user/get', 'IdeasController@getUser');
+    Route::post('/user/get/current', 'IdeasController@getUser');
     Route::post('/user/get/{id}', 'IdeasController@getUserById');
+
+    // search routes
+    Route::post('/search', 'SearchController@searchQuery');
+
+    // discover / news feed routes
+    Route::post('/feed/get/', 'IdeasController@getFeed');
 
     //idea routes
     Route::post('/idea/get/all', 'IdeasController@getAll');
@@ -52,7 +60,7 @@ Route::group(['prefix' => 'ai/'], function() {
             Route::post('/idea/discussion/reply/create/{discussion_id}', 'DiscussionReplyController@create'); // pass discussion_id
             Route::post('/idea/discussion/reply/delete/{id}', 'DiscussionReplyController@deleteEntry');
             Route::post('/idea/discussion/reply/update/{id}', 'DiscussionReplyController@updateEntry');
-            Route::post('/idea/discussion/reply/vote/{reply_id}/{vote}', 'DiscussionReplyController@upDownVote'); // pass in either 'up' pr 'down'
+            Route::post('/idea/discussion/reply/darts/{reply_id}', 'DiscussionReplyController@darts'); // pass in either 'up' pr 'down'
         
         // updates_post routes
         Route::post('/idea/update_post/get/{id}', 'UpdatesPostController@getById'); // pass update_post_id
