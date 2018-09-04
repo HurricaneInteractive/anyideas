@@ -12,6 +12,7 @@ import Register from './views/Register'
 import AddNewIdea from './views/AddNewIdea'
 import IdeaPage from './views/IdeaPage'
 import IndividualIdea from './views/IndividualIdea'
+import UserPage from './views/UserPage'
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -48,6 +49,11 @@ const router = new VueRouter({
             path: '/idea/:id',
             name: 'idea',
             component: IndividualIdea
+        },
+        {
+            path: '/user/:id',
+            name: 'user-page',
+            component: UserPage
         }
         // add more pages here
     ]
