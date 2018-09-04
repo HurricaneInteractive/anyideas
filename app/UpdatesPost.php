@@ -11,7 +11,6 @@ class UpdatesPost extends Model
         'user_id',
         'idea_id',
         'id',
-        'title',
         'message',
         'darts'
     ];

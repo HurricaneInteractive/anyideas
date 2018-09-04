@@ -139,9 +139,8 @@
                                         <h4>{{value.title}}</h4>
                                         <h6>{{value.id}}</h6>
                                         <p>{{value.message}}</p>
-                                        <button @click="handleDiscussionReplyVote(value.id)">Delete entry</button>
-                                        <button @click="handleDiscussionReplyVote(value.id, 'down')">{{value.down_votes}} | Down</button>
-                                        <button @click="handleDiscussionReplyVote(value.id, 'up')">{{value.up_votes}} | Up</button>
+                                        <button @click="handleDiscussionReplyDelete(value.id)">Delete entry</button>
+                                        <button @click="handleDiscussionReplyVote(value.id)">{{value.darts}} | Darts</button>
                                     </li>
                                 </ul>
                             </div>
@@ -376,15 +375,15 @@
             },
 
             // discussion replies functions
-            handleDiscussionReplyVote(reply_id, vote) {
+            handleDiscussionReplyVote(reply_id) {
                 axios({
                     method: 'POST',
-                    url: '/ai/idea/discussion/reply/vote/' + reply_id + '/' + vote
+                    url: '/ai/idea/discussion/reply/darts/' + reply_id
                 }).then( (response) => {
                     this.discussion_replies_data = response.data;
                 });
             },
-            handleDiscussionReplyiesDelete(value) {
+            handleDiscussionReplyDelete(value) {
                 axios({
                     method: 'POST',
                     url: '/ai/idea/discussion/reply/delete/' + value,
