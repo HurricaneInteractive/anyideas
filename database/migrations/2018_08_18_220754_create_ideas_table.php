@@ -19,6 +19,7 @@ class CreateIdeasTable extends Migration
             
             $table->increments('id');
             $table->string('title');
+            $table->boolean('success');
             $table->mediumText('pitch');
             $table->string('status');
             $table->string('category');
