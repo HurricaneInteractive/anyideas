@@ -6,11 +6,17 @@
                     <div class="card-header">Home.vue View</div>
 
                     <div class="card-body">
-                        <h1>Home page boi</h1>
+                        <h1>{{user_data.user.name}}</h1>
+                        <h2>@{{user_data.user.username}}</h2>
+                        <h5>Interests</h5>
+                        <ul v-for="(value, key) in this.user_data.interests" :key="key">
+                          <li key={{key}}>
+                            {{value}}
+                          </li>
+                        </ul>
                     </div>
 
                     <div>
-                        <button @click="searchDatabase">Run search query</button>
                         <h2>users ideas</h2>
                         <div>
                             <div v-for="(value, key) in this.user_ideas" :key="key">
@@ -37,31 +43,31 @@
                     description: ''
                 },
                 user_ideas: '',
-                search_results: '',
+                user_data: '',
                 errors: [],
                 ideas: []
             }
         },
         // figure out passing MySQL data to Vue
         mounted() {
-            console.log("this => " + this.data);
-            axios.post('/ai/idea/get-by-user/1234')
-                .then(response => {
-                    this.user_ideas = response.data;
+            console.log('this.$route.params.id => ', this.$route.params);
+            axios({
+              method: 'POST',
+              url: '/ai/idea/get-by-user/' + this.$route.params.id,
+            }).then( (response) => {
+              console.log('TCL: search -> get by user', response.data);
+              this.user_ideas = response.data
+            });
+            axios({
+              method: 'POST',
+              url: '/ai/user/get/' + this.$route.params.id,
+            }).then( (response) => {
+              console.log('TCL: search -> user get', response.data);
+              this.user_data = response.data
             });
         },
         methods: {
-            searchDatabase() {
-                axios({
-                    method: 'POST',
-                    url: '/ai/search',
-                    data: {
-                        search: "steve"
-                    },
-                }).then( (response) => {
-                    console.log('TCL: search -> response', response);
-                });
-            }
+
         }
 
     }
