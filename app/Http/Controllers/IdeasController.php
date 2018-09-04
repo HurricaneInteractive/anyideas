@@ -25,13 +25,15 @@ class IdeasController extends Controller
     }
     public function getUserById($id) { 
         $user = User::all()->where('id', $id)->first();
-        $meta = DB::table('user_meta_datas')->where('user_id', $user);
+        $meta = DB::table('user_meta_datas')->where('user_id', $id)->first();
         $interests = json_decode($user->interests);
+        $social = json_decode($meta->social_media);
 
         return response()->json([
             'user' => $user,
             'interests' => $interests,
-            'user_meta' => $meta
+            'user_meta' => $meta,
+            'social_media' => $social
         ]);
     }
 

@@ -14,6 +14,17 @@
                             {{value}}
                           </li>
                         </ul>
+                        <ul>
+                          <li>
+                            Facebook: {{this.user_data.social_media.facebook}}
+                          </li>
+                          <li>
+                            Instagram: {{this.user_data.social_media.instagram}}
+                          </li>
+                          <li>
+                            YouTube: {{this.user_data.social_media.youtube}}
+                          </li>
+                        </ul>
                     </div>
 
                     <div>
@@ -50,12 +61,10 @@
         },
         // figure out passing MySQL data to Vue
         mounted() {
-            console.log('this.$route.params.id => ', this.$route.params);
             axios({
               method: 'POST',
               url: '/ai/idea/get-by-user/' + this.$route.params.id,
             }).then( (response) => {
-              console.log('TCL: search -> get by user', response.data);
               this.user_ideas = response.data
             });
             axios({
