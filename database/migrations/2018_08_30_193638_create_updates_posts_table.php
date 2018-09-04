@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserMetaTable extends Migration
+class CreateUpdatesPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateUserMetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_meta', function (Blueprint $table) {
+        Schema::create('updates_posts', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unsignedInteger('idea_id');
+            $table->foreign('idea_id')->references('id')->on('ideas');
+            
             $table->increments('id');
-            $table->string('occupation')->nullable($value = true);
-            $table->string('website')->nullable($value = true);
-            $table->string('avatar')->nullable($value = true);
-            $table->mediumText('following')->nullable($value = true);
-            $table->mediumText('followers')->nullable($value = true);
-            $table->mediumText('social_media')->nullable($value = true);
+            $table->mediumText('message');
+            $table->mediumInteger('darts')->default('0');
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ class CreateUserMetaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_meta');
+        Schema::dropIfExists('updates_posts');
     }
 }

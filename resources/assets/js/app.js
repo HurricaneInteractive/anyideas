@@ -1,13 +1,63 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+// import lodash from 'lodash'
+// import marked from 'marked'
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+Vue.use(VueRouter)
+
+import App from './App.vue'
+import Home from './views/Home'
+import Login from './views/Login'
+import Register from './views/Register'
+import AddNewIdea from './views/AddNewIdea'
+import IdeaPage from './views/IdeaPage'
+import IndividualIdea from './views/IndividualIdea'
+import UserPage from './views/UserPage'
 
 require('./bootstrap');
-
 window.Vue = require('vue');
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
+        },
+        {
+            path: '/add-new-idea',
+            name: 'add-new-idea',
+            component: AddNewIdea
+        },
+        {
+            path: '/idea-view',
+            name: 'idea-view',
+            component: IdeaPage
+        },
+        {
+            path: '/idea/:id',
+            name: 'idea',
+            component: IndividualIdea
+        },
+        {
+            path: '/user/:id',
+            name: 'user-page',
+            component: UserPage
+        }
+        // add more pages here
+    ]
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,9 +65,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('index', require('./components/Index.vue'));
-
-// const app = new Vue({
-//     el: '#app'
-// });
+const app = new Vue({
+    el: '#app',
+    components: { App },
+    router,
+});
