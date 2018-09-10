@@ -19,8 +19,9 @@ Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
 
 Route::group(['prefix' => 'ai/'], function() {
     //user routes
-    Route::post('/user/get/current', 'IdeasController@getUser');
-    Route::post('/user/get/{id}', 'IdeasController@getUserById');
+    Route::post('/user/get/current', 'UserController@getUser');
+    Route::post('/user/get/{id}', 'UserController@getUserById');
+    Route::post('/user/update/{id}', 'UserController@updateUser');
 
     // search routes
     Route::post('/search', 'SearchController@searchQuery');
