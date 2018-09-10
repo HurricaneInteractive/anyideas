@@ -1,21 +1,32 @@
-window._ = require('lodash');
-
 window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import Vue from 'vue';
+import router from './routes.js'
+import VueCookies from 'vue-cookies'
+import App from './App.vue'
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+Vue.use( VueCookies )
 
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+// this.$cookies.isKey("laravel_token")
+console.log('window.cookie => ', window.cookie);
 
-import Vue            from 'vue';
-import router           from './routes.js'
+// router.beforeEach((to, from, next) => {
+//     // const requiresAuth = to.matched.some(record  => record.meta.requiresAuth)
+//     // const currentUser = token.content;
+//     // console.log('TCL: this.$cookies.get(laravel_token)', this.$cookies.get('anyideas_session'));
+//     // console.log('TCL: this.$cookies.get(anyideas_session)', this.$cookies.get("anyideas_session"));
+//     console.log('document.cookie => ', document.cookie)
+//     if (this.$cookies.isKey("anyideas_session") === undefined ) {
+//         next('/login')
+//     } else {
+//         next()
+//     }
+//   })
 
+console.log("document.cookie => ", document.cookie.laravel_token);
 
-new Vue({
-    router
-}).$mount('#app')
+const app = new Vue({
+    el: '#app',
+    components: { App },
+    router,
+});

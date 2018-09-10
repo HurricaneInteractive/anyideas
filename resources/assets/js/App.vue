@@ -1,3 +1,4 @@
+<!-- App.vue acts as a wrapper for the whole application -->
 <template>
         <div>
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
