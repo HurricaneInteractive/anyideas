@@ -1,72 +1,21 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import lodash from 'lodash'
-// import marked from 'marked'
+window._ = require('lodash');
 
-Vue.use(VueRouter)
+window.axios = require('axios');
 
-import App from './App.vue'
-import Home from './views/Home'
-import Login from './views/Login'
-import Register from './views/Register'
-import AddNewIdea from './views/AddNewIdea'
-import IdeaPage from './views/IdeaPage'
-import IndividualIdea from './views/IndividualIdea'
-import UserPage from './views/UserPage'
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-require('./bootstrap');
-window.Vue = require('vue');
+let token = document.head.querySelector('meta[name="csrf-token"]');
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register
-        },
-        {
-            path: '/add-new-idea',
-            name: 'add-new-idea',
-            component: AddNewIdea
-        },
-        {
-            path: '/idea-view',
-            name: 'idea-view',
-            component: IdeaPage
-        },
-        {
-            path: '/idea/:id',
-            name: 'idea',
-            component: IndividualIdea
-        },
-        {
-            path: '/user/:id',
-            name: 'user-page',
-            component: UserPage
-        }
-        // add more pages here
-    ]
-});
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import Vue            from 'vue';
+import router           from './routes.js'
 
-const app = new Vue({
-    el: '#app',
-    components: { App },
-    router,
-});
+
+new Vue({
+    router
+}).$mount('#app')

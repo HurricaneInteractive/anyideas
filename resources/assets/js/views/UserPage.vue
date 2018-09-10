@@ -71,7 +71,7 @@
               method: 'POST',
               url: '/ai/user/get/' + this.$route.params.id,
             }).then( (response) => {
-              console.log('TCL: search -> user get', response.data);
+            //   console.log('TCL: search -> user get', response.data);
               this.user_data = response.data
             });
         },
