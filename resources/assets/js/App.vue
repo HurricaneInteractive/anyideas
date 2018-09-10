@@ -14,7 +14,7 @@
                             <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
                             <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
                             <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="isLoggedIn">Add New Idea</router-link>
-                            <li class="nav-link" v-if="isLoggedIn"> Hi, {{name}}</li>
+                            <li class="nav-link" v-if="isLoggedIn"> Hi, <router-link :to="'user/' + isLoggedIn" class="nav-link">{{name}}</router-link></li>
                             <form method="POST" action="/logout" class="nav-link" v-if="isLoggedIn"><button @click="handleLogout" type="submit">Logout</button></form>
                         </ul>
                     </div>
@@ -32,6 +32,9 @@
 <!-- App.vue is imported into app.blade.php -->
 
 <script>
+
+import VueCookie from 'vue-cookie'
+
     export default {
         data(){
             return {
@@ -47,9 +50,15 @@
             this.isLoggedIn = null;
             this.name = null;
             // check if user_data exists (user is logged in)
-            this.checkForUserData();            
+            this.checkForUserData();
+            this.getLaravelCookies();     
         },
         methods: {
+            getLaravelCookies() {
+                console.log('anyideas_session in App.vue => ', this.$cookie.get('anyideas_session'))
+                // console.log('XSRF-TOKEN in App.vue => ', this.$cookie.get('XSRF-TOKEN'))
+                console.log('laravel_token in App.vue => ', this.$cookie.get('laravel_token'))
+            },
             checkForUserData() {
                 if (window.user_data === null) {
                     console.log('no user_data here');
