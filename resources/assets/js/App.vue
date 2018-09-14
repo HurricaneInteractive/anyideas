@@ -39,32 +39,14 @@ import VueCookie from 'vue-cookie'
         data(){
             return {
                 isLoggedIn : null,
-                name : null
+                name : null,
+                // parent_data: this.$parent.data
             }
         },
-        props: [
-            'userData'
-        ],
         mounted(){
-            // console.log(this.userData); get all user data (name, email, username etc.)
-            this.isLoggedIn = null;
-            this.name = null;
-            // check if user_data exists (user is logged in)
-            this.checkForUserData();
+            // console.log('this.parent_data => ', this.parent_data)
         },
         methods: {
-            checkForUserData() {
-                if (window.user_data === null) {
-                    console.log('no user_data here');
-                    this.isLoggedIn = null,
-                    this.name = null
-                } else {
-                    console.log('all you can eat of user_data');
-                    this.isLoggedIn = window.user_data.id,
-                    this.name = window.user_data.name
-                }
-                console.log('no user data?');
-            },
             // user logout function
             handleLogout(e) {
                 e.preventDefault()
