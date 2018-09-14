@@ -51,14 +51,8 @@ import VueCookie from 'vue-cookie'
             this.name = null;
             // check if user_data exists (user is logged in)
             this.checkForUserData();
-            this.getLaravelCookies();     
         },
         methods: {
-            getLaravelCookies() {
-                console.log('anyideas_session in App.vue => ', this.$cookie.get('anyideas_session'))
-                // console.log('XSRF-TOKEN in App.vue => ', this.$cookie.get('XSRF-TOKEN'))
-                console.log('laravel_token in App.vue => ', this.$cookie.get('laravel_token'))
-            },
             checkForUserData() {
                 if (window.user_data === null) {
                     console.log('no user_data here');
