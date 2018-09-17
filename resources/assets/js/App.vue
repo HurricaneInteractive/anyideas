@@ -34,24 +34,18 @@
 <script>
 
 import VueCookie from 'vue-cookie'
+import store from './store'
 
     export default {
         data(){
             return {
                 isLoggedIn : '1234',
                 name : 'guest user',
-                store: 'data.store'
+                store_state: store.state,
             }
         },
-        // computed: {
-        //     count () {
-        //         return store.state.count
-        //     }
-        // },
-        mounted(){
-            // this works -> -> -> -> -> 
-            console.log('CHILD this.$parent.store_data => ', this.$parent.store_data)
-            console.log('CHILD this.$parent.user_data_app => ', this.$parent.user_data_app)
+        mounted: function(){
+            console.warn("CHILD this.store_state => ",this.store_state)
         },
         methods: {
             // user logout function 
