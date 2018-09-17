@@ -11,11 +11,11 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Authentication Links -->
-                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
-                            <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
-                            <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="isLoggedIn">Add New Idea</router-link>
-                            <li class="nav-link" v-if="isLoggedIn"> Hi, <router-link :to="'user/' + isLoggedIn" class="nav-link">{{name}}</router-link></li>
-                            <form method="POST" action="/logout" class="nav-link" v-if="isLoggedIn"><button @click="handleLogout" type="submit">Logout</button></form>
+                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!user_id">Login</router-link>
+                            <router-link :to="{ name: 'register' }" class="nav-link" v-if="!user_id">Register</router-link>
+                            <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="user_id">Add New Idea</router-link>
+                            <li class="nav-link" v-if="user_id"> Hi, <router-link :to="'user/' + user_id" class="nav-link">{{name}}</router-link></li>
+                            <form method="POST" action="/logout" class="nav-link" v-if="user_id"><button @click="handleLogout" type="submit">Logout</button></form>
                         </ul>
                     </div>
                 </div>
@@ -33,19 +33,20 @@
 
 <script>
 
-import VueCookie from 'vue-cookie'
 import store from './store'
 
     export default {
         data(){
             return {
-                isLoggedIn : '1234',
-                name : 'guest user',
+                user_id : store.state.user_data.id,
+                name : store.state.user_data.name,
                 store_state: store.state,
             }
         },
         mounted: function(){
-            console.warn("CHILD this.store_state => ",this.store_state)
+            // working -> -> -> -> ->
+            // console.log('user_id => ', this.user_id)
+            // console.warn("CHILD this.store_state => ",this.store_state)
         },
         methods: {
             // user logout function 
