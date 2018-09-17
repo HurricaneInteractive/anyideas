@@ -11,7 +11,7 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Authentication Links -->
-                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!user_id">Login</router-link>
+                            <router-link :to="{ name: 'login-guest' }" class="nav-link" v-if="!user_id">Login</router-link>
                             <router-link :to="{ name: 'register' }" class="nav-link" v-if="!user_id">Register</router-link>
                             <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="user_id">Add New Idea</router-link>
                             <li class="nav-link" v-if="user_id"> Hi, <router-link :to="'user/' + user_id" class="nav-link">{{name}}</router-link></li>
@@ -32,15 +32,12 @@
 <!-- App.vue is imported into app.blade.php -->
 
 <script>
-
-import store from './store'
-
     export default {
         data(){
             return {
-                user_id : store.state.user_data.id,
-                name : store.state.user_data.name,
-                store_state: store.state,
+                user_id : this.$ud_store.state.user_data.id,
+                name : this.$ud_store.state.user_data.name,
+                store_state: this.$ud_store.state,
             }
         },
         mounted: function(){
@@ -58,6 +55,11 @@ import store from './store'
                 })
                 .then(response => {
                     if (response.status === 200) {
+                        $ud_store.commit('SET_USER_DATA',
+                            user_data = {
+                                name: "guest"
+                            }
+                        );
                         window.location = '/';
                     }
                 })

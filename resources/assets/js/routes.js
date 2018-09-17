@@ -9,11 +9,10 @@ const routes = [
     path: '/',
     name: 'home',
     component: Vue.component( 'Home', require( './views/Home.vue' ) ),
-    meta: { requiresAuth: true }
   },
   {
-    path: '/login',
-    name: 'login',
+    path: '/login-guest',
+    name: 'login-guest',
     component: Vue.component( 'Login', require( './views/Login.vue' ) )
   },
   {
@@ -39,13 +38,13 @@ const routes = [
   {
     path: '/user/:id',
     name: 'user',
-    component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) )
+    component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) ),
+    meta: { requiresAuth: true }
   },
 ];
 // routes here
 const router = new VueRouter({
-  mode: 'history', props: true,
-  routes, store
+  mode: 'history', routes
 });
 
 export default router;
