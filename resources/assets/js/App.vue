@@ -4,8 +4,8 @@
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
                     <router-link :to="{name: 'home'}" class="navbar-brand">any.ideas v1</router-link>
-
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto"></ul>
                         <!-- Right Side Of Navbar -->
@@ -38,16 +38,23 @@ import VueCookie from 'vue-cookie'
     export default {
         data(){
             return {
-                isLoggedIn : null,
-                name : null,
-                // parent_data: this.$parent.data
+                isLoggedIn : '1234',
+                name : 'guest user',
+                store: 'data.store'
             }
         },
+        // computed: {
+        //     count () {
+        //         return store.state.count
+        //     }
+        // },
         mounted(){
-            // console.log('this.parent_data => ', this.parent_data)
+            // this works -> -> -> -> -> 
+            console.log('CHILD this.$parent.store_data => ', this.$parent.store_data)
+            console.log('CHILD this.$parent.user_data_app => ', this.$parent.user_data_app)
         },
         methods: {
-            // user logout function
+            // user logout function 
             handleLogout(e) {
                 e.preventDefault()
                 axios({
