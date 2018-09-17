@@ -11,8 +11,8 @@ const routes = [
     component: Vue.component( 'Home', require( './views/Home.vue' ) ),
   },
   {
-    path: '/login-guest',
-    name: 'login-guest',
+    path: '/login/guest',
+    name: 'login',
     component: Vue.component( 'Login', require( './views/Login.vue' ) )
   },
   {

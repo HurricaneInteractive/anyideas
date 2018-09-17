@@ -11,7 +11,7 @@
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Authentication Links -->
-                            <router-link :to="{ name: 'login-guest' }" class="nav-link" v-if="!user_id">Login</router-link>
+                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!user_id">Login</router-link>
                             <router-link :to="{ name: 'register' }" class="nav-link" v-if="!user_id">Register</router-link>
                             <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="user_id">Add New Idea</router-link>
                             <li class="nav-link" v-if="user_id"> Hi, <router-link :to="'user/' + user_id" class="nav-link">{{name}}</router-link></li>

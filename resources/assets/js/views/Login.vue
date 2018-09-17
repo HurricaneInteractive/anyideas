@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         <form method="POST" action="/login">
-                        
+
                             <div class="form-group row">
                                 <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
 
@@ -70,10 +70,13 @@
                         url: '/login'
                     })
                     .then(response => {
-                        console.log('we got a response')
+                        console.clear;
+                        console.log('TCL: handleSubmit -> response', response);
+                        console.log('TCL: handleSubmit -> response.data', response.data);
+                        console.log('TCL: handleSubmit -> response.data.user', response.data.user);
                         if (response.status === 200) {
                             console.log('login .then')
-                            $ud_store.commit('SET_USER_DATA', response.data.user);
+                            this.$ud_store.commit('SET_USER_DATA', response.data.user);
                             window.location = '/';
                         }
                     })
