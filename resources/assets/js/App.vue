@@ -35,15 +35,20 @@
     export default {
         data(){
             return {
-                user_id : this.$ud_store.state.user_data.id,
-                name : this.$ud_store.state.user_data.name,
+                user_id : null,
+                name : null,
                 store_state: this.$ud_store.state,
             }
         },
         mounted: function(){
             // working -> -> -> -> ->
+            console.log('window.user_data => ', window.user_data)
             // console.log('user_id => ', this.user_id)
             // console.warn("CHILD this.store_state => ",this.store_state)
+            if (window.user_data !== null) {
+                this.user_id = window.user_data.id
+                this.name = window.user_data.name
+            }
         },
         methods: {
             // user logout function 
@@ -55,7 +60,7 @@
                 })
                 .then(response => {
                     if (response.status === 200) {
-                        $ud_store.commit('SET_USER_DATA',
+                        this.$ud_store.commit('SET_USER_DATA',
                             user_data = {
                                 name: "guest"
                             }
