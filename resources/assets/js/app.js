@@ -1,72 +1,153 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import lodash from 'lodash'
-// import marked from 'marked'
+window.axios = require('axios');
 
-Vue.use(VueRouter)
+import Vue from 'vue';
+import Vuex from 'vuex';
+import router from './routes.js';
+import VueCookie from 'vue-cookie';
+import App from './App.vue';
+import store from './store';
+import axios from 'axios';
+import storePlugin from './storePlugin'
 
-import App from './App.vue'
-import Home from './views/Home'
-import Login from './views/Login'
-import Register from './views/Register'
-import AddNewIdea from './views/AddNewIdea'
-import IdeaPage from './views/IdeaPage'
-import IndividualIdea from './views/IndividualIdea'
-import UserPage from './views/UserPage'
+Vue.use( Vuex )
+Vue.use( VueCookie )
+Vue.use( storePlugin )
 
-require('./bootstrap');
-window.Vue = require('vue');
+router.beforeEach((to, from, next) => {
+    console.log('2. beforeResolve');
+    console.log('to.fullPath =>', to.fullPath)
+    window.scrollTo(0, 0);
+    console.log('ROUTER BEFOREEACH: store.state.user_data.name', store.state.user_data);
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register
-        },
-        {
-            path: '/add-new-idea',
-            name: 'add-new-idea',
-            component: AddNewIdea
-        },
-        {
-            path: '/idea-view',
-            name: 'idea-view',
-            component: IdeaPage
-        },
-        {
-            path: '/idea/:id',
-            name: 'idea',
-            component: IndividualIdea
-        },
-        {
-            path: '/user/:id',
-            name: 'user-page',
-            component: UserPage
+    if (to.fullPath !== "/login/guest") {
+        
+        let user_name = "guest";
+        console.log('TCL: user_name ', user_name );
+        console.log('store.state.user_data =>', store.state.user_data);
+        if (typeof store.state.user_data !== undefined && typeof store.state.user_data.name !== undefined) {
+            console.log('store.state => ', store.state)
+            console.log('store.state.user_data => ', store.state.user_data)
+            console.log('store.state.user_data.name => ', store.state.user_data.name)
+            user_name = store.state.user_data.name
         }
-        // add more pages here
-    ]
+
+        // console.log('just a guest')
+        // axios.post('/ai/user/get/current').then(response => {
+        //     console.assert('we ran boiz')     
+        //     console.log('axios response.data.user =>', response.data.user);
+        //     store.commit('SET_USER_DATA', response.data.user);
+        //     // store.SET_USER_DATA(response.data.user)
+        //     next();
+        // }).catch(error => {
+        //     console.error('ROUTER BEFOREEACH: error', error);
+        //     next()
+        // })
+        next();
+    } else {
+        alert('welcome to the login page');
+        next();
+    }
+
 });
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+router.beforeResolve((to, from, next) => {
+    console.log("3. beforeResolve")
+    next();
+})
 
 const app = new Vue({
     el: '#app',
     components: { App },
     router,
+    store,
+    data: {
+        user_data_app: 'placeholder user_data_app string',
+        store_data: store.state.user_data
+    },
+    methods: {
+        getUserAuth: function() {
+            return this.this.user_data_app
+        }
+    }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.beforeEach((to, from, next) => {
+//     console.log('2. beforeResolve');
+//     window.scrollTo(0, 0);
+//     console.log("to.fullPath => ", to.fullPath)
+//     console.log('ROUTER BEFOREEACH: store.state.user_data.name', store.state.user_data.name);
+//     if (to.fullPath === "/login") {
+//         console.log('apparently we"re on the login page')
+//         if (store.state.user_data.name === 'guest') {
+//             console.warn('run if user is guest')
+//             axios({
+//                 method: 'POST',
+//                 url: '/ai/user/get/current'
+//             })
+//             .then(response => {
+//                 console.log('TCL: response', response);
+//                 console.log('TCL: response', response.data);
+//                 console.log('TCL: response', response.data.user);
+//             })
+//             .catch(error => {
+//                 console.error(error);
+//             });
+
+//         } else {
+//             console.warn('ran else')
+//             next()
+//         }
+//     }
+//     if (store.state.user_data.name === 'guest') {
+//         axios.post('/ai/user/get/current').then(response => {
+//             console.log('TCL: response', response);
+//             console.log('TCL: response', response.data);
+//             console.log('TCL: response', response.data.user);
+            
+//             store.commit('SET_USER_DATA', response.data.user);
+//             next();
+//         }).catch(error => {
+//             console.error('ROUTER BEFOREEACH: error', error);
+//             next()
+//         })
+//     }
+// });
+
+// if (to.fullPath === "/login") {
+//     axios.post('/ai/user/get/current').then(response => {
+//         store.commit('SET_USER_DATA', response.data.user);
+//         next();
+//     }).catch(error => {
+//         console.error('ROUTER BEFOREEACH: error', error);
+//         next()
+//     })
+// }
+// else {
+//     console.log('ROUTER BEFOREEACH: store.state.user_data.name', store.state.user_data.name);
+//     if (store.state.user_data.name === 'guest') {
+//         axios.post('/ai/user/get/current').then(response => {
+//             store.commit('SET_USER_DATA', response.data.user);
+//             next();
+//         }).catch(error => {
+//             console.error('ROUTER BEFOREEACH: error', error);
+//             next()
+//         })
+//     }
+//     next();
+// }

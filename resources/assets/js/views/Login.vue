@@ -4,9 +4,12 @@
             <div class="col-md-8">
                 <div class="card card-default">
                     <div class="card-header">Login</div>
+                    <h2>log in page</h2>
+                    <h3>{{$ud_store.state.user_data.name}}</h3>
 
                     <div class="card-body">
                         <form method="POST" action="/login">
+
                             <div class="form-group row">
                                 <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
 
@@ -30,6 +33,7 @@
                                     </button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -45,6 +49,11 @@
                 email : "",
                 password : ""
             }
+        },
+        mounted: function(){
+            // working -> -> -> -> ->
+            // console.log('user_id => ', $ud_store.state.user_data.user_id)
+            // console.warn("CHILD this.store_state => ", $ud_store.state.user_data)
         },
         methods : {
             handleSubmit(e){
@@ -62,6 +71,7 @@
                     })
                     .then(response => {
                         if (response.status === 200) {
+                            this.$ud_store.commit('SET_USER_DATA', response.data.user);
                             window.location = '/';
                         }
                     })

@@ -19,7 +19,7 @@ class IdeasController extends Controller
         $id = Auth::id();
 
         if ($user === null) {
-            return alert('no logged in user - please login');
+            return 'no logged in user - please login';
         };
         return ['user' => $user, 'id' => $id];
     }

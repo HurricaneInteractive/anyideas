@@ -1,20 +1,21 @@
+<!-- App.vue acts as a wrapper for the whole application -->
 <template>
         <div>
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
                     <router-link :to="{name: 'home'}" class="navbar-brand">any.ideas v1</router-link>
-
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto"></ul>
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
                             <!-- Authentication Links -->
-                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
-                            <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
-                            <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="isLoggedIn">Add New Idea</router-link>
-                            <li class="nav-link" v-if="isLoggedIn"> Hi, {{name}}</li>
-                            <form method="POST" action="/logout" class="nav-link" v-if="isLoggedIn"><button @click="handleLogout" type="submit">Logout</button></form>
+                            <router-link :to="{ name: 'login' }" class="nav-link" v-if="!user_id">Login</router-link>
+                            <router-link :to="{ name: 'register' }" class="nav-link" v-if="!user_id">Register</router-link>
+                            <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="user_id">Add New Idea</router-link>
+                            <li class="nav-link" v-if="user_id"> Hi, <router-link :to="'user/' + user_id" class="nav-link">{{name}}</router-link></li>
+                            <form method="POST" action="/logout" class="nav-link" v-if="user_id"><button @click="handleLogout" type="submit">Logout</button></form>
                         </ul>
                     </div>
                 </div>
@@ -34,34 +35,23 @@
     export default {
         data(){
             return {
-                isLoggedIn : null,
-                name : null
+                user_id : null,
+                name : null,
+                store_state: this.$ud_store.state,
             }
         },
-        props: [
-            'userData'
-        ],
-        mounted(){
-            // console.log(this.userData); get all user data (name, email, username etc.)
-            this.isLoggedIn = null;
-            this.name = null;
-            // check if user_data exists (user is logged in)
-            this.checkForUserData();            
+        mounted: function(){
+            // working -> -> -> -> ->
+            console.log('window.user_data => ', window.user_data)
+            // console.log('user_id => ', this.user_id)
+            // console.warn("CHILD this.store_state => ",this.store_state)
+            if (window.user_data !== null) {
+                this.user_id = window.user_data.id
+                this.name = window.user_data.name
+            }
         },
         methods: {
-            checkForUserData() {
-                if (window.user_data === null) {
-                    console.log('no user_data here');
-                    this.isLoggedIn = null,
-                    this.name = null
-                } else {
-                    console.log('all you can eat of user_data');
-                    this.isLoggedIn = window.user_data.id,
-                    this.name = window.user_data.name
-                }
-                console.log('no user data?');
-            },
-            // user logout function
+            // user logout function 
             handleLogout(e) {
                 e.preventDefault()
                 axios({
@@ -70,6 +60,11 @@
                 })
                 .then(response => {
                     if (response.status === 200) {
+                        this.$ud_store.commit('SET_USER_DATA',
+                            user_data = {
+                                name: "guest"
+                            }
+                        );
                         window.location = '/';
                     }
                 })

@@ -42,9 +42,7 @@
                 ideas: []
             }
         },
-        // figure out passing MySQL data to Vue
         mounted() {
-            console.log("this => " + this.data);
             axios.post('/ai/idea/get-by-user/1234')
                 .then(response => {
                     this.user_ideas = response.data;
