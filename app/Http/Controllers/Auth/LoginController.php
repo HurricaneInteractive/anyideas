@@ -13,7 +13,7 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     public function index() {
-        return view('/index');
+        return view('/');
     }
     /**
      * Create a new controller instance.
@@ -22,23 +22,23 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except('logout');
     }
 
-    // public function logout(Request $request)
-    // {
+    public function logout(Request $request)
+    {
 
-    //     Auth::logout();
-    //     // $this->guard()->logout();
+        Auth::logout();
+        $this->guard()->logout();
 
-    //     // $request->session()->invalidate();
+        $request->session()->invalidate();
 
-    //     // if ($request->wantsJson()) {
-    //     //     return response()->json([], 204);
-    //     // }
+        if ($request->wantsJson()) {
+            return response()->json([], 204);
+        }
 
-    //     // $request->session()->regenerate();       
+        $request->session()->regenerate();       
 
-    //     return redirect('/index');
-    // }
+        return redirect('/');
+    }
 }
