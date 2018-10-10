@@ -25,7 +25,7 @@
                     </div>
                   </form>
                   
-
+                  
                   <h1>{{this.ideaSingle}}</h1>
                   <button @click="getIdeaByUser">get ideas by user id</button><br/><br/>
                   <button @click="handldeGetSingleIdeaData">get single idea data</button><br/><br/>

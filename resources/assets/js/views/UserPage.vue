@@ -27,7 +27,7 @@
                         </ul>
                     </div>
 
-                    <div v-if="this.$ud_store.state.data.user_data === this.user_data.user.id">
+                    <div v-if="this.$ud_store.state.data.user_data.id === this.user_data.user.id">
                         <h1>Edit user meta</h1>
                         <form method="POST">
                             <div class="form-group row">

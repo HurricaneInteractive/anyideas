@@ -16,6 +16,15 @@
                         <div>{{idea_data.description}}</div>
                         <button @click="handleDeleteIdea">DELETE IDEA</button>
                     </div>
+                    
+                    <hr/><hr/><hr/>
+                    
+                    <h2>EDITOR</h2><hr/>
+                    <div class="editSection" id="editSection">
+                        .md editor
+                    </div>
+
+                    <hr/><hr/><hr/>
 
                     <!-- update_post -->
                     <div>
@@ -261,6 +270,13 @@
 <script>
     import marked from 'marked'
     var debounce = require('lodash.debounce');
+
+    require('codemirror/lib/codemirror.css') // codemirror
+    require('tui-editor/dist/tui-editor.css'); // editor ui
+    require('tui-editor/dist/tui-editor-contents.css'); // editor content
+    require('highlight.js/styles/github.css'); // code block highlight
+
+    var Editor = require('tui-editor');
     export default {
         data() {
             return {
@@ -301,11 +317,17 @@
             }
         },
         mounted() {
-            console.log('this.$route.params.id => ', this.$route.params.id);
+            // console.log('this.$route.params.id => ', this.$route.params.id);
             axios.post('/ai/idea/get/' + this.$route.params.id)
-                .then(response => {
-                    this.idea_data = response.data;
-                    console.log('TCL: mounted -> this.idea_data', this.idea_data);
+            .then(response => {
+                this.idea_data = response.data;
+                var editor = new Editor({
+                    el: document.querySelector('#editSection'),
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical',
+                    height: '300px',
+                    initialValue: this.idea_data.description
+                });
             });
         },
         methods: {
