@@ -13,7 +13,8 @@
                         <hr/>
                         <p>Pitch: {{idea_data.pitch}}</p>
                         <hr/>
-                        <div>{{idea_data.description}}</div>
+                        <!-- <div>{{idea_data.description}}</div> -->
+                        <div id="viewerSection"></div>
                         <button @click="handleDeleteIdea">DELETE IDEA</button>
                     </div>
                     
@@ -326,6 +327,12 @@
                     initialEditType: 'markdown',
                     previewStyle: 'vertical',
                     height: '300px',
+                    initialValue: this.idea_data.description
+                });
+               var viewer = Editor.factory({
+                    el: document.querySelector('#viewerSection'),
+                    viewer: true,
+                    height: '500px',
                     initialValue: this.idea_data.description
                 });
             });
