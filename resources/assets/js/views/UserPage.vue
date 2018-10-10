@@ -27,7 +27,7 @@
                         </ul>
                     </div>
 
-                    <div>
+                    <div v-if="this.$ud_store.state.data.user_data === this.user_data.user.id">
                         <h1>Edit user meta</h1>
                         <form method="POST">
                             <div class="form-group row">
@@ -132,6 +132,7 @@
         },
         // figure out passing MySQL data to Vue
         mounted() {
+            console.log('this.$ud_store.state.data.user_data => ', this.$ud_store.state.data.user_data);
             axios({
               method: 'POST',
               url: '/ai/idea/get-by-user/' + this.$route.params.id,

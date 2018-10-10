@@ -73,6 +73,11 @@ Route::group(['prefix' => 'ai/'], function() {
     
 });
 
+Route::post('/login-please', function() {
+    Auth::logout();
+    return Redirect::to('/');
+});
+
 Route::post('/logout', function() {
     Auth::logout();
     return Redirect::to('/');

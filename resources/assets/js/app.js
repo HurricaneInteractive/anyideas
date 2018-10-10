@@ -5,7 +5,7 @@ import Vuex from 'vuex';
 import router from './routes.js';
 import VueCookie from 'vue-cookie';
 import App from './App.vue';
-import store from './store';
+import ud_store from './store';
 import axios from 'axios';
 import storePlugin from './storePlugin'
 
@@ -14,21 +14,16 @@ Vue.use( VueCookie )
 Vue.use( storePlugin )
 
 router.beforeEach((to, from, next) => {
-    console.log('2. beforeResolve');
-    console.log('to.fullPath =>', to.fullPath)
+    // console.log('to.fullPath =>', to.fullPath)
     window.scrollTo(0, 0);
-    console.log('ROUTER BEFOREEACH: store.state.user_data.name', store.state.user_data);
 
     if (to.fullPath !== "/login/guest") {
-        
-        let user_name = "guest";
-        console.log('TCL: user_name ', user_name );
-        console.log('store.state.user_data =>', store.state.user_data);
-        if (typeof store.state.user_data !== undefined && typeof store.state.user_data.name !== undefined) {
-            console.log('store.state => ', store.state)
-            console.log('store.state.user_data => ', store.state.user_data)
-            console.log('store.state.user_data.name => ', store.state.user_data.name)
-            user_name = store.state.user_data.name
+        // if path is NOT /login/guest
+        if (typeof ud_store.state.data.user_data !== undefined || ud_store.state.data.loggedIn === false) {
+            console.log('ud_store (app.js) => ', ud_store.state)
+            console.log('ud_store.data (app.js) => ', ud_store.state.data)
+            console.log('ud_store.data.user_data (app.js) => ', ud_store.state.data.user_data)
+            // user_name = ud_store.state.data.user_data.name
         }
 
         // console.log('just a guest')
@@ -51,7 +46,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeResolve((to, from, next) => {
-    console.log("3. beforeResolve")
+    // console.log("3. beforeResolve")
     next();
 })
 
@@ -59,10 +54,10 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
-    store,
+    ud_store,
     data: {
         user_data_app: 'placeholder user_data_app string',
-        store_data: store.state.user_data
+        store_data: ud_store.state.data.user_data
     },
     methods: {
         getUserAuth: function() {

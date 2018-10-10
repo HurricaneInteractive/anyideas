@@ -1,4 +1,5 @@
 <!-- App.vue acts as a wrapper for the whole application -->
+<!-- use this.$ud_store in child components -->
 <template>
         <div>
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
@@ -37,17 +38,32 @@
             return {
                 user_id : null,
                 name : null,
+                user_data: null,
                 store_state: this.$ud_store.state,
             }
         },
         mounted: function(){
             // working -> -> -> -> ->
-            console.log('window.user_data => ', window.user_data)
-            // console.log('user_id => ', this.user_id)
-            // console.warn("CHILD this.store_state => ",this.store_state)
-            if (window.user_data !== null) {
-                this.user_id = window.user_data.id
-                this.name = window.user_data.name
+            // console.log("window.checkAuth => ", window.checkAuth)
+            if (window.checkAuth === undefined) {
+                this.$ud_store.commit('SET_USER_DATA', "guest" );
+                this.$ud_store.commit('SET_USER_LOGGED_IN', false );
+            } else {
+                this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
+                this.$ud_store.commit('SET_USER_LOGGED_IN', true );
+            }
+            const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
+            console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
+            console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
+            // this.$ud_store.commit('SET_USER_LOGGED_IN', true);
+            if (this.$ud_store.state.data.user_data === "guest") {
+                this.user_id = null;
+                console.log('set as GUEST');
+            } else {
+                console.log('this.$ud_store.state.data.user_data.name => ', this.$ud_store.state.data.user_data.name )
+                this.user_id = this.$ud_store.state.data.user_data.id;
+                this.name = this.$ud_store.state.data.user_data.name;
+                console.log('set as USER');
             }
         },
         methods: {
@@ -60,11 +76,8 @@
                 })
                 .then(response => {
                     if (response.status === 200) {
-                        this.$ud_store.commit('SET_USER_DATA',
-                            user_data = {
-                                name: "guest"
-                            }
-                        );
+                        this.$ud_store.commit('SET_USER_DATA', "guest" );
+                        this.$ud_store.commit('SET_USER_LOGGED_IN', false );
                         window.location = '/';
                     }
                 })
@@ -72,7 +85,6 @@
                     console.error(error);
                 });
             },
-
         }
     }
 </script>
