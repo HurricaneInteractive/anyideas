@@ -1,14 +1,39 @@
 
-// Fonts
+/* Fonts */
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
+/* Variables */
+@import '_variables.scss';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
-
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+html, body {
+  width: 100%;
+  background-color: $body-bg;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
+
+.Ideation {
+  color: $ideation;
+};
+.Planning {
+  color: $planning;
+};
+.Creating {
+  color: $creating;
+};
+.Evaluating {
+  color: $evaluating;
+};
+.Refining {
+  color: $refining;
+};
+.Completed {
+  color: $completed;
+};
+.On-hold {
+  color: $on-hold;
+};
+.Abandoned {
+  color: $abandoned;
+};
