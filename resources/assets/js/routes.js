@@ -7,8 +7,8 @@ Vue.use( VueRouter )
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Vue.component( 'Home', require( './views/Home.vue' ) ),
+    name: 'index',
+    component: Vue.component( 'Index', require( './views/Index.vue' ) ),
   },
   {
     path: '/login/guest',
