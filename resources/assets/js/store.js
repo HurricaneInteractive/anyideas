@@ -1,5 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue';
+import icons from './data/icons'
 
 Vue.use(Vuex)
 
@@ -8,12 +9,12 @@ export default new Vuex.Store({
         data: {
             user_data: 'guest',
             loggedIn: false
-        }
+        },
+        icons: icons
     },
     mutations: {
         SET_USER_DATA(state, newValue) {
             // state.data.user_data = newValue;
-            console.warn('STORE MUTATIONS: state', state.data);
             if (this.debug) console.log('setUserData triggered with', newValue)
             this.state.data.user_data = newValue;
         },
