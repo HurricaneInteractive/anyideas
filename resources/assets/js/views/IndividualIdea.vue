@@ -324,7 +324,7 @@
                 this.idea_data = response.data;
                 var editor = new Editor({
                     el: document.querySelector('#editSection'),
-                    initialEditType: 'markdown',
+                    initialEditType: 'wysiwyg',
                     previewStyle: 'vertical',
                     height: '300px',
                     initialValue: this.idea_data.description

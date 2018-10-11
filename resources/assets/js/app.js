@@ -6,7 +6,8 @@ import router from './routes.js';
 import VueCookie from 'vue-cookie';
 import App from './App.vue';
 import ud_store from './store';
-import axios from 'axios';
+import icons from './data/icons.js';
+// import axios from 'axios';
 import storePlugin from './storePlugin'
 
 Vue.use( Vuex )
@@ -63,6 +64,9 @@ const app = new Vue({
         getUserAuth: function() {
             return this.this.user_data_app
         }
+    },
+    mounted() {
+        // console.log("icons => ", icons);
     }
 });
 

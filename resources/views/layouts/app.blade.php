@@ -16,11 +16,11 @@
         </script>
         @endif
 
-        @auth
+        <!-- @auth
             user logged in blade
         @else
             guest user
-        @endauth
+        @endauth -->
         <div id="app">
             <app /> <!-- vue here m8 -->
         </div>
