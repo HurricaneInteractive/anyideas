@@ -1,24 +1,25 @@
 <template>
     <div class="container">
+        <div class="header-container">
+            <div class="card card-default"  v-bind:style="{ width: '750px', margin: '0 auto' }">
+                <div class="home-header">
+                    Tim's beautiful svg shower art
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="card card-default"  v-bind:style="{ width: '750px', margin: '0 auto' }">
-                    <div class="card-header">Home.vue View</div>
-
-                    <div class="card-body">
-                        <h1>Home page boi</h1>
-                    </div>
-
                     <div>
                         <button @click="searchDatabase">Run search query</button>
-                        <h2>users ideas</h2>
                         <div>
                             <div v-for="(value, key) in this.user_ideas" :key="key">
-                                <div key={{key}}>
-                                    <h4>{{value.title}}</h4>
+                                <IdeaCard key={{key}} :props='value'>
+                                    <!-- <h4>{{value.title}}</h4>
                                     <p>{{value.pitch}}</p>
-                                    <router-link :to="`/idea/${value.id}`">go to idea {{value.id}}</router-link>
-                                </div>
+                                    <router-link :to="`/idea/${value.id}`">go to idea {{value.id}}</router-link> -->
+                                </IdeaCard>
                             </div>
                         </div>
                     </div>
@@ -28,8 +29,28 @@
     </div>
 </template>
 
+<style lang="scss">
+
+.header-container {
+    background-color: #F5F5F5;
+    width: 100%;
+    min-height: 400px;
+    margin: 0;
+    padding: 0;
+    transition: .5s;
+    text-align: center;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+</style>
+
 <script>
+    import IdeaCard from '../components/IdeaCard'
     export default {
+        components: {
+            IdeaCard
+        },
         data() {
             return {
                 idea: {
