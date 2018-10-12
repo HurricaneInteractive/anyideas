@@ -26,6 +26,7 @@
         "npm": "^6.4.1",
         "tui-editor": "^1.2.6",
         "vue-cookie": "^1.1.4",
+        "vue-lottie": "^0.2.1",
         "vue-router": "^3.0.1",
         "vuedraggable": "^2.16.0",
         "vuex": "^3.0.1"
