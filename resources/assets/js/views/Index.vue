@@ -46,6 +46,7 @@
 </style>
 
 <script>
+    import Lottie from 'vue-lottie';
     import IdeaCard from '../components/IdeaCard'
     export default {
         components: {
