@@ -4,7 +4,7 @@
         <div>
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-wrapper navbar-left">
                             <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link>
@@ -18,10 +18,17 @@
                             <form method="POST" action="/logout" class="nav-link" v-if="user_id"><button @click="handleLogout" type="submit">Logout</button></form> -->
                             
                             <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search"></router-link>
-                            <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user"></router-link>
+                            <a>
+                                <span v-on:click="openUser('open')" v-html="this.$ud_store.state.icons.user">
+                                </span>
+                                <div class="user" v-on:click='openUser("close")'>
+                                    <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user">Log In</router-link>
+                                    <router-link :to="{name: 'index'}">Sign In</router-link>
+                                </div>
+                            </a>
                             <router-link :to="{ name: 'add-new-idea' }" class="nav-link" v-if="user_id"><div v-html="this.$ud_store.state.icons.plus">+ New Idea</div></router-link>
                         </ul>
-                    </div>
+                    </ul>
                 </div>
             </nav>
             <main>
@@ -70,6 +77,10 @@
 <style lang="scss">
     @import '~@/App.scss';
 
+    .user {
+        opacity: 0;
+    }
+
     .bold {
         font-weight: $w-bold;
     }
@@ -89,7 +100,7 @@
     }
 
     .navbar-wrapper {
-        a {
+        > a {
             svg {
                 width: 25px;
             }
@@ -99,10 +110,11 @@
 
 <script>
     import icons from './data/icons'
+
     export default {
-        
         data(){
             return {
+                openUserState: false,
                 user_id : null,
                 name : null,
                 user_data: null,
@@ -112,7 +124,6 @@
         mounted: function(){
             // working -> -> -> -> ->
             // console.log("window.checkAuth => ", window.checkAuth)
-            console.log('icons => ', this.$ud_store.state.icons.logo_small);
             if (window.checkAuth === undefined) {
                 this.$ud_store.commit('SET_USER_DATA', "guest" );
                 this.$ud_store.commit('SET_USER_LOGGED_IN', false );
@@ -132,6 +143,29 @@
             }
         },
         methods: {
+            openUser(toggle) {
+                if (toggle === 'open') {
+                    this.$animie_js({
+                        targets: '.user',
+                        opacity: 1,
+                        translateY: {
+                            value: 50,
+                            duration: 800
+                        },
+                        delay: 100 // All properties except 'scale' inherit 250ms delay
+                    });
+                } else {
+                    this.$animie_js({
+                        targets: '.user',
+                        opacity: 0,
+                        translateY: {
+                            value: 0,
+                            duration: 800
+                        },
+                        delay: 100 // All properties except 'scale' inherit 250ms delay
+                    });
+                }
+            },
             // user logout function 
             handleLogout(e) {
                 e.preventDefault()

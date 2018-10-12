@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header-container">
             <div class="card card-default"  v-bind:style="{ width: '750px', margin: '0 auto' }">
-                <div class="home-header">
+                <div class="home-header" v-on:click="animate_me()">
                     Tim's beautiful svg shower art
                 </div>
             </div>
@@ -42,6 +42,9 @@
     display: grid;
     align-content: center;
     justify-content: center;
+}
+.test {
+    background-color: goldenrod;
 }
 </style>
 

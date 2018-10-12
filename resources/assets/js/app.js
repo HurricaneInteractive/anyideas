@@ -9,10 +9,13 @@ import ud_store from './store';
 import icons from './data/icons.js';
 // import axios from 'axios';
 import storePlugin from './storePlugin'
+import VueAnime from './plugins/vue-anime';
+
 
 Vue.use( Vuex )
 Vue.use( VueCookie )
 Vue.use( storePlugin )
+Vue.use( VueAnime );
 
 router.beforeEach((to, from, next) => {
     // console.log('to.fullPath =>', to.fullPath)
@@ -66,7 +69,7 @@ const app = new Vue({
         }
     },
     mounted() {
-        // console.log("icons => ", icons);
+        // console.log("anime => ", anime);
     }
 });
 
