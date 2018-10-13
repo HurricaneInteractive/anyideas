@@ -47,20 +47,19 @@ const icons = {
     </svg>
   `,
   "plus": `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-            stroke: #000;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-          }
-        </style>
-      </defs>
-      <g id="plus" transform="translate(-380.5 -123.5)">
-        <path id="Union_2" data-name="Union 2" class="cls-1" d="M-424,88.687h0v0h0v0Z" transform="translate(810 40.312)"/>
-      </g>
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+      viewBox="0 0 11 11" style="enable-background:new 0 0 11 11;" xml:space="preserve">
+    <style type="text/css">
+      .st0{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;}
+    </style>
+    <line class="st0" x1="5.5" y1="0.7" x2="5.5" y2="10.3"/>
+    <line class="st0" x1="10.3" y1="5.5" x2="0.7" y2="5.5"/>
+    </svg>
+  
+  `,
+  "curve_square": `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36.77 36.77">
+      <rect id="curve_square" data-name="curve_square" class="cls-1" width="26" height="26" rx="5" transform="translate(18.385) rotate(45)"/>
     </svg>
   `,
   "exit": "#222222",

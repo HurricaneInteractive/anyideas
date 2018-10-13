@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue';
 import icons from './data/icons'
+import categories from './data/categories'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
             user_data: 'guest',
             loggedIn: false
         },
-        icons: icons
+        icons: icons,
+        categories: categories,
     },
     mutations: {
         SET_USER_DATA(state, newValue) {
