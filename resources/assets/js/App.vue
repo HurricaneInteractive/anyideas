@@ -5,18 +5,24 @@
             <nav class="navbar">
                 <div class="container">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link></li>
+                    <ul :class="'navbar-wrapper navbar-left ' + this.openSearchState">
+                        <li v-if="this.openSearchState === false"><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link></li>
+                        <li v-else>
+                            <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"></router-link>
+                            <div :class="'search_expand ' + this.openSearchState">
+                                <p>Search</p>
+                            </div>    
+                        </li>
+                        </span>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
-                        <!-- Authentication Links -->
-                        <!-- <router-link :to="{ name: 'login' }" class="nav-link" v-if="!user_id">Login</router-link>
-                        <router-link :to="{ name: 'register' }" class="nav-link" v-if="!user_id">Register</router-link>
-                        <li class="nav-link" v-if="user_id"> Hi, <router-link :to="'user/' + user_id" class="nav-link">{{name}}</router-link></li>
-                        <form method="POST" action="/logout" class="nav-link" v-if="user_id"><button @click="handleLogout" type="submit">Logout</button></form> -->
-                        
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search"></router-link></li>
+                        <li class="search">
+                            <span v-if="this.openSearchState === false" class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                            </span>
+                            <span v-else class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
+                            </span>
+                        </li>
                         <li>
                             <span class="user_icon" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
                             </span>
@@ -118,6 +124,9 @@
     // App.vue specific
     .navbar-wrapper {
         > li {
+            .user_icon {
+                cursor: pointer;
+            }
             svg {
                 width: 25px;
             }
@@ -139,11 +148,41 @@
             }
             .navbar-left {
                 width: 25%;
+                display: inline-flex;
+                justify-content: flex-start;
+                > li {
+                    display: inline-flex;
+                    a {
+                        display: grid;
+                        align-content: center;
+                    }
+                    div {
+                        padding-left: 16px;
+                    }
+                }
+            }
+            .navbar-left.true {
+                border-bottom: 2px solid black;
             }
             .navbar-right {
                 width: 75%;
                 display: inline-flex;
                 justify-content: flex-end;
+                .search {
+                    position: relative;
+                    display: flex;
+                    .search_expand {
+                        width: 80%;
+                        div {
+                            white-space: nowrap;
+                        }
+                    }
+                    .search_icon {
+                        display: grid;
+                        justify-content: center;
+                        align-content: center;
+                    }
+                }
                 > li {
                     display: flex;
                     position: relative;
@@ -180,7 +219,7 @@
                     }
                     .user {
                         position: absolute;
-                        top: 15px;
+                        top: 40px;
                         width: 128px;
                         height: 128px;
                         z-index: -100;
@@ -259,6 +298,7 @@
         data(){
             return {
                 openUserState: false,
+                openSearchState: false,
                 user_id : null,
                 name : null,
                 user_data: null,
@@ -287,10 +327,43 @@
             }
         },
         methods: {
+            toggleSearchState(toggle) {
+                this.openSearchState = toggle
+            },
+            openSearch() {
+                console.log('openSearch(this.openSearchState)  => ', this.openSearchState);
+                // console.log('openSearch(toggle)  => ', toggle);
+                if (this.openSearchState === true) {
+                    this.$animie_js({
+                        targets: '.search_expand',
+                        opacity: 0,
+                        translateX: {
+                            value: 0,
+                            duration: 1200
+                        },
+                        delay: 100 // All properties except 'scale' inherit 250ms delay
+                    });
+                } else {
+                    this.$animie_js({
+                        targets: '.search_expand',
+                        opacity: 1,
+                        translateX: {
+                            value: -224,
+                            duration: 1200
+                        },
+                        delay: 100 // All properties except 'scale' inherit 250ms delay
+                    });
+                }
+                if (this.openSearchState === false) {
+                    this.toggleSearchState(true)
+                } else {
+                    this.toggleSearchState(false)
+                }
+            },
             menuState(toggle) {
                 this.openUserState = toggle
             },
-            openUser(toggle) {
+            openUser() {
                 console.log('openUser(toggle) => ', this.openUserState);
                 if (this.openUserState === true) {
                     this.$animie_js({
@@ -307,7 +380,7 @@
                         targets: '.user',
                         opacity: 1,
                         translateY: {
-                            value: 20,
+                            value: 10,
                             duration: 800
                         },
                         delay: 100 // All properties except 'scale' inherit 250ms delay
