@@ -265,27 +265,6 @@
             }
         }
     }
-    .categories {
-        width: 100%;
-        overflow-x: scroll;
-        .categories_wrapper {
-            margin: 8px 16px;
-            ul {
-                display: flex;
-                list-style-type: none;
-                padding: 0;
-                margin: 8px 16px;
-                li {
-                    margin: 0 16px;
-                    white-space: nowrap;
-                    a {
-                        text-decoration: none;
-                        color: $p-color;
-                    }
-                }
-            }
-        }
-    }
 </style>
 
 <script>

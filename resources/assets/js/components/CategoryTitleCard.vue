@@ -1,9 +1,11 @@
 <template>
     <div class="card-container" :id="this.$route.params.id">
-        <h2 class="title">
-            {{this.props}}
-            <!-- {{this.setBackground(this.props)}} -->
-        </h2>
+        <div>
+            <h2 class="title">
+                {{this.$route.params.id}}
+                <!-- {{this.setBackground(this.props)}} -->
+            </h2>
+        </div>
     </div>
 </template>
 
@@ -26,7 +28,7 @@
             }
         }
     }
-    a {
+    div {
         height: 100%;
         display: grid;
         align-content: center;
@@ -48,7 +50,8 @@ import * as hero from 'hero-patterns'
         data() {
             return {
                 categoryData: null,
-                categoryBackground: null
+                categoryBackground: null,
+                currentRoute: this.$route.params.id
             }
         },
         mounted() {
@@ -56,13 +59,15 @@ import * as hero from 'hero-patterns'
             this.setBackground();
         },
         watch: {
-            '$route': 'setBackground'
+            '$route': ['setBackground', 'setRoute']
         },
         methods: {
+            setRoute() {
+                this.currentRoute = this.$route.params.id
+            },
             setBackground() {
-                this.categoryData = '#' + this.$route.params.id;
-                console.warn('this.categoryData => ', this.categoryData)
-                this.categoryBackground = this.$ud_store.state.svgBackground[this.$route.params.id];
+                this.categoryData = '#' + this.currentRoute;
+                this.categoryBackground = this.currentRoute.svgBackground[this.currentRoute];
                 document.querySelector(this.categoryData).style.backgroundImage = hero[this.categoryBackground]('#dddddd');
             }
         }
