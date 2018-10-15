@@ -5,23 +5,23 @@
             <nav class="navbar">
                 <div class="container">
                     <!-- Left Side Of Navbar -->
-                    <ul :class="'navbar-wrapper navbar-left ' + this.openSearchState">
-                        <li v-if="this.openSearchState === false"><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link></li>
-                        <li v-else>
-                            <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"></router-link>
-                            <div :class="'search_expand ' + this.openSearchState">
-                                <p>Search</p>
-                            </div>    
-                        </li>
-                        </span>
+                    <ul class="navbar-wrapper navbar-left">
+                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link></li>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
                         <li class="search">
                             <span v-if="this.openSearchState === false" class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
                             </span>
+                            <li v-if="this.openSearchState === true">
+                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"></router-link>
+                                <div :class="'search_expand ' + this.openSearchState">
+                                    <p>Search</p>
+                                </div>
+                            </li>
                             <span v-else class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
                             </span>
+                            
                         </li>
                         <li>
                             <span class="user_icon" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
@@ -46,15 +46,7 @@
                     </ul>
                 </div>
             </nav>
-            <section class="categories">
-                <div  class="categories_wrapper">
-                    <ul>
-                        <li v-for="(value, key) in this.$ud_store.state.categories" :key="key">
-                            <router-link :to="{ name: 'index' }" key={{key}}>{{value}}</router-link>
-                        </li>
-                    </ul>
-                </div>
-            </section>
+            <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
             <main>
                 <router-view>
                     <!-- App.vue component runs here -->
@@ -217,9 +209,12 @@
                         align-content: center;
                         justify-content: center;
                     }
+                    .user.false {
+                        display: none;
+                    }
                     .user {
                         position: absolute;
-                        top: 40px;
+                        top: 15px;
                         width: 128px;
                         height: 128px;
                         z-index: -100;
@@ -294,7 +289,11 @@
 </style>
 
 <script>
+import CategoriesSlider from './components/CategoriesSlider'
     export default {
+        components: {
+            CategoriesSlider
+        },
         data(){
             return {
                 openUserState: false,
@@ -306,6 +305,7 @@
             }
         },
         mounted: function(){
+            // console.log("this.$route.name => ", this.$route.name);
             // working -> -> -> -> ->
             // console.log("window.checkAuth => ", window.checkAuth)
             if (window.checkAuth === undefined) {

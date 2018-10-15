@@ -25,8 +25,8 @@ router.beforeEach((to, from, next) => {
         // if path is NOT /login/guest
         if (typeof ud_store.state.data.user_data !== undefined || ud_store.state.data.loggedIn === false) {
             console.log('ud_store (app.js) => ', ud_store.state)
-            console.log('ud_store.data (app.js) => ', ud_store.state.data)
-            console.log('ud_store.data.user_data (app.js) => ', ud_store.state.data.user_data)
+            // console.log('ud_store.data (app.js) => ', ud_store.state.data)
+            // console.log('ud_store.data.user_data (app.js) => ', ud_store.state.data.user_data)
             // user_name = ud_store.state.data.user_data.name
         }
 

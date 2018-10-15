@@ -5,7 +5,7 @@ const status = [
   "Evaluating",
   "Refining",
   "Completed",
-  "On Hold",
+  "On-Hold",
   "Abandoned"
 ]
 export default status

@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue';
 import icons from './data/icons'
 import categories from './data/categories'
+import svgBackground from './data/svgBackground'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
         },
         icons: icons,
         categories: categories,
+        svgBackground: svgBackground,
     },
     mutations: {
         SET_USER_DATA(state, newValue) {

@@ -1,16 +1,17 @@
 <template>
     <div class="container">
         <div class="header-container">
-            <div class="card card-default"  v-bind:style="{ width: '750px', margin: '0 auto' }">
-                <div class="home-header" v-on:click="animate_me()">
-                    Tim's beautiful svg shower art
+            <div class="card card-default">
+                <div class="home-header">
+                    <!-- https://codepen.io/jerrylow/pen/KaPvNa -->
+                    Turn Your Shower Thoughts Into <br>Power Thoughts
                 </div>
             </div>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-md-7">
-                <div class="card card-default"  v-bind:style="{ width: '750px', margin: '0 auto' }">
+                <div class="card card-default">
                     <div>
                         <button @click="searchDatabase">Run search query</button>
                         <div>

@@ -36,6 +36,16 @@ const routes = [
     component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) )
   },
   {
+    path: '/categories',
+    name: 'categories',
+    component: Vue.component( 'CategoriesPage', require( './views/CategoriesPage.vue' ) )
+  },
+  {
+    path: '/category/:id',
+    name: 'category',
+    component: Vue.component( 'IndividualCategory', require( './views/IndividualCategory.vue' ) )
+  },
+  {
     path: '/user/:id',
     name: 'user',
     component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) ),
