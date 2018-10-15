@@ -21,7 +21,6 @@
                             </li>
                             <span v-else class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
                             </span>
-                            
                         </li>
                         <li>
                             <span class="user_icon" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
@@ -52,8 +51,8 @@
                     <!-- App.vue component runs here -->
                 </router-view>
             </main>
-            <footer>
-                <div>
+            <footer class="footer-container">
+                <div class="footer footer-left">
                     <ul>
                         <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
                         <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
@@ -61,17 +60,6 @@
                         <li><router-link :to="{ name: 'index' }">Account</router-link></li>
                         <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
                     </ul>
-                    <ul>
-                        <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
-                        <li>
-                            <a href="https://facebook.com">FB icon</a>
-                            <a href="https://facebook.com">Twitter icon</a>
-                            <a href="https://facebook.com">Instagram icon</a>
-                        </li>
-                    </ul>
-                </div>
-                <div>
                     <ul>
                         <li><router-link :to="{ name: 'login' }">About</router-link></li>
                         <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
@@ -81,8 +69,20 @@
                         <li><a href="#">Built by <span>Sunset Studios</span></a></li>
                     </ul>
                 </div>
-                <div>
-                    <img src="#" alt="footer logo"/>
+                <div class="footer footer-right">
+                    <ul>
+                        <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
+                        
+                    </ul>
+                    <ul>
+                        <li><a href="https://facebook.com">FB icon</a></li>
+                        <li><a href="https://facebook.com">Twitter icon</a></li>
+                        <li><a href="https://facebook.com">Instagram icon</a></li>
+                    </ul>
+                </div>
+                <div class="footer-logo">
+                    <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
                 </div>
             </footer>
         </div>
@@ -111,7 +111,6 @@
         font-weight: $w-regular;
         color: $p-color;
     }
-
 
     // App.vue specific
     .navbar-wrapper {
@@ -265,6 +264,54 @@
             }
         }
     }
+
+    .footer-container {
+        width: auto;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        .footer {
+            ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0 0 32px 0;
+                li {
+                    margin: 4px 0;
+                    a {
+                        color: $p-color;
+                        font-size: $size-h6;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+        .footer-left {
+
+        }
+        .footer-right {
+            ul {
+                li {
+                    text-align: right;
+                    a {
+                        text-align: right;
+                    }
+                }
+            }
+        }
+        .footer-logo {
+            grid-area: 2 / 1 / 2 / 3;
+            margin: 24px auto 84px auto;
+            a {
+                display: block;
+                width: 128px;
+                margin: 0 auto;
+                svg {
+                    width: 100%;
+                }
+            }
+        }
+    }    
 </style>
 
 <script>

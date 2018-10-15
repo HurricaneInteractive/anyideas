@@ -27,6 +27,7 @@
                 li {
                     margin: 0 16px;
                     white-space: nowrap;
+                    display: flex;
                     a {
                         text-decoration: none;
                         color: $p-color;
