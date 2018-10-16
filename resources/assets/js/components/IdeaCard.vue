@@ -58,6 +58,7 @@
             }
             .status_category {
                 display: inline-flex;
+                text-transform: uppercase;
                 * {
                     margin: 0 16px 0 0;
                 }
@@ -94,8 +95,7 @@
         },
         // figure out passing MySQL data to Vue
         mounted() {
-            console.log('idea-card.vue mounted (this) => ', this);
-            console.log('idea-card.vue mounted (this.props) => ', this.props);
+            // console.log('idea-card.vue mounted (this.props) => ', this.props);
         },
         methods: {
             handleAnimation: function (anim) {
