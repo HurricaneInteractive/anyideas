@@ -6,21 +6,22 @@
                 <div class="container">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"></router-link></li>
+                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"/>
+                        </li>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
                         <li class="search">
-                            <span v-if="this.openSearchState === false" class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
-                            </span>
-                            <li v-if="this.openSearchState === true">
-                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"></router-link>
+                            <li v-if="this.openSearchState === true" class="search_text_container">
+                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"/>
                                 <div :class="'search_expand ' + this.openSearchState">
                                     <p>Search</p>
                                 </div>
                             </li>
-                            <span v-else class="search_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
-                            </span>
+                            <li v-if="this.openSearchState === false" class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                            </li>
+                            <li v-else class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
+                            </li>
                         </li>
                         <li>
                             <span class="user_icon" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
@@ -128,6 +129,7 @@
         .container {
             display: flex;
             margin: 35px;
+            min-height: 64px;
             .navbar-wrapper {
                 list-style-type: none;
                 padding: 0;
@@ -159,23 +161,43 @@
                 width: 75%;
                 display: inline-flex;
                 justify-content: flex-end;
+                .search_text_container {
+                    display: inline-flex;
+                    align-content: center;
+                    justify-content: center;
+                    border-bottom: 2px black solid;
+                    margin: 0;
+                    padding: 0 8px;
+                }
                 .search {
                     position: relative;
-                    display: flex;
                     .search_expand {
                         width: 80%;
                         div {
                             white-space: nowrap;
+                            display: flex;
+                            align-content: center;
+                            justify-content: center;
+                            p {
+                                margin-left: 8px;
+                            }
                         }
                     }
                     .search_icon {
                         display: grid;
                         justify-content: center;
                         align-content: center;
+                        svg {
+                            display: grid;
+                            justify-content: center;
+                            align-content: center;
+                        }
                     }
                 }
                 > li {
-                    display: flex;
+                    display: grid;
+                    justify-content: center;
+                    align-content: center;
                     position: relative;
                     z-index: 10;
                     a {
@@ -361,7 +383,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 // console.log('openSearch(toggle)  => ', toggle);
                 if (this.openSearchState === true) {
                     this.$animie_js({
-                        targets: '.search_expand',
+                        targets: '.search_text_container',
                         opacity: 0,
                         translateX: {
                             value: 0,
@@ -371,7 +393,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                     });
                 } else {
                     this.$animie_js({
-                        targets: '.search_expand',
+                        targets: '.search_text_container',
                         opacity: 1,
                         translateX: {
                             value: -224,

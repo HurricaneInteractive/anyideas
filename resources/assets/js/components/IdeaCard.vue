@@ -4,7 +4,7 @@
         <router-link :to="`/idea/${this.props.id}`">
             <div class="card card-default" v-on:mouseover="play" v-on:mouseleave="stop">
                 <h2 class="bold">
-                    <span :class="this.props.status">
+                    <span :class="'dot ' + this.props.status">
                         <lottie :options="defaultOptions" :height="20" :width="20" v-on:animCreated="handleAnimation"/>
                     </span>{{this.props.title}}
                 </h2>
@@ -32,21 +32,28 @@
         text-decoration: none;
         .card {
             margin: 0 0 16px 0;
-            padding: 28px;
+            padding: 48px;
             h2 {
                 position: relative;
                 font-size: $size-h2;
                 color: $text-title-color;
                 margin: 0 0 4px 0;
-                span {
-                    width: 20px;
-                    height: 20px;
-                    font-size: 32px;
+                .dot {
+                    display: grid;
+                    align-content: center;
+                    justify-content: center;
+                    width: 16px;
+                    height: 100%;
                     line-height: 1rem;
                     position: absolute;
-                    left: -16px;
+                    left: -18px;
                     top: 0;
                     bottom: 0;
+                    > div {
+                        display: flex;
+                        width: 12px !important;
+                        height: 12px !important;
+                    }
                 }
             }
             .status_category {
@@ -67,7 +74,7 @@
 
 <script>
     import Lottie from 'vue-lottie';
-    import * as animationData from '../data/lottie/check.json';
+    import * as animationData from '../data/lottie/hover.json';
     export default {
         name: 'IdeaCard',
         components: {
