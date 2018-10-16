@@ -16,11 +16,7 @@
                         <button @click="searchDatabase">Run search query</button>
                         <div>
                             <div v-for="(value, key) in this.user_ideas" :key="key">
-                                <IdeaCard key={{key}} :props='value'>
-                                    <!-- <h4>{{value.title}}</h4>
-                                    <p>{{value.pitch}}</p>
-                                    <router-link :to="`/idea/${value.id}`">go to idea {{value.id}}</router-link> -->
-                                </IdeaCard>
+                                <IdeaCard key={{key}} :props='value'/>
                             </div>
                         </div>
                     </div>
