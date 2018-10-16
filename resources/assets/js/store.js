@@ -12,6 +12,10 @@ export default new Vuex.Store({
             user_data: 'guest',
             loggedIn: false
         },
+        idea: {
+            id: '',
+            description: '',
+        },
         icons: icons,
         categories: categories,
         svgBackground: svgBackground,
@@ -30,6 +34,16 @@ export default new Vuex.Store({
             if (this.debug) console.log('STORE MUTATIONS: clearUserData triggered -> ') 
             this.state.data.user_data = '';
             this.state.data.loggedIn = false;
+        },
+
+        SET_IDEA_DESCRIPTION(state, newValue) {
+            if (this.debug) console.log('SET_IDEA_DESCRIPTION triggered with', newValue)
+            this.state.idea.description = newValue;
+        },
+        CLEAR_IDEA(state) {
+            if (this.debug) console.log('SET_IDEA triggered with', newValue)
+            this.state.idea.id = '';
+            this.state.idea.description = '';
         }
     }
   })

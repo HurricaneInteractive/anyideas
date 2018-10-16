@@ -1,6 +1,42 @@
 <template>
     <div class="container">
         <div class="row">
+
+            <header>
+                <h1>title</h1>
+                <p>Description</p>
+                <div>
+                    <p>Darts</p>
+                    <span>icon</span>
+                </div>
+            </header>
+
+            <section class="meta_data">
+                <ul>
+                <li><router-link to="index">Category</router-link></li>
+                <li><router-link to="index">Status</router-link></li>
+                <ul>
+                    <li>tag</li>
+                    <li>items</li>
+                    <li>go</li>
+                    <li>here</li>
+                </ul>
+                </ul>
+            </section>
+
+            <section class="idea_navigation">
+                <ul>
+                    <li><router-link :to="{ path: 'description' }">Description</router-link></li>
+                    <li><router-link :to="{ path: 'timeline' }">Timeline</router-link></li>
+                    <li><router-link :to="{ path: 'updates' }">Updates</router-link></li>
+
+                </ul>
+            </section>
+
+            <router-view>
+                <!-- Description / Timeline / Updates here -->
+            </router-view>
+
             <div>
                 <div class="card">
                     <div class="card-header"></div>
@@ -14,16 +50,11 @@
                         <p>Pitch: {{idea_data.pitch}}</p>
                         <hr/>
                         <!-- <div>{{idea_data.description}}</div> -->
-                        <div id="viewerSection"></div>
+                        <!-- <div id="viewerSection"></div> -->
                         <button @click="handleDeleteIdea">DELETE IDEA</button>
                     </div>
                     
                     <hr/><hr/><hr/>
-                    
-                    <h2>EDITOR</h2><hr/>
-                    <div class="editSection" id="editSection">
-                        .md editor
-                    </div>
 
                     <hr/><hr/><hr/>
 
@@ -278,7 +309,13 @@
     require('highlight.js/styles/github.css'); // code block highlight
 
     var Editor = require('tui-editor');
+
+    import Description from '../components/idea/Description'
     export default {
+        props: ['props'],
+        components: {
+            Description
+        },
         data() {
             return {
                 idea_data: '',
@@ -322,19 +359,13 @@
             axios.post('/ai/idea/get/' + this.$route.params.id)
             .then(response => {
                 this.idea_data = response.data;
-                var editor = new Editor({
-                    el: document.querySelector('#editSection'),
-                    initialEditType: 'wysiwyg',
-                    previewStyle: 'vertical',
-                    height: '300px',
-                    initialValue: this.idea_data.description
-                });
-               var viewer = Editor.factory({
+                var viewer = Editor.factory({
                     el: document.querySelector('#viewerSection'),
                     viewer: true,
                     height: '500px',
                     initialValue: this.idea_data.description
                 });
+                this.$ud_store.commit('SET_IDEA_DESCRIPTION', this.idea_data.description );
             });
         },
         methods: {
