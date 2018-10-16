@@ -3,12 +3,13 @@
         <div class="row">
 
             <header>
-                <h1>title</h1>
-                <p>Description</p>
-                <div>
-                    <p>Darts</p>
-                    <span>icon</span>
-                </div>
+                <h1>{{idea_data.title}}</h1>
+                <h4>Category: {{idea_data.category}}</h4>
+                <div>Tags: {{idea_data.tags}}</div>
+                <i>{{idea_data.status}}</i>
+                <hr/>
+                <p>Pitch: {{idea_data.pitch}}</p>
+                <hr/>
             </header>
 
             <section class="meta_data">
@@ -26,9 +27,10 @@
 
             <section class="idea_navigation">
                 <ul>
-                    <li><router-link :to="{ path: 'description' }">Description</router-link></li>
-                    <li><router-link :to="{ path: 'timeline' }">Timeline</router-link></li>
-                    <li><router-link :to="{ path: 'updates' }">Updates</router-link></li>
+                    <li><router-link :to="{ name: 'description', props: {data: 'cheese' }}">Description</router-link></li>
+                    <li><router-link :to="{ name: 'timeline' }">Timeline</router-link></li>
+                    <li><router-link :to="{ name: 'discussion' }">Discussion</router-link></li>
+                    <li><router-link :to="{ name: 'updates' }">Updates</router-link></li>
 
                 </ul>
             </section>
@@ -39,28 +41,9 @@
 
             <div>
                 <div class="card">
-                    <div class="card-header"></div>
-
-                    <div class="card-body">
-                        <h1>{{idea_data.title}}</h1>
-                        <h4>Category: {{idea_data.category}}</h4>
-                        <div>Tags: {{idea_data.tags}}</div>
-                        <i>{{idea_data.status}}</i>
-                        <hr/>
-                        <p>Pitch: {{idea_data.pitch}}</p>
-                        <hr/>
-                        <!-- <div>{{idea_data.description}}</div> -->
-                        <!-- <div id="viewerSection"></div> -->
-                        <button @click="handleDeleteIdea">DELETE IDEA</button>
-                    </div>
-                    
-                    <hr/><hr/><hr/>
-
-                    <hr/><hr/><hr/>
-
                     <!-- update_post -->
                     <div>
-                        <h3>Updates data</h3>
+                        <!-- <h3>Updates data</h3>
                         <button @click="hanldeGetUpdateData">get update_posts data from (pre filled) idea_id</button><br/><br/>   
                     
                         <form method="POST">
@@ -85,10 +68,9 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
 
-                        <div id="updates_post_data">
-                            <!-- @{{ updates_post_data }} -->
+                        <!-- <div id="updates_post_data">
                             <ul v-for="(value, key) in this.updates_post_data" :key="key">
                                 <li key={{key}}>
                                     <h4>{{value.title}}</h4>
@@ -97,9 +79,9 @@
                                     <button @click="handleUpdatePostDarts(value.id)">{{value.darts}}</button>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
 
-                        <h4>update_post item</h4>
+                        <!-- <h4>update_post item</h4>
                         <form method="POST">
                             <div class="form-group row">
                                 <label for="update_post_update.id" class="col-md-4 col-form-label text-md-right">update_post id to update</label>
@@ -129,14 +111,14 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
 
                     <hr/>
 
                     <!-- discussion data -->
                     <div>
-                        <h3>Discussions data</h3>
+                        <!-- <h3>Discussions data</h3>
                         <button @click="hanldeGetDiscussionData">get discussion data from (pre filled) idea_id</button><br/><br/>   
                     
                         <form method="POST">
@@ -161,10 +143,9 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
 
-                        <div id="discussion_data">
-                            <!-- @{{ discussion_data }} -->
+                        <!-- <div id="discussion_data">
                             <ul v-for="(value, key) in this.discussion_data" :key="key">
                                 <li key={{key}}>
                                     <h4>{{value.title}}</h4>
@@ -185,9 +166,9 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <h4>update discussion item</h4>
+                        <!-- <h4>update discussion item</h4>
                         <form method="POST">
                             <div class="form-group row">
                                 <label for="discussion_update.id" class="col-md-4 col-form-label text-md-right">Discussion item to update (ID)</label>
@@ -217,14 +198,14 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                     </div>
 
                     <hr/>
 
                     <!-- timeline data -->
                     <div>
-                        <h3>Timeline data</h3>
+                        <!-- <h3>Timeline data</h3>
                         <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
                         <form method="POST">
                             <div class="form-group row">
@@ -248,9 +229,9 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
-                        <div id="timeline_data">
-                            <!-- @{{ timeline_data }} -->
+                        </form> -->
+
+                        <!-- <div id="timeline_data">
                             <ul v-for="(value, key) in this.timeline_data" :key="key">
                                 <li key={{key}}>
                                     <h4>{{value.title}}</h4>
@@ -259,9 +240,9 @@
                                     <button @click="handleDartsAdd(value.id)">{{value.darts}}</button>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
 
-                        <form method="POST">
+                        <!-- <form method="POST">
                             <div class="form-group row">
                                 <label for="timeline_update.id" class="col-md-4 col-form-label text-md-right">Id of discussion to update</label>
 
@@ -290,7 +271,7 @@
                                 </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> -->
                         
                     </div>
                 </div>
@@ -311,10 +292,13 @@
     var Editor = require('tui-editor');
 
     import Description from '../components/idea/Description'
+    import Timeline from '../components/idea/Timeline'
+    import Updates from '../components/idea/Updates'
+    import Discussion from '../components/idea/Discussion'
     export default {
         props: ['props'],
         components: {
-            Description
+            Description, Timeline, Updates, Discussion
         },
         data() {
             return {
@@ -355,17 +339,17 @@
             }
         },
         mounted() {
-            // console.log('this.$route.params.id => ', this.$route.params.id);
+            console.warn("MOUNT PARENT (INDIVIDUALIDEA.VUE)")
+            console.log('this.$route.params.id => ', this.$route.params.id);
+            this.$ud_store.commit('SET_IDEA_ID', this.$route.params.id );
+            console.log("store => ", this.$ud_store.state.idea.id);
+            console.warn("store.idea => ", this.$ud_store.state.idea);
             axios.post('/ai/idea/get/' + this.$route.params.id)
             .then(response => {
                 this.idea_data = response.data;
-                var viewer = Editor.factory({
-                    el: document.querySelector('#viewerSection'),
-                    viewer: true,
-                    height: '500px',
-                    initialValue: this.idea_data.description
-                });
-                this.$ud_store.commit('SET_IDEA_DESCRIPTION', this.idea_data.description );
+                console.log('TCL: mounted -> response.data', response.data);
+                console.log('response.data.description (BEFORE SET_IDEA_DESCRIPTION) => ', response.data.description)
+                this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
             });
         },
         methods: {
@@ -377,62 +361,62 @@
                 });
             },
 
-            // updates post functions
-            handleUpdatePostDarts(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/update_post/darts/add/' + value,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                    }
-                });
-            },
-            hanldeGetUpdateData(e) {
-                e.preventDefault();
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/update_post/get/all/' + this.$route.params.id
-                }).then( (response) => {
-                    this.updates_post_data = response.data;
-                }); 
-            },
-            handleUpdatePostSubmit(e) {
-                e.preventDefault();
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/update_post/create/' + this.$route.params.id,
-                    data: {
-                        title: this.update_post.title,
-                        message: this.update_post.message
-                    }
-                }).then( (response) => {
-                    this.discussion_data = response.data;
-                });
-            },
-            handleUpdatePostDelete(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/update_post/delete/' + value,
-                }).then( (response) => {
-                    this.discussion_data = response.data;
-                });
-            },
-            handleUpdatePostUpdate(e){
-                e.preventDefault();
-                let update_post_id = this.update_post_update.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/update_post/update/' + update_post_id,
-                    data: {
-                        title: this.update_post_update.title,
-                        message: this.update_post_update.message,
-                    },
-                }).then( (response) => {
-                    if (response.data === "") {
-                        alert('error creating timeline entry');
-                    }
-                });
-            },
+            // // updates post functions
+            // handleUpdatePostDarts(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/update_post/darts/add/' + value,
+            //         headers: {
+            //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            //         }
+            //     });
+            // },
+            // hanldeGetUpdateData(e) {
+            //     e.preventDefault();
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/update_post/get/all/' + this.$route.params.id
+            //     }).then( (response) => {
+            //         this.updates_post_data = response.data;
+            //     }); 
+            // },
+            // handleUpdatePostSubmit(e) {
+            //     e.preventDefault();
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/update_post/create/' + this.$route.params.id,
+            //         data: {
+            //             title: this.update_post.title,
+            //             message: this.update_post.message
+            //         }
+            //     }).then( (response) => {
+            //         this.discussion_data = response.data;
+            //     });
+            // },
+            // handleUpdatePostDelete(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/update_post/delete/' + value,
+            //     }).then( (response) => {
+            //         this.discussion_data = response.data;
+            //     });
+            // },
+            // handleUpdatePostUpdate(e){
+            //     e.preventDefault();
+            //     let update_post_id = this.update_post_update.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/update_post/update/' + update_post_id,
+            //         data: {
+            //             title: this.update_post_update.title,
+            //             message: this.update_post_update.message,
+            //         },
+            //     }).then( (response) => {
+            //         if (response.data === "") {
+            //             alert('error creating timeline entry');
+            //         }
+            //     });
+            // },
 
             // discussion replies functions
             handleDiscussionReplyVote(reply_id) {

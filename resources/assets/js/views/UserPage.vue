@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div>
-                <header class="card-body">
+                <header>
                     <img :src="this.user_data.avatar" :alt="this.user_data.avatar"/>
                     <h1>{{user_data.user.name}}</h1>
                     <h2>@{{user_data.user.username}}</h2>
