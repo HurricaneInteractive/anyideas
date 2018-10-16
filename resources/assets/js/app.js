@@ -10,6 +10,7 @@ import icons from './data/icons.js';
 // import axios from 'axios';
 import storePlugin from './storePlugin'
 import VueAnime from './plugins/vue-anime';
+require('typeface-pt-sans')
 
 
 Vue.use( Vuex )

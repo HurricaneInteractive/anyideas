@@ -6,14 +6,14 @@
                 <div class="container">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-brand"/>
+                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-icon"/>
                         </li>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
                         <li class="search">
                             <li v-if="this.openSearchState === true" class="search_text_container">
-                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-brand"/>
+                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
                                 <div :class="'search_expand ' + this.openSearchState">
                                     <p>Search</p>
                                 </div>
