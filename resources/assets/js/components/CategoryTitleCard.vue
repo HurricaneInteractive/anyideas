@@ -1,5 +1,5 @@
 <template>
-    <div class="card-container" :id="this.$route.params.id">
+    <div class="card-container" :props="this.props" :id="this.$route.params.id">
         <div>
             <h2 class="title">
                 {{this.$route.params.id}}
