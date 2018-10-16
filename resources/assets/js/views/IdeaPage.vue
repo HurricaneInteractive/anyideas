@@ -1,9 +1,50 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <div class="row">
+          <header>
+            <h1>title</h1>
+            <p>Description</p>
+            <div>
+              <p>Darts</p>
+              <span>icon</span>
+            </div>
+          </header>
+
+          <section class="meta_data">
+            <ul>
+              <li><router-link>Category</router-link></li>
+              <li><router-link>Status</router-link></li>
+              <ul>
+                <li>tag</li>
+                <li>items</li>
+                <li>go</li>
+                <li>here</li>
+              </ul>
+            </ul>
+          </section>
+
+          <section class="idea_navigation">
+            <ul>
+              <li>Description</li>
+              <li>Timeline</li>
+              <li>Updates</li>
+            </ul>
+          </section>
+
+          <section class="description">
+
+          </section>
+
+          <section class="timeline">
+
+          </section>
+
+          <section class="updates">
+
+          </section>
+
+            <!-- <div class="col-md-8">
                 <div class="card card-default">
-                  <div class="card-header">IdeaPage.vue</div>
 
                   <button @click="getUser">get user data</button><br/><br/>
                   <button @click="getUserById">get user data by id (pre-filled)</button><br/><br/>
@@ -37,7 +78,7 @@
                   <button @click="handleGetIdeaByTags">get ideas by tags (pre filled array of data)</button><br/><br/>
                   <hr/>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

@@ -26,14 +26,23 @@ const routes = [
     component: Vue.component( 'Cafe', require( './views/AddNewIdea.vue' ) )
   },
   {
-    path: '/idea-view',
-    name: 'idea-view',
-    component: Vue.component( 'IdeaPage', require( './views/IdeaPage.vue' ) )
-  },
-  {
     path: '/idea/:id',
     name: 'idea',
-    component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) )
+    component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) ),
+    children: [
+      {
+        path: 'description',
+        component: Vue.component( 'Description', require( './components/idea/Description.vue' ) )
+      },
+      {
+        path: 'timeline',
+        component: Vue.component( 'Timeline', require( './components/idea/Timeline.vue' ) )
+      },
+      {
+        path: 'updates',
+        component: Vue.component( 'Updates', require( './components/idea/Updates.vue' ) )
+      }
+    ]
   },
   {
     path: '/categories',
