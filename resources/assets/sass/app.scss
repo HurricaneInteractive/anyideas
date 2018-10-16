@@ -1,6 +1,5 @@
 
 /* Fonts */
-@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 /* Variables */
 @import '_variables.scss';
@@ -13,27 +12,35 @@ html, body {
   box-sizing: border-box;
 }
 
-.Ideation {
-  color: $ideation;
+@mixin category($color) {
+  color: $color;
+  * {
+    fill: $color;
+    stroke: $color;
+  }
+}
+
+.Ideation, .ideation {
+  @include category($ideation)
 };
-.Planning {
-  color: $planning;
+.Planning, .planning {
+  @include category($planning)
 };
-.Creating {
-  color: $creating;
+.Creating, .creating {
+    @include category($creating)
 };
-.Evaluating {
-  color: $evaluating;
+.Evaluating, .evaluating {
+  @include category($evaluating)
 };
-.Refining {
-  color: $refining;
+.Refining, .refining {
+  @include category($refining)
 };
-.Completed {
-  color: $completed;
+.Completed, .completed {
+  @include category($completed)
 };
-.On-hold {
-  color: $on-hold;
+.On-hold, .on-hold {
+  @include category($on-hold)
 };
-.Abandoned {
-  color: $abandoned;
+.Abandoned, .abandoned {
+  @include category($abandoned)
 };
