@@ -14,272 +14,83 @@
 
             <section class="meta_data">
                 <ul>
-                <li><router-link to="index">Category</router-link></li>
-                <li><router-link to="index">Status</router-link></li>
-                <ul>
-                    <li>tag</li>
-                    <li>items</li>
-                    <li>go</li>
-                    <li>here</li>
-                </ul>
+                    <li class="category"><router-link to="index">{{idea_data.category}}</router-link></li>
+                    <li :class="'status bg_' + idea_data.status"><router-link to="index">{{idea_data.status}}</router-link></li>
+                    <li class="tags">tag</li>
+                    <li class="tags">items</li>
+                    <li class="tags">go</li>
+                    <li class="tags">here</li>
                 </ul>
             </section>
 
             <section class="idea_navigation">
                 <ul>
-                    <li><router-link :to="{ name: 'description', props: {data: 'cheese' }}">Description</router-link></li>
-                    <li><router-link :to="{ name: 'timeline' }">Timeline</router-link></li>
-                    <li><router-link :to="{ name: 'discussion' }">Discussion</router-link></li>
-                    <li><router-link :to="{ name: 'updates' }">Updates</router-link></li>
-
+                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'description'}">Description</router-link></li>
+                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'timeline' }">Timeline</router-link></li>
+                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'discussion' }">Discussion</router-link></li>
+                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'updates' }">Updates</router-link></li>
                 </ul>
             </section>
 
             <router-view>
                 <!-- Description / Timeline / Updates here -->
             </router-view>
-
-            <div v-bind:style="{ display: 'none'}">
-                <div class="card">
-                    <!-- update_post -->
-                    <div>
-                        <!-- <h3>Updates data</h3>
-                        <button @click="hanldeGetUpdateData">get update_posts data from (pre filled) idea_id</button><br/><br/>   
-                    
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="update_post.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="update_post.title" type="text" class="form-control" v-model="update_post.title" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="update_post.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="update_post.message" type="text" class="form-control" v-model="update_post.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleUpdatePostSubmit">
-                                    Post update_post update
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-
-                        <!-- <div id="updates_post_data">
-                            <ul v-for="(value, key) in this.updates_post_data" :key="key">
-                                <li key={{key}}>
-                                    <h4>{{value.title}}</h4>
-                                    <p>{{value.message}}</p>
-                                    <button @click="handleUpdatePostDelete(value.id)">Delete entry</button>
-                                    <button @click="handleUpdatePostDarts(value.id)">{{value.darts}}</button>
-                                </li>
-                            </ul>
-                        </div> -->
-
-                        <!-- <h4>update_post item</h4>
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="update_post_update.id" class="col-md-4 col-form-label text-md-right">update_post id to update</label>
-
-                                <div class="col-md-6">
-                                <input id="update_post_update.id" type="text" class="form-control" v-model="update_post_update.id" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="update_post_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="update_post_update.title" type="text" class="form-control" v-model="update_post_update.title" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="update_post_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="update_post_update.message" type="text" class="form-control" v-model="update_post_update.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleUpdatePostUpdate">
-                                    Update updates_item
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-                    </div>
-
-                    <hr/>
-
-                    <!-- discussion data -->
-                    <div>
-                        <!-- <h3>Discussions data</h3>
-                        <button @click="hanldeGetDiscussionData">get discussion data from (pre filled) idea_id</button><br/><br/>   
-                    
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="discussion.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="discussion.title" type="text" class="form-control" v-model="discussion.title" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="discussion.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="discussion.message" type="text" class="form-control" v-model="discussion.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleDiscussionSubmit">
-                                    Post discussion update
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-
-                        <!-- <div id="discussion_data">
-                            <ul v-for="(value, key) in this.discussion_data" :key="key">
-                                <li key={{key}}>
-                                    <h4>{{value.title}}</h4>
-                                    <h6>{{value.id}}</h6>
-                                    <p>{{value.message}}</p>
-                                    <button @click="handleDiscussionDelete(value.id)">Delete entry</button>
-                                    <button @click="handleDiscussionRepliesGet(value.id)">display no of replies</button>
-                                </li>
-                            </ul>
-                            <div v-bind:style="{ paddingLeft: '48px'}">
-                                <ul v-for="(value, key) in this.discussion_replies_data" :key="key">
-                                    <li key={{key}}>
-                                        <h4>{{value.title}}</h4>
-                                        <h6>{{value.id}}</h6>
-                                        <p>{{value.message}}</p>
-                                        <button @click="handleDiscussionReplyDelete(value.id)">Delete entry</button>
-                                        <button @click="handleDiscussionReplyVote(value.id)">{{value.darts}} | Darts</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> -->
-
-                        <!-- <h4>update discussion item</h4>
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="discussion_update.id" class="col-md-4 col-form-label text-md-right">Discussion item to update (ID)</label>
-
-                                <div class="col-md-6">
-                                <input id="discussion_update.id" type="text" class="form-control" v-model="discussion_update.id" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="discussion_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="discussion_update.title" type="text" class="form-control" v-model="discussion_update.title" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="discussion_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="discussion_update.message" type="text" class="form-control" v-model="discussion_update.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleTimelineUpdate">
-                                    Update discussion_update item
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-                    </div>
-
-                    <hr/>
-
-                    <!-- timeline data -->
-                    <div>
-                        <!-- <h3>Timeline data</h3>
-                        <button @click="hanldeGetTimelineData">get timeline data from (pre filled) idea_id</button><br/><br/>
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="timeline.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="timeline.title" type="text" class="form-control" v-model="timeline.title" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="timeline.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="timeline.message" type="text" class="form-control" v-model="timeline.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleTimelineSubmit">
-                                    Post timeline update
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-
-                        <!-- <div id="timeline_data">
-                            <ul v-for="(value, key) in this.timeline_data" :key="key">
-                                <li key={{key}}>
-                                    <h4>{{value.title}}</h4>
-                                    <p>{{value.message}}</p>
-                                    <button @click="handleTimelineDelete(value.id)">Delete entry</button>
-                                    <button @click="handleDartsAdd(value.id)">{{value.darts}}</button>
-                                </li>
-                            </ul>
-                        </div> -->
-
-                        <!-- <form method="POST">
-                            <div class="form-group row">
-                                <label for="timeline_update.id" class="col-md-4 col-form-label text-md-right">Id of discussion to update</label>
-
-                                <div class="col-md-6">
-                                <input id="timeline_update.id" type="text" class="form-control" v-model="timeline_update.id" required autofocus>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="timeline_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                                <div class="col-md-6">
-                                <input id="timeline_update.title" type="text" class="form-control" v-model="timeline_update.title" required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="timeline_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                                <div class="col-md-6">
-                                <input id="timeline_update.message" type="text" class="form-control" v-model="timeline_update.message" required>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" @click="handleTimelineUpdate">
-                                    Update timeline item
-                                </button>
-                                </div>
-                            </div>
-                        </form> -->
-                        
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </template>
+
+<style lang="scss">
+    @import '~@/App.scss';
+
+.meta_data {
+    > ul {
+        list-style-type: none;
+        display: inline-flex;
+        .category {
+            background-color: $black;
+        }
+        .tags {
+            background-color: $grey-med;
+        }
+        > li {
+            padding: 8px 16px;
+            margin: 0 4px;
+            border-radius: 25px;
+            color: $white;
+            @include fontSize(12px);
+            a {
+                text-decoration: none;
+                color: $white;
+            }
+        }
+    } 
+}
+
+.idea_navigation {
+    width: 100%;
+    > ul {
+        display: inline-flex;
+        margin: 0 auto;
+        width: 100%;
+        
+        list-style-type: none;
+        .active {
+            border-bottom: 2px solid $grey-dark;
+        }
+        > li {
+            padding: 4px;
+            
+            font-size: $size-p;
+            color: $p-color;
+            border-bottom: 2px solid $grey;
+            a {
+                text-decoration: none;
+                margin: 0 4px;
+            }
+        }
+    }
+}
+</style>
 
 <script>
     import marked from 'marked'
@@ -305,6 +116,7 @@
             return {
                 idea_data: '',
                 idea_id: '5678',
+                subNavActive: 'Description',
                 timeline: {
                     title: '',
                     message: ''
@@ -351,6 +163,13 @@
             // });
         },
         methods: {
+            setAsActive(event) {
+                event.preventDefault();
+                console.warn('set me as active => ', event)
+                console.warn('set me as active => ', event.target)
+                console.warn('set me as active => ', event.target.innerText)
+                this.subNavActive = event.target.innerText;
+            },
             handeGetInitialData() {
                 console.log('TCL: handeGetInitialData -> handeGetInitialData');
                 axios.post('/ai/idea/get/' + this.$route.params.id)

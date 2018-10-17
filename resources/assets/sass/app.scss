@@ -2,6 +2,7 @@
 /* Fonts */
 
 /* Variables */
+@import '_mixins.scss';
 @import '_variables.scss';
 
 html, body {
@@ -18,6 +19,10 @@ html, body {
     fill: $color;
     stroke: $color;
   }
+}
+
+@mixin bg_category($color) {
+  background-color: $color;
 }
 
 .Ideation, .ideation {
@@ -43,4 +48,29 @@ html, body {
 };
 .Abandoned, .abandoned {
   @include category($abandoned)
+};
+
+.bg_Ideation {
+  @include bg_category($ideation)
+};
+.bg_Planning {
+  @include bg_category($planning)
+};
+.bg_Creating {
+    @include bg_category($creating)
+};
+.bg_Evaluating {
+  @include bg_category($evaluating)
+};
+.bg_Refining {
+  @include bg_category($refining)
+};
+.bg_Completed {
+  @include bg_category($completed)
+};
+.bg_On-hold {
+  @include bg_category($on-hold)
+};
+.bg_Abandoned {
+  @include bg_category($abandoned)
 };

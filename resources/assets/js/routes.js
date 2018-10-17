@@ -28,6 +28,7 @@ const routes = [
   {
     path: '/idea/:id',
     name: 'idea',
+    redirect: '/idea/:id/description',
     component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) ),
     children: [
       {

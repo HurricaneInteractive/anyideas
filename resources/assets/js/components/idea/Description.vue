@@ -20,17 +20,20 @@
     var Editor = require('tui-editor');
     export default {
       name: 'Description',
+      props: ['data'],
       data() {
         return {
           loaded: false
         }
       },
       mounted() {
-        console.log('Description.vue')
+        console.log("%c Description.vue", this.$ud_store.state.consoleLog.component)
         this.setDescription();
+        console.log('props => ', this)
       },
       methods: {
         setDescription() {
+          
           console.warn('run setDescription Func')
           console.log('run =>', this.$ud_store.state.idea.description )
           var viewer = Editor.factory({

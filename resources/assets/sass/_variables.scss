@@ -1,8 +1,11 @@
+@import '_mixins.scss';
 
 // Body
 $body-bg: #ffffff;
 $white: #fafafa;
 $grey: #fafafa;
+$grey-med: #BFBFBF;
+$grey-dark: #707070;
 $black: #010101;
 $accent: #FFE6A0;
 
@@ -21,6 +24,7 @@ $size-h4: 1rem;
 $size-h5: 1rem;
 $size-h6: 0.75rem;
 $size-p: 1rem;
+$size-12: 12 / 16 + 'px';
 
 
 // Colors
