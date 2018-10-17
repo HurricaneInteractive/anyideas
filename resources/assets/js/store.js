@@ -20,6 +20,9 @@ export default new Vuex.Store({
             tags: '',
             description: '',
         },
+        consoleLog: {
+            component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
+        },
         icons: icons,
         categories: categories,
         svgBackground: svgBackground,
