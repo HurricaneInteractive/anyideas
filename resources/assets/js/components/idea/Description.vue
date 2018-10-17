@@ -20,23 +20,19 @@
     var Editor = require('tui-editor');
     export default {
       name: 'Description',
-      props: ['props'],
+      data() {
+        return {
+          loaded: false
+        }
+      },
       mounted() {
-        console.warn("MOUNT CHILD (DESCRIPTION.VUE)")
-        this.$nextTick(()=>{
-          //execute your code
-          console.log('Finished rendering the complete view')
-        })
-        // console.log('Description (this.props.description) => ', this);
-        console.log('Description (this.$route.params.data) => ', this.$route.params)
-        console.log('Description (this.$route.params.data) => ', this.$route)
-        console.warn('Description (this.$ud_state) => ', $ud_state)
-        console.log('Description (this.$ud_state) => ', $ud_state.state)
-        console.log('Description (this.$ud_state.idea.description) => ', this.$ud_state.state.idea.description)
+        console.log('Description.vue')
         this.setDescription();
       },
       methods: {
         setDescription() {
+          console.warn('run setDescription Func')
+          console.log('run =>', this.$ud_store.state.idea.description )
           var viewer = Editor.factory({
             el: document.querySelector('#viewerSection'),
             viewer: true,
@@ -50,6 +46,7 @@
             height: '300px',
             initialValue: this.$ud_store.state.idea.description
           });
+          this.loaded = true;
         }
       }
     }

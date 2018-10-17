@@ -90,7 +90,7 @@
               title: '',
               message: ''
             },
-            update_post_update: {
+            update_post_create: {
               id: '',
               title: '',
               message: ''
@@ -103,7 +103,7 @@
           }
       },
       mounted() {
-        console.log('Updates.vue')
+        console.log("%c Updates.vue", this.$ud_store.state.consoleLog.component)
       },
       methods: {
         // updates post functions
@@ -135,7 +135,7 @@
                     message: this.update_post.message
                 }
             }).then( (response) => {
-                this.discussion_data = response.data;
+                this.update_post_create = response.data;
             });
         },
         handleUpdatePostDelete(value) {
@@ -143,7 +143,7 @@
                 method: 'POST',
                 url: '/ai/idea/update_post/delete/' + value,
             }).then( (response) => {
-                this.discussion_data = response.data;
+                this.update_post_create = response.data;
             });
         },
         handleUpdatePostUpdate(e){

@@ -39,7 +39,7 @@
                 <!-- Description / Timeline / Updates here -->
             </router-view>
 
-            <div>
+            <div v-bind:style="{ display: 'none'}">
                 <div class="card">
                     <!-- update_post -->
                     <div>
@@ -276,6 +276,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -338,21 +339,28 @@
                 ideas: []
             }
         },
-        mounted() {
-            console.warn("MOUNT PARENT (INDIVIDUALIDEA.VUE)")
-            console.log('this.$route.params.id => ', this.$route.params.id);
+        beforeMount() {
+            console.log("%c IndividualIdea.vue", this.$ud_store.state.consoleLog.component)
             this.$ud_store.commit('SET_IDEA_ID', this.$route.params.id );
-            console.log("store => ", this.$ud_store.state.idea.id);
-            console.warn("store.idea => ", this.$ud_store.state.idea);
-            axios.post('/ai/idea/get/' + this.$route.params.id)
-            .then(response => {
-                this.idea_data = response.data;
-                console.log('TCL: mounted -> response.data', response.data);
-                console.log('response.data.description (BEFORE SET_IDEA_DESCRIPTION) => ', response.data.description)
-                this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
-            });
+            this.handeGetInitialData();
+            // axios.post('/ai/idea/get/' + this.$route.params.id)
+            // .then(response => {
+            //     this.idea_data = response.data;
+            //     this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
+            //     console.warn('JUST SET STORE DESC');
+            // });
         },
         methods: {
+            handeGetInitialData() {
+                console.log('TCL: handeGetInitialData -> handeGetInitialData');
+                axios.post('/ai/idea/get/' + this.$route.params.id)
+                .then(response => {
+                    this.idea_data = response.data;
+                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
+                    console.warn('JUST SET STORE DESC');
+                    console.log('response -> handeGetInitialData');
+                });
+            },
             handleDeleteIdea(e) {
                 e.preventDefault();
                 axios.post('/ai/idea/delete/' + this.$route.params.id)

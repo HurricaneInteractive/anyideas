@@ -79,7 +79,7 @@
             </div>
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary" @click="handleTimelineUpdate">
+                <button type="submit" class="btn btn-primary" @click="handleDiscussionUpdate">
                     Update discussion_update item
                 </button>
                 </div>
@@ -96,6 +96,7 @@
       data() {
           return {
             discussion_data: '',
+            discussion_replies_data: '',
             updates_post_data: '',
             discussion: {
               title: '',
@@ -114,7 +115,7 @@
           }
       },
       mounted() {
-        console.log('Updates.vue')
+        console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
         this.hanldeGetDiscussionData();
       },
       methods: {

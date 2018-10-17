@@ -352,6 +352,11 @@ import CategoriesSlider from './components/CategoriesSlider'
                 store_state: this.$ud_store.state,
             }
         },
+        beforeMount: function() {
+            const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
+            console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
+            console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
+        },
         mounted: function(){
             // console.log("this.$route.name => ", this.$route.name);
             // working -> -> -> -> ->
@@ -363,9 +368,6 @@ import CategoriesSlider from './components/CategoriesSlider'
                 this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
                 this.$ud_store.commit('SET_USER_LOGGED_IN', true );
             }
-            const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
-            console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
-            console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
             // this.$ud_store.commit('SET_USER_LOGGED_IN', true);
             if (this.$ud_store.state.data.user_data === "guest") {
                 this.user_id = null;

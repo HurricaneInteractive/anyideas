@@ -92,7 +92,7 @@
           }
       },
       mounted() {
-        console.log('Timeline.vue')
+        console.log("%c Timeline.vue", this.$ud_store.state.consoleLog.component)
       },
       methods: {
         hanldeGetTimelineData() {
@@ -117,6 +117,21 @@
                   alert('error creating timeline entry');
               }
           });
+        },
+        handleTimelineUpdate(e){
+            let value = this.timeline_update.id;
+            axios({
+                method: 'POST',
+                url: '/ai/idea/timeline/update/' + value,
+                data: {
+                    title: this.timeline_update.title,
+                    message: this.timeline_update.message,
+                },
+            }).then( (response) => {
+                if (response.data === "") {
+                    alert('error creating timeline entry');
+                }
+            });
         },
       }
     }
