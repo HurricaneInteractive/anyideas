@@ -12,15 +12,16 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
                         <li class="search">
-                            <li v-if="this.openSearchState === true" class="search_text_container">
-                                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
-                                <div :class="'search_expand ' + this.openSearchState">
-                                    <p>Search</p>
-                                </div>
+                            <li class="search_text_container">
+                                <form method="POST" :class="'search_expand ' + this.openSearchState">
+                                    <span type="submit" @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
+                                
+                                    <input placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
+                                </form>
                             </li>
                             <li v-if="this.openSearchState === false" class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
                             </li>
-                            <li v-else class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.user">
+                            <li v-else class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
                             </li>
                         </li>
                         <li>
@@ -131,6 +132,11 @@
     }
 
     .navbar {
+        .navbar-icon {
+            fill: black;
+            color: black;
+            stroke: black;
+        }
         .container {
             display: flex;
             margin: 35px;
@@ -167,27 +173,31 @@
                 display: inline-flex;
                 justify-content: flex-end;
                 .search_text_container {
+                    opacity: 0;
                     display: inline-flex;
                     align-content: center;
                     justify-content: center;
                     border-bottom: 2px black solid;
                     margin: 0;
                     padding: 0 8px;
+                    .search_expand {
+                        width: 80%;
+                        white-space: nowrap;
+                        display: flex;
+                        align-content: center;
+                        align-items: center;
+                        justify-content: center;
+                        input {
+                            margin: 0 24px;
+                            padding: 0;
+                            height: 100%;
+                            width: 100%;
+                            border: none;
+                        }
+                    }
                 }
                 .search {
                     position: relative;
-                    .search_expand {
-                        width: 80%;
-                        div {
-                            white-space: nowrap;
-                            display: flex;
-                            align-content: center;
-                            justify-content: center;
-                            p {
-                                margin-left: 8px;
-                            }
-                        }
-                    }
                     .search_icon {
                         display: grid;
                         justify-content: center;
@@ -244,7 +254,7 @@
                     .user_icon {
                         display: grid;
                         align-content: center;
-                        justify-content: center;
+                        justify-content: flex-start;
                     }
                     .user.false {
                         display: none;
@@ -366,6 +376,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 user_id : null,
                 name : null,
                 user_data: null,
+                search_text: 'null',
                 store_state: this.$ud_store.state,
             }
         },
@@ -394,6 +405,33 @@ import CategoriesSlider from './components/CategoriesSlider'
             }
         },
         methods: {
+            handleSearch(e) {
+                e.preventDefault();
+                console.log('handleSearch(search_text)')
+                if (this.search_text !== 'search' || this.search_text !== null) {
+                    console.log('search_text === defined')
+                    axios({
+                        method: 'POST',
+                        url: '/ai/search',
+                        data: this.search_text,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                        }
+                    })
+                    .then(response => {
+                        console.warn('​handleSubmit -> response', response);
+                        // if (response.status === 200) {
+                        //     window.location = '/';
+                        // }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                } else {
+                    console.log('maaaaate');
+                    return alert('make sure you fill in all the fields');
+                }
+            },
             toggleSearchState(toggle) {
                 this.openSearchState = toggle
             },
