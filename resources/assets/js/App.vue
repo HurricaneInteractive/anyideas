@@ -13,11 +13,23 @@
                     <ul class="navbar-wrapper navbar-right">
                         <li class="search">
                             <li class="search_text_container">
-                                <form method="POST" :class="'search_expand ' + this.openSearchState">
-                                    <span type="submit" @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
+                                <div :class="'search_expand ' + this.openSearchState">
+                                    <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
                                 
-                                    <input placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
-                                </form>
+                                    <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
+                                </div>
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- filter array of objects + passed to route.params template page -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
+                                <!-- -->
                             </li>
                             <li v-if="this.openSearchState === false" class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
                             </li>
@@ -420,9 +432,12 @@ import CategoriesSlider from './components/CategoriesSlider'
                     })
                     .then(response => {
                         console.warn('​handleSubmit -> response', response);
-                        // if (response.status === 200) {
-                        //     window.location = '/';
-                        // }
+                        // could append results to the store? and then access the store on the SearchResults page
+                        // or figure out how to pass arrays between routes / functions
+
+                        if (response.status === 200) {
+                            window.location = '/results';
+                        }
                     })
                     .catch(error => {
                         console.error(error);
