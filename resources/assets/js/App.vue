@@ -35,10 +35,13 @@
                                 </div>
                             </div>
                         </li>
-                        <li>
-                            <router-link :to="{ name: 'add-new-idea' }" class="add-idea"
-                                
-                            >
+                        <li v-if="this.$route.name === 'add-new-idea'">
+                            <div v-on:click="openUser()" class="post-idea">
+                                <p> POST IDEA</p>
+                            </div>
+                        </li>
+                        <li v-else>
+                            <router-link :to="{ name: 'add-new-idea' }" class="add-idea">
                                 <span v-html="this.$ud_store.state.icons.plus"></span>
                                 <p> Idea</p>
                             </router-link>
@@ -49,41 +52,43 @@
             <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
             <main>
                 <router-view>
-                    <!-- App.vue component runs here -->
+                    <!-- Child components run here -->
                 </router-view>
             </main>
             <footer class="footer-container">
-                <div class="footer footer-left">
-                    <ul>
-                        <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Account</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
-                    </ul>
-                    <ul>
-                        <li><router-link :to="{ name: 'login' }">About</router-link></li>
-                        <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
-                    </ul>
-                    
-                    <ul>
-                        <li><a href="#">Built by <span>Sunset Studios</span></a></li>
-                    </ul>
-                </div>
-                <div class="footer footer-right">
-                    <ul>
-                        <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
+                <div class="fixed_width">
+                    <div class="footer footer-left">
+                        <ul>
+                            <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
+                            <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
+                            <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
+                            <li><router-link :to="{ name: 'index' }">Account</router-link></li>
+                            <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
+                        </ul>
+                        <ul>
+                            <li><router-link :to="{ name: 'login' }">About</router-link></li>
+                            <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
+                        </ul>
                         
-                    </ul>
-                    <ul>
-                        <li><a href="https://facebook.com">FB icon</a></li>
-                        <li><a href="https://facebook.com">Twitter icon</a></li>
-                        <li><a href="https://facebook.com">Instagram icon</a></li>
-                    </ul>
-                </div>
-                <div class="footer-logo">
-                    <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
+                        <ul>
+                            <li><a href="#">Built by <span>Sunset Studios</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="footer footer-right">
+                        <ul>
+                            <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
+                            <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
+                            
+                        </ul>
+                        <ul>
+                            <li><a href="https://facebook.com">FB icon</a></li>
+                            <li><a href="https://facebook.com">Twitter icon</a></li>
+                            <li><a href="https://facebook.com">Instagram icon</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-logo">
+                        <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
+                    </div>
                 </div>
             </footer>
         </div>
@@ -204,12 +209,23 @@
                         align-self: center;
                         justify-self: center;
                     }
+                    .post-idea {
+                        background-color: $primary;
+                        color: $pure;
+                        border: none;
+                        p {
+                            margin: 8px;
+                            color: $pure;
+                        }
+                    }
                     .add-idea {
+                        border: 1px solid $black;
+                    }
+                    .add-idea, .post-idea {
                         display: inline-flex;
                         align-content: center;
                         justify-content: center;
                         border-radius: 25px;
-                        border: 1px solid $black;
                         padding: 0 16px;
                         text-decoration: none;
                         > span {
@@ -256,8 +272,8 @@
                                 > * {
                                     height: 15px;
                                     width: 15px;
-                                    fill: $grey;
-                                    stroke: $grey;
+                                    fill: $white;
+                                    stroke: $white;
                                     border: 1px solid black;
                                     border-color: transparent transparent $white $white;
                                     z-index: -100;
@@ -288,48 +304,49 @@
     }
 
     .footer-container {
-        width: auto;
         margin: 0 auto;
         padding: 0 32px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        .footer {
-            ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0 0 32px 0;
-                li {
-                    margin: 4px 0;
-                    a {
-                        color: $p-color;
-                        font-size: $size-h6;
-                        text-decoration: none;
+        background-color: $white;
+        > div {
+            margin: 0 auto;
+            padding: 68px 32px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            .footer {
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0 0 32px 0;
+                    li {
+                        margin: 4px 0;
+                        a {
+                            color: $p-color;
+                            font-size: $size-h6;
+                            text-decoration: none;
+                        }
                     }
                 }
             }
-        }
-        .footer-left {
-
-        }
-        .footer-right {
-            ul {
-                li {
-                    text-align: right;
-                    a {
+            .footer-right {
+                ul {
+                    li {
                         text-align: right;
+                        a {
+                            text-align: right;
+                        }
                     }
                 }
             }
-        }
-        .footer-logo {
-            grid-area: 2 / 1 / 2 / 3;
-            margin: 24px auto 84px auto;
-            a {
-                display: block;
-                width: 128px;
-                margin: 0 auto;
-                svg {
-                    width: 100%;
+            .footer-logo {
+                grid-area: 2 / 1 / 2 / 3;
+                margin: 24px auto 84px auto;
+                a {
+                    display: block;
+                    width: 128px;
+                    margin: 0 auto;
+                    svg {
+                        width: 100%;
+                    }
                 }
             }
         }

@@ -82,7 +82,7 @@
             
             font-size: $size-p;
             color: $p-color;
-            border-bottom: 2px solid $grey;
+            border-bottom: 2px solid $white;
             a {
                 text-decoration: none;
                 margin: 0 4px;

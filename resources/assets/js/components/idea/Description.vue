@@ -29,7 +29,6 @@
       mounted() {
         console.log("%c Description.vue", this.$ud_store.state.consoleLog.component)
         this.setDescription();
-        console.log('props => ', this)
       },
       methods: {
         setDescription() {

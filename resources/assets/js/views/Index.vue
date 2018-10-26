@@ -10,16 +10,10 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="card card-default">
-                    <div>
-                        <button @click="searchDatabase">Run search query</button>
-                        <div>
-                            <div v-for="(value, key) in this.user_ideas" :key="key">
-                                <IdeaCard key={{key}} :props='value'/>
-                            </div>
-                        </div>
-                    </div>
+            <!-- <button @click="searchDatabase">Run search query</button> -->
+            <div class="idea_wrapper">
+                <div class="fixed_width" v-for="(value, key) in this.user_ideas" :key="key">
+                    <IdeaCard key={{key}} :props='value'/>
                 </div>
             </div>
         </div>
@@ -40,8 +34,12 @@
     align-content: center;
     justify-content: center;
 }
-.test {
-    background-color: goldenrod;
+.idea_wrapper {
+    margin-top: 48px;
+    div {
+        max-width: 750px;
+        margin: 0 auto;
+    }
 }
 </style>
 

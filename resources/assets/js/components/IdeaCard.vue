@@ -26,13 +26,16 @@
     margin: 28px 0;
     transition: .5s;
     &:hover {
-        background-color: $grey;
+        background-color: $white;
     }
     a {
         text-decoration: none;
         .card {
             margin: 0 0 16px 0;
             padding: 48px;
+            > * {
+                padding-left: 16px;
+            }
             h2 {
                 position: relative;
                 font-size: $size-h2;

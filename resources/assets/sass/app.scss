@@ -7,7 +7,7 @@
 
 html, body {
   width: 100%;
-  background-color: $body-bg;
+  background-color: $pure;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -23,6 +23,17 @@ html, body {
 
 @mixin bg_category($color) {
   background-color: $color;
+}
+
+// global classes
+.fixed_width {
+  width: 1080px;
+  margin: 0 auto;
+}
+// to be placed on the element directly above the IdeaCard component (usually in a loop)
+.idea_wrapper_width {
+  width: 750px;
+  margin: 0 auto;
 }
 
 .Ideation, .ideation {
