@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue';
 import icons from './data/icons'
 import categories from './data/categories'
+import status from './data/status'
 import svgBackground from './data/svgBackground'
 
 Vue.use(Vuex)
@@ -20,47 +21,60 @@ export default new Vuex.Store({
             tags: '',
             description: '',
         },
+        current_search: {},
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
         },
         icons: icons,
         categories: categories,
+        status: status,
         svgBackground: svgBackground,
     },
     mutations: {
         SET_USER_DATA(state, newValue) {
             // state.data.user_data = newValue;
             if (this.debug) console.log('setUserData triggered with', newValue)
-            this.state.data.user_data = newValue;
+            state.data.user_data = newValue;
         },
         SET_USER_LOGGED_IN(state, newValue) {
             if (this.debug) console.log('setUserData triggered with', newValue)
-            this.state.data.loggedIn = newValue;
+            state.data.loggedIn = newValue;
         },
         CLEAR_USER_DATA(state) {
             if (this.debug) console.log('STORE MUTATIONS: clearUserData triggered -> ') 
-            this.state.data.user_data = '';
-            this.state.data.loggedIn = false;
+            state.data.user_data = '';
+            state.data.loggedIn = false;
         },
 
         SET_IDEA_ID(state, newValue) {
             if (this.debug) console.log('SET_IDEA_ID triggered with', newValue)
-            this.state.idea.id = newValue;
+            state.idea.id = newValue;
         },
 
         SET_IDEA_DARTS(state, newValue) {
             if (this.debug) console.log('SET_IDEA_DARTS triggered with', newValue)
-            this.state.idea.darts = newValue.darts;
+            state.idea.darts = newValue.darts;
         },
 
         SET_IDEA_DESCRIPTION(state, newValue) {
             if (this.debug) console.log('SET_IDEA_DESCRIPTION triggered with', newValue)
-            this.state.idea.description = newValue;
+            state.idea.description = newValue;
         },
         CLEAR_IDEA(state) {
             if (this.debug) console.log('CLEAR_IDEA triggered with', newValue)
-            this.state.idea.id = '';
-            this.state.idea.description = '';
-        }
+            state.idea.id = '';
+            state.idea.description = '';
+        },
+
+        SET_CURRENT_SEARCH(state, newValue) {
+            if (this.debug) console.log('SET_CURRENT_SEARCH triggered with', newValue)
+            console.error('newValue => ', newValue)
+            state.current_search = newValue;
+        },
+        CLEAR_CURRENT_SEARCH(state) {
+            if (this.debug) console.log('CLEAR_CURRENT_SEARCH triggered with', newValue)
+            state.current_search = '';
+        },
+        
     }
   })

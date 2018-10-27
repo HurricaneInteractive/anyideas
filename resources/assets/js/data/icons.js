@@ -29,16 +29,6 @@ const icons = {
   ,
   "search": `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-            stroke: #000;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-          }
-        </style>
-      </defs>
       <g id="search" transform="translate(-242.5 -35.5)">
         <path id="Union_1" data-name="Union 1" class="cls-1" d="M-438.378,10.622a6.2,6.2,0,0,1-4.4,1.823A6.222,6.222,0,0,1-449,6.222,6.222,6.222,0,0,1-442.778,0a6.223,6.223,0,0,1,6.222,6.222,6.2,6.2,0,0,1-1.823,4.4L-435,14Z" transform="translate(692 36)"/>
       </g>
@@ -46,16 +36,6 @@ const icons = {
   `,
   "user": `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 16.167">
-      <defs>
-        <style>
-          .cls-1 {
-            fill: none;
-            stroke: #000;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-          }
-        </style>
-      </defs>
       <g id="user" transform="translate(-330.5 -36.5)">
         <g id="Group_2" data-name="Group 2">
           <path id="Path_1" data-name="Path 1" class="cls-1" d="M18,20.056V18.37A3.437,3.437,0,0,0,14.5,15h-7A3.437,3.437,0,0,0,4,18.37v1.685" transform="translate(327 32.111)"/>

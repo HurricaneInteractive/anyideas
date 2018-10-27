@@ -24,21 +24,16 @@ router.beforeEach((to, from, next) => {
 
     if (to.fullPath !== "/login/guest") {
         // if path is NOT /login/guest
-        if (typeof ud_store.state.data.user_data !== undefined || ud_store.state.data.loggedIn === false) {
-            // console.log('ud_store (app.js) => ', ud_store.state)
+        if (typeof ud_store.state.data.user_data !== undefined) {
+            console.log('user_data !== undefined => ', ud_store.state)
         }
-
-        // console.log('just a guest')
-        // axios.post('/ai/user/get/current').then(response => {
-        //     console.assert('we ran boiz')     
-        //     console.log('axios response.data.user =>', response.data.user);
-        //     store.commit('SET_USER_DATA', response.data.user);
-        //     // store.SET_USER_DATA(response.data.user)
-        //     next();
-        // }).catch(error => {
-        //     console.error('ROUTER BEFOREEACH: error', error);
-        //     next()
-        // })
+        if (ud_store.state.data.loggedIn === false) {
+            console.log('loggedIn === false => ', ud_store.state)
+        }
+        if (ud_store.state.data.loggedIn === true) {
+            console.log('loggedIn === true => ', ud_store.data.user_data)
+        }
+        
         next();
     } else {
         alert('welcome to the login page');
@@ -63,7 +58,7 @@ const app = new Vue({
     },
     methods: {
         getUserAuth: function() {
-            return this.this.user_data_app
+            return ud_store.state.data.user_data
         }
     },
     mounted() {

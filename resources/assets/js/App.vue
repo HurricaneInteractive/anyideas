@@ -6,8 +6,11 @@
                 <div class="container">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="navbar-icon"/>
+                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
                         </li>
+                        <!-- display full logo on larger screens -->
+                        <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
+                        </li> -->
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-wrapper navbar-right">
@@ -15,36 +18,31 @@
                             <li class="search_text_container">
                                 <div :class="'search_expand ' + this.openSearchState">
                                     <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
-                                
                                     <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
                                 </div>
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- filter array of objects + passed to route.params template page -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
-                                <!-- -->
                             </li>
-                            <li v-if="this.openSearchState === false" class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                            <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
                             </li>
-                            <li v-else class="user_icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
+                            <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
                             </li>
                         </li>
                         <li>
-                            <span class="user_icon" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
+                            <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
                             </span>
-                            <div :class="'user ' + this.openUserState">
+                            <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
                                 <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
                                 </span>
                                 <div class="user_items" v-on:click="openUser()">
                                     <router-link :to="{name: 'login' }">Log In</router-link>
                                     <router-link :to="{name: 'register' }">Sign Up</router-link>
+                                </div>
+                            </div>
+                            <div :class="'user ' + this.openUserState">
+                                <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
+                                </span>
+                                <div class="user_items" v-on:click="openUser()">
+                                    <router-link :to="`/user/${user_id}`">View Account</router-link>
+                                    <p @click="handleSignOut">Sign Out</p>
                                 </div>
                             </div>
                         </li>
@@ -145,9 +143,9 @@
 
     .navbar {
         .navbar-icon {
-            fill: black;
-            color: black;
-            stroke: black;
+            fill: none;
+            color: $black;
+            stroke: $black;
         }
         .container {
             display: flex;
@@ -267,6 +265,10 @@
                         display: grid;
                         align-content: center;
                         justify-content: flex-start;
+                        fill: none;
+                    }
+                    .user_icon.false {
+                        opacity: .5;
                     }
                     .user.false {
                         display: none;
@@ -388,7 +390,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 user_id : null,
                 name : null,
                 user_data: null,
-                search_text: 'null',
+                search_text: '',
                 store_state: this.$ud_store.state,
                 search_results: {}
             }
@@ -399,9 +401,7 @@ import CategoriesSlider from './components/CategoriesSlider'
             console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
         },
         mounted: function(){
-            // console.log("this.$route.name => ", this.$route.name);
-            // working -> -> -> -> ->
-            // console.log("window.checkAuth => ", window.checkAuth)
+            console.log('window.offsetWidth => ', window)
             if (window.checkAuth === undefined) {
                 this.$ud_store.commit('SET_USER_DATA', "guest" );
                 this.$ud_store.commit('SET_USER_LOGGED_IN', false );
@@ -418,25 +418,42 @@ import CategoriesSlider from './components/CategoriesSlider'
             }
         },
         methods: {
+            handleSignOut() {
+                axios({
+                    method: 'POST',
+                    url: '/logout',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                })
+                .then(res => {
+                    console.log('úser_logged out')
+
+                    // if (res.status === 200) {
+                    //     this.$router.push({name: 'search'})
+                    // }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            },
             handleSearch(e) {
                 e.preventDefault();
                 console.log('handleSearch(search_text)')
-                if (this.search_text !== 'search' || this.search_text !== null) {
+                if (this.search_text !== '' || this.search_text !== null) {
                     console.log('search_text === defined')
                     axios({
                         method: 'POST',
                         url: '/ai/search',
-                        data: this.search_text,
+                        data: {
+                            search: this.search_text
+                        },
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                         }
                     })
                     .then(res => {
-                        // console.warn('​handleSubmit -> res', res);
-                        this.search_results = {
-                            "users": res.data.users,
-                            "ideas": res.data.ideas
-                        };
+                        this.$ud_store.commit('SET_CURRENT_SEARCH', res.data);
 
                         if (res.status === 200) {
                             this.$router.push({name: 'search'})

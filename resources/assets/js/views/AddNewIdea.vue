@@ -3,18 +3,23 @@
         <div class="wrapper">
 
             <!-- <button @click="handleGetIdeaData">get all idea data</button> -->
-            <div class="form-wrapper ">
-                <form method="POST">
+            <div v-if="this.$ud_store.state.data.loggedIn !== true" class="please_log_in">
+                <p>Hi user - please login to start sharing your ideas with the world</p>
+            </div>
+
+            <div v-else class="form-wrapper ">
+                <form>
+                <!-- <form method="POST"> -->
                     <header class="header-container">
                         <div class="header-wrapper fixed_width">
-                            <div class="form no-label">
+                            <div class="form no-label" id="title">
                                 <label for="title">Name of Idea</label>
                                 <div>
                                     <input value="Name of Idea" id="title" type="text" class="form-control" v-model="idea.title" required autofocus>
                                 </div>
                             </div>
 
-                            <div class="form-group row no-label" >
+                            <div class="form-group row no-label" id="elevator">
                                 <label for="pitch">Elevator Pitch (240 Characters)</label>
 
                                 <div>
@@ -22,30 +27,31 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row no-label">
+                            <div class="form-group row no-label" id="status">
                                 <label for="status">Status</label>
 
                                 <div>
-                                    <input value="pre-alpha 0.0.0.1" id="status" type="text" class="form-control" v-model="idea.status" required>
+                                    <select v-model="idea.status">
+                                        <option v-for="(value, key) in this.$ud_store.state.status" :key="key" :value="$ud_store.state.status[key]">
+                                            {{$ud_store.state.status[key]}}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="form-group row no-label">
+                            <div class="form-group row no-label" id="category">
                                 <label for="category">Category</label>
-
-                                <div >
-                                    <!-- <input type="text" class="form-control" > -->
-                                    <select id="category" v-model="idea.category" name="cars">
-                                        <option value="aec">Arts, Entertainment & Culture</option>
-                                        <option value="law">Life & Well-being</option>
-                                        <option value="ib">Industry & Business</option>
-                                        <option value="its">Innovation, Technology & Science</option>
+                                <div>
+                                    <select v-model="idea.category">
+                                        <option v-for="(value, key) in this.$ud_store.state.categories" :key="key" :value="$ud_store.state.categories[key]">
+                                            {{$ud_store.state.categories[key]}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- get array out of data... somehow -->
-                            <div class="form-group row">
+                            <div class="form-group row" id="tags">
                                 <label for="tags">Tags</label>
 
                                 <div>
@@ -57,7 +63,7 @@
 
                     <TabNav v-bind:props="tab_nav"/>
 
-                    <div class="form-group row fixed_width">
+                    <div class="form-group row fixed_width" id="description_container">
 
                         <div class="description_input" id="editor">
                             <div class="form-control editSection" :value="idea.description" @input="update" id="description" type="text" required/>
@@ -128,7 +134,7 @@
                     category: 'Category',
                     tags: '',
                     description: 'Add Description',
-                    status: 'status'
+                    status: 'Status'
                 },
                 tab_nav: [
                     {
@@ -156,6 +162,7 @@
                     //     active: 'false',
                     // }
                 ],
+                ideaData: [],
                 errors: [],
                 ideas: []
             }
@@ -169,6 +176,9 @@
         mounted() {
             console.log('AddNewIdea.vue page');
             // console.log(this.idea.tags);
+            this.setDescription();
+        },
+        updated() {
             this.setDescription();
         },
         methods: {
@@ -195,14 +205,13 @@
 
             // on click gets titles of all ideas and console logs them
             handleGetIdeaData() {
-                axios.get('/ai/idea-get-all').then( (response) => {
-                    this.ideaData = response.data
+                axios.get('/ai/idea/get/').then( (res) => {
+                    console.log('​handleGetIdeaData -> this.ideaData', res.dat);
+                    this.ideaData = res.data
                     console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
                 })
             },
-            handleSubmit(e) {
-                e.preventDefault()
-
+            handleSubmit() {
                 if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null) {
                     axios({
                         method: 'POST',
@@ -219,13 +228,16 @@
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                         }
                     })
-                    .then(response => {
-                        console.log('​handleSubmit -> response', response);
-                        if (response.status === 200) {
-                            window.location = '/';
-                        }
+                    .then(res => {
+                        console.warn('​handleSubmit -> response', res);
+                        // if (response.status === 200) {
+                        //     window.location = '/';
+                        // }
+                        console.log('run this.handleGetIdeaData()');
+                        this.handleGetIdeaData()
                     })
                     .catch(error => {
+                        console.log('érror is coming')
                         console.error(error);
                     });
                 } else {

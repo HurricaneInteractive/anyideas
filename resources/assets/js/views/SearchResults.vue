@@ -1,12 +1,42 @@
 <template>
     <div class="container">
         <div class="row">
-            <!-- <CategoryTitleCard :props="this.currentRoute" class="category-header"/> -->
-            <h2>search term here</h2>
-            <!-- map over search results - show 3 users max and then the rest ideas -->
-            <!-- <div v-for="(value, key) in this.category_data" :key="key">
+
+            <header>
+              <h2>search term here</h2>
+            </header>
+
+            <div v-if="this.users.length !== 0" class="users_results">
+              <h2>Users</h2>
+              <div v-for="(value, key) in this.users" :key="key">
+                <!-- add UserCard component and use here -->
+                <p>user</p>
+                <h4>{{users[key].name}}</h4>
+                <h4>{{users[key].id}}</h4>
+              </div>
+            </div>
+
+            <div v-else class="users_results">
+              <h2>Users</h2>
+              <div class="no_results">
+                <p>no users found</p>
+              </div>
+            </div>
+
+            <div v-if="this.ideas.length !== 0 " class="ideas_results">
+              <h2>Ideas</h2>
+              <div v-for="(value, key) in this.ideas" :key="key">
                 <IdeaCard key={{key}} :props='value'/>
-            </div> -->
+              </div>
+            </div>
+
+            <div v-else class="ideas_results">
+              <h2>Ideas</h2>
+              <div class="no_results">
+                <p>no ideas found</p>
+              </div>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -26,44 +56,24 @@ import IdeaCard from '../components/IdeaCard'
     data() {
       return {
         currentRoute: this.$route.params.id,
-        ideas: this.$parent.search_results.ideas,
-        users: this.$parent.search_results.users
+        ideas: [],
+        users: []
       }
     },
     mounted() {
       console.log('mounted searchResults')
-      console.warn(this.$parent.search_results);
-      console.warn(this.users);
-      console.warn(this.ideas);
-      // handle the above and use it
+      
+      console.warn('TCL: mounted -> this.$ud_store.state', this.$ud_store.state);
+      console.warn('TCL: mounted -> this.$ud_store.state.current_search', this.$ud_store.state.current_search);
+      this.ideas = this.$ud_store.state.current_search.ideasQuery.slice(1,3);
+      this.users = this.$ud_store.state.current_search.usersQuery;
+      console.log('this.users => ', this.users);
+      console.log('this.ideas => ', this.ideas);
+      console.log('this.ideas.length => ', this.ideas.length)
+      console.log('this.users.length => ', this.users.length)
     },
     methods: {
-      getIdeasByID(array_of_ids) {
-        console.log('getIdeasByID(search_text)')
-        if (this.search_text !== 'search' || this.search_text !== null) {
-            console.log('search_text === defined')
-            axios({
-                method: 'POST',
-                url: '/ai/get-by-ids/' + array_of_ids,
-                data: this.search_text,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                }
-            })
-            .then(res => {
-                console.warn('​handleSubmit -> res', res);
-                // could append results to the store? and then access the store on the SearchResults page
-                // or figure out how to pass arrays between routes / functions
-
-            })
-          .catch(error => {
-            console.error(error);
-          });
-        } else {
-          console.log('maaaaate');
-          return alert('make sure you fill in all the fields');
-        }
-      },
+      
     }
   }
 </script>

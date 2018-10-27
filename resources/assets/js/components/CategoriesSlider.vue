@@ -53,10 +53,6 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar'
             }
           }
         },
-        mounted() {
-            console.log('category.vue mounted (this) => ', this);
-            console.log('.vue mounted (this.props) => ', this.props);
-        },
         methods: {
           scrollHanle(evt) {
             console.log(evt)

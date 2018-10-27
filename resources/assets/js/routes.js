@@ -23,7 +23,8 @@ const routes = [
   {
     path: '/add-new-idea',
     name: 'add-new-idea',
-    component: Vue.component( 'Cafe', require( './views/AddNewIdea.vue' ) )
+    component: Vue.component( 'Cafe', require( './views/AddNewIdea.vue' ) ),
+    meta: { requiresAuth: true }
   },
   {
     path: '/idea/:id',

@@ -31,12 +31,13 @@ class SearchController extends Controller
         })->get();
 
         if ($ideasQuery === []) {
-            $ideasQuery = ['no', 'query', 'here'];
+            $ideasQuery = ['cheese', 'potato'];
         }
 
         return response()->json([
-            'ideas' => $ideasQuery,
-            'users' => $usersQuery,
+            'keyword' => $keyword,
+            'ideasQuery' => $ideasQuery,
+            'usersQuery' => $usersQuery,
         ]);
     }
 }
