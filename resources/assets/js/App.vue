@@ -390,6 +390,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 user_data: null,
                 search_text: 'null',
                 store_state: this.$ud_store.state,
+                search_results: {}
             }
         },
         beforeMount: function() {
@@ -430,13 +431,15 @@ import CategoriesSlider from './components/CategoriesSlider'
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                         }
                     })
-                    .then(response => {
-                        console.warn('​handleSubmit -> response', response);
-                        // could append results to the store? and then access the store on the SearchResults page
-                        // or figure out how to pass arrays between routes / functions
+                    .then(res => {
+                        // console.warn('​handleSubmit -> res', res);
+                        this.search_results = {
+                            "users": res.data.users,
+                            "ideas": res.data.ideas
+                        };
 
-                        if (response.status === 200) {
-                            window.location = '/results';
+                        if (res.status === 200) {
+                            this.$router.push({name: 'search'})
                         }
                     })
                     .catch(error => {

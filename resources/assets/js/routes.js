@@ -69,6 +69,12 @@ const routes = [
     component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) ),
     meta: { requiresAuth: true }
   },
+  {
+    path: '/search',
+    name: 'search',
+    props: true,
+    component: Vue.component( 'SearchResults', require( './views/SearchResults.vue' ) )
+  },
 ];
 // routes here
 const router = new VueRouter({

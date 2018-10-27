@@ -37,6 +37,7 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/idea/update/{id}', 'IdeasController@updateIdea');
 
     Route::post('/idea/get/{id}', 'IdeasController@getById');
+    Route::post('/idea/get-by-ids/{id}', 'IdeasController@getIdeasById'); // pass an array of idea id's
     Route::post('/idea/get-by-user/{id}', 'IdeasController@getByUser');
     Route::post('/idea/get-by-title/{title}', 'IdeasController@getByTitle');
     Route::post('/idea/get-by-category/{category}', 'IdeasController@getByCategory');

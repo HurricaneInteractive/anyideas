@@ -12,8 +12,6 @@ class SearchController extends Controller
 {
 
     public function searchQuery(Request $request) {
-
-        // Ideas::search('any')->where('title', 'any')->get();
         $keyword = $request->search;
 
         $ideasQuery = [];
@@ -33,23 +31,12 @@ class SearchController extends Controller
         })->get();
 
         if ($ideasQuery === []) {
-            $ideasQuery = ['cheese', 'potato'];
+            $ideasQuery = ['no', 'query', 'here'];
         }
 
-        // $allResults = array_merge($ideasQuery, $usersQuery);
-
-
-
         return response()->json([
-            'keyword' => $keyword,
-            'ideasQuery' => $ideasQuery,
-            'usersQuery' => $usersQuery,
-            // 'allResults' => $allResults
+            'ideas' => $ideasQuery,
+            'users' => $usersQuery,
         ]);
-
-        // $discussion_replies_id = DB::table('discussion_replies')->where('idea_id', $request->search);
-        // $discussion_id = DB::table('discussions')->where('idea_id', $request->search);
-        // $timeline_id = DB::table('timelines')->where('idea_id', $request->search);
-        // $updates_posts_id = DB::table('updates_posts')->where('idea_id', $request->search);
     }
 }
