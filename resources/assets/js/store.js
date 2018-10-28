@@ -22,6 +22,7 @@ export default new Vuex.Store({
             description: '',
         },
         current_search: {},
+        current_category_id: '',
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
         },
@@ -75,6 +76,10 @@ export default new Vuex.Store({
             if (this.debug) console.log('CLEAR_CURRENT_SEARCH triggered with', newValue)
             state.current_search = '';
         },
-        
+
+        SET_CATEGORY_ID(state, newValue) {
+            if (this.debug) console.log('SET_CATEGORY_ID triggered with', newValue)
+            state.current_category_id = newValue;
+        }
     }
   })

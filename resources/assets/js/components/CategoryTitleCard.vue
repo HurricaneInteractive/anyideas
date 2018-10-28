@@ -1,10 +1,11 @@
 <template>
-    <div class="card-container" :props="this.props" :id="this.$route.params.id">
-        <div>
-            <h2 class="title">
-                {{this.$route.params.id}}
-                <!-- {{this.setBackground(this.props)}} -->
-            </h2>
+    <div class="card-container" >
+        <div class="card-wrapper" id="header">
+            <div>
+                <h2 class="title">
+                    {{this.props}}
+                </h2>
+            </div>
         </div>
     </div>
 </template>
@@ -13,18 +14,27 @@
 @import '~@/App.scss';
 
 .card-container {
-    height: 198px;
-    transition: .5s;
+    background-color: rgba(221, 221, 221, .95);
     &:hover {
         transition: .5s;
-        animation: lv 100s linear infinite;
+        background-color: rgba(252,176,69,.95);
+    }
+}
+
+.card-wrapper {
+    height: 198px;
+    transition: .5s;
+    border-bottom: 10px solid white;
+    &:hover {
+        transition: .5s;
+        animation: lv 1250s linear infinite;
         box-shadow:inset 0px 0px 0px 10px #222;
         @keyframes lv {
             0% {
                 background-position: 0 0;
             }
             100% {
-                background-position: 4000px 0;
+                background-position: 40000px 0;
             }
         }
     }
@@ -33,10 +43,14 @@
         display: grid;
         align-content: center;
         justify-content: center;
+        text-decoration: none;
         .title {
+            padding: 8px 16px;
+            background-color: white;
             color: $p-color;
             text-align: center;
-            text-transform: capitalize;
+            text-decoration: none;
+            text-transform: uppercase;
         }
     }
 }
@@ -46,29 +60,27 @@
 <script>
 import * as hero from 'hero-patterns'
     export default {
-        name: 'CategoryTitleCard',
+        name: 'CategoryCard',
+        props: ['props'],
         data() {
             return {
                 categoryData: null,
-                categoryBackground: null,
-                currentRoute: this.$route.params.id
+                categoryBackground: null
             }
         },
+        watch: {
+            '$route': ['setBackground']
+        },
         mounted() {
-            console.log('CategoryTitleCard.vue mounted (this.$route.params.id) => ', this.$route.params.id);
+            // console.log('CategoryCard.vue mounted (this) => ', this);
+            // console.log('CategoryCard.vue mounted (this.props) => ', this.props)z;
             this.setBackground();
         },
-        watch: {
-            '$route': ['setBackground', 'setRoute']
-        },
         methods: {
-            setRoute() {
-                this.currentRoute = this.$route.params.id
-            },
             setBackground() {
-                this.categoryData = '#' + this.currentRoute;
-                this.categoryBackground = this.currentRoute.svgBackground[this.currentRoute];
-                document.querySelector(this.categoryData).style.backgroundImage = hero[this.categoryBackground]('#dddddd');
+                this.categoryData = '#' + this.props.toLowerCase();
+                // this.categoryBackground = this.$ud_store.state.svgBackground[this.props.toLowerCase()];
+                document.querySelector('#header').style.backgroundImage = hero[this.$ud_store.state.svgBackground[this.props.toLowerCase()]]('#222');
             }
         }
     }

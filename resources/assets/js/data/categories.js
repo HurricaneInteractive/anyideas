@@ -1,13 +1,13 @@
 const categories = [
-    "Arts",
-    "Entertainment",
-    "Culture",
-    "Life",
-    "Well-being",
-    "Industry",
-    "Business",
-    "Innovation",
-    "Technology",
-    "Science"
+    "arts",
+    "entertainment",
+    "culture",
+    "life",
+    "well-being",
+    "industry",
+    "business",
+    "innovation",
+    "technology",
+    "science"
 ]
 export default categories

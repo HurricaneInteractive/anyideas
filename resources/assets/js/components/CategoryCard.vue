@@ -4,7 +4,6 @@
             <router-link :to="`/category/${this.props.toLowerCase()}`">
                 <h2 class="title">
                     {{this.props}}
-                    <!-- {{this.setBackground(this.props)}} -->
                 </h2>
             </router-link>
         </div>
@@ -70,8 +69,6 @@ import * as hero from 'hero-patterns'
             }
         },
         mounted() {
-            // console.log('CategoryCard.vue mounted (this) => ', this);
-            // console.log('CategoryCard.vue mounted (this.props) => ', this.props);
             this.setBackground();
         },
         methods: {

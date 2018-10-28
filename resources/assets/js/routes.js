@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from './store'
 
 Vue.use( VueRouter )
 
@@ -23,7 +22,7 @@ const routes = [
   {
     path: '/add-new-idea',
     name: 'add-new-idea',
-    component: Vue.component( 'Cafe', require( './views/AddNewIdea.vue' ) ),
+    component: Vue.component( 'AddNewIdea', require( './views/AddNewIdea.vue' ) ),
     meta: { requiresAuth: true }
   },
   {

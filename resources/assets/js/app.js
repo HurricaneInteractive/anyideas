@@ -4,23 +4,35 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import router from './routes.js';
 import VueCookie from 'vue-cookie';
-import App from './App.vue';
 import ud_store from './store';
-import icons from './data/icons.js';
-// import axios from 'axios';
 import storePlugin from './storePlugin'
+import './components/global/_globals'
+import App from './App.vue';
+
 import VueAnime from './plugins/vue-anime';
+import vueAnime from './plugins/vue-anime';
 require('typeface-pt-sans')
 
+// Vue.component( Loading, require('./components/global/Loading.vue') )
 
 Vue.use( Vuex )
 Vue.use( VueCookie )
 Vue.use( storePlugin )
+// Vue.use( Loading )
 Vue.use( VueAnime );
 
 router.beforeEach((to, from, next) => {
-    // console.log('to.fullPath =>', to.fullPath)
+    console.log('from => ', from.params.id)
+    console.log('to => ', to.params.id)
+    console.log('next => ', next)
     window.scrollTo(0, 0);
+
+    console.log('to.path => ', to.name)
+
+    if (to.name === 'category') {
+        // push category parmas to store for use on category page
+        ud_store.commit('SET_CATEGORY_ID', to.params.id );
+    }
 
     if (to.fullPath !== "/login/guest") {
         // if path is NOT /login/guest

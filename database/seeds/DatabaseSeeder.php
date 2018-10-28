@@ -61,8 +61,8 @@ class DatabaseSeeder extends Seeder
             'id' => '5678',
             'title' => 'any.ideas',
             'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'Creating',
-            'category' => 'Business',
+            'status' => 'creating',
+            'category' => 'business',
             'tags' => "['vue','cooking','rabbits']",
             'description' => "## SEED Data
             To push the seed table data run  `php artisan migrate:refresh --seed` *running this will clear any data currently in the tables*
@@ -97,8 +97,8 @@ class DatabaseSeeder extends Seeder
             'id' => '5649',
             'title' => 'Spotify Websockets',
             'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'Abandoned',
-            'category' => 'Industry',
+            'status' => 'abandoned',
+            'category' => 'industry',
             'tags' => "['react','music','lyrics']",
             'description' => "** Desc can have data pushed using the same schema**",
             'darts' => '12'
@@ -110,8 +110,8 @@ class DatabaseSeeder extends Seeder
             'id' => '5679',
             'title' => 'Lyrical',
             'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'Evaluating',
-            'category' => 'Industry',
+            'status' => 'evaluating',
+            'category' => 'industry',
             'tags' => "['react','music','lyrics']",
             'description' => "** Desc can have data pushed using the same schema**",
             'darts' => '12'
@@ -123,8 +123,8 @@ class DatabaseSeeder extends Seeder
             'id' => '5694',
             'title' => 'Posh Weather',
             'pitch' => 'Lorem ipsum dolor amet deep v shaman kitsch hoodie, vinyl meggings tattooed cliche. Chillwave authentic blog, squid la croix raw denim biodiesel intelligentsia paleo twee fixie bitters pitchfork. Sartorial poutine franzen swag, mustache woke salvia scenester. Lumbersexual freegan typewriter gentrify, pabst enamel pin vinyl waistcoat leggings +1 irony fixie. Four loko keytar pok pok, taiyaki ugh snackwave pitchfork pork belly butcher hella stumptown. 90s normcore health goth ramps la croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'Completed',
-            'category' => 'Industry',
+            'status' => 'completed',
+            'category' => 'industry',
             'tags' => "['react','music','lyrics']",
             'description' => "** Desc can have data pushed using the same schema**",
             'darts' => '5'
@@ -136,8 +136,8 @@ class DatabaseSeeder extends Seeder
             'id' => '1234',
             'title' => 'any.ideas.v2',
             'pitch' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'On-hold',
-            'category' => 'Technology',
+            'status' => 'on-hold',
+            'category' => 'technology',
             'tags' => "['vue','photography','cheese']",
             'description' => "## SEED Data
             here is another example used to create an idea within the `ideas` table in the DB.
@@ -169,8 +169,8 @@ class DatabaseSeeder extends Seeder
             'id' => '2235',
             'title' => 'New users = New ideas',
             'pitch' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'status' => 'Ideation',
-            'category' => 'Innovation',
+            'status' => 'ideation',
+            'category' => 'innovation',
             'tags' => "['vue','photography','cheese']",
             'description' => "
                 #### code

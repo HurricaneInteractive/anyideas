@@ -1,10 +1,12 @@
 <template>
     <div class="container">
         <div class="header-container">
+            <Loading/>
             <div class="card card-default">
                 <div class="home-header">
                     <!-- https://codepen.io/jerrylow/pen/KaPvNa -->
                     Turn Your Shower Thoughts Into <br>Power Thoughts
+                    
                 </div>
             </div>
         </div>

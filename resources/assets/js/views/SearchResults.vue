@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
 
-            <header>
+            <!-- <header>
               <h2>search term here</h2>
-            </header>
+            </header> -->
 
-            <div v-if="this.users.length !== 0" class="users_results">
+            <div v-if="this.users.length !== 0" class="users_results fixed_width">
               <h2>Users</h2>
               <div v-for="(value, key) in this.users" :key="key">
                 <!-- add UserCard component and use here -->
@@ -16,21 +16,21 @@
               </div>
             </div>
 
-            <div v-else class="users_results">
+            <div v-else class="users_results fixed_width">
               <h2>Users</h2>
               <div class="no_results">
                 <p>no users found</p>
               </div>
             </div>
 
-            <div v-if="this.ideas.length !== 0 " class="ideas_results">
+            <div v-if="this.ideas.length !== 0 " class="ideas_results fixed_width">
               <h2>Ideas</h2>
               <div v-for="(value, key) in this.ideas" :key="key">
                 <IdeaCard key={{key}} :props='value'/>
               </div>
             </div>
 
-            <div v-else class="ideas_results">
+            <div v-else class="ideas_results fixed_width">
               <h2>Ideas</h2>
               <div class="no_results">
                 <p>no ideas found</p>
