@@ -13,14 +13,15 @@
         @if(auth()->check())
         <script>
             window.checkAuth = {!! auth()->user()  !!}
+            // alert('user logged in')
         </script>
         @endif
 
-        <!-- @auth
+        @auth
             user logged in blade
         @else
             guest user
-        @endauth -->
+        @endauth
         <div id="app">
             <app /> <!-- vue here m8 -->
         </div>

@@ -1,8 +1,4 @@
-
-/* Fonts */
-
 /* Variables */
-@import '_mixins.scss';
 @import '_variables.scss';
 
 html, body {
@@ -11,6 +7,41 @@ html, body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+// global styles
+.bold {
+  font-weight: $w-bold;
+}
+* {
+  font-family: $font-family-sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $text-title-color;
+}
+h6 {
+  font-size: $size-h6;
+}
+p {
+  font-weight: $w-regular;
+  color: $p-color;
+}
+
+// global classes
+.fixed_width {
+  width: 1080px;
+  margin: 0 auto;
+}
+// to be placed on the element directly above the IdeaCard component (usually in a loop)
+.idea_wrapper {
+  width: 750px;
+  margin: 0 auto;
+}
+
+@mixin fontSize($size) {
+  font-size: $size; //Fallback in px
+  font-size: $size / 16px;
 }
 
 @mixin category($color) {
@@ -25,16 +56,7 @@ html, body {
   background-color: $color;
 }
 
-// global classes
-.fixed_width {
-  width: 1080px;
-  margin: 0 auto;
-}
-// to be placed on the element directly above the IdeaCard component (usually in a loop)
-.idea_wrapper_width {
-  width: 750px;
-  margin: 0 auto;
-}
+
 
 .Ideation, .ideation {
   @include category($ideation)

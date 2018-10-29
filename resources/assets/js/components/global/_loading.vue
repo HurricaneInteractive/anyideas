@@ -1,5 +1,5 @@
 <template>
-    <span class="dot">
+    <span class="loading">
         <p>loading goes here</p>
         <lottie :options="defaultOptions" :height="120" :width="120" v-on:animCreated="handleAnimation"/>
     </span>
@@ -8,8 +8,7 @@
 <style lang="scss">
 @import '~@/App.scss';
 
-.dot {
-    background-color: green;
+.loading {
     position: relative;
     display: grid;
     align-content: center;

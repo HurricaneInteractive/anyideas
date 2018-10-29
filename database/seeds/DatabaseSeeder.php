@@ -26,13 +26,13 @@ class DatabaseSeeder extends Seeder
             'id' => '4321',
             'occupation' => 'Web Dev',
             'website' => 'google.com',
-            'avatar' => 'https://avatars0.githubusercontent.com/u/13529535?s=460&v=4',
+            'avatar' => 'https://i.scdn.co/image/3a836196bfb341f736c7fe2704fb75de53f8dfbb',
             'social_media' => '{
                 "facebook": "facebook.com",
                 "instagram": "instagram",
                 "youtube": "youtube.com"
             }',
-            "following" => '["2235"]',
+            "following" => '"2235"]',
             "followers" => '["1235"]',
             'likes' => '{
                 "discussions": ["1234", "1235"],

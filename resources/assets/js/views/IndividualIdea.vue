@@ -23,17 +23,10 @@
                 </ul>
             </section>
 
-            <section class="idea_navigation">
-                <ul>
-                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'description'}">Description</router-link></li>
-                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'timeline' }">Timeline</router-link></li>
-                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'discussion' }">Discussion</router-link></li>
-                    <li v-on:click="setAsActive" ><router-link :to="{ name: 'updates' }">Updates</router-link></li>
-                </ul>
-            </section>
+            <TabNav v-bind:props="tab_nav"/>
 
             <router-view>
-                <!-- Description / Timeline / Updates here -->
+                <!-- Description / Timeline / Discussion / Updates here -->
             </router-view>
         </div>
     </div>
@@ -94,7 +87,7 @@
 
 <script>
     import marked from 'marked'
-    var debounce = require('lodash.debounce');
+    import TabNav from '../components/TabNav'
 
     require('codemirror/lib/codemirror.css') // codemirror
     require('tui-editor/dist/tui-editor.css'); // editor ui
@@ -110,7 +103,7 @@
     export default {
         props: ['props'],
         components: {
-            Description, Timeline, Updates, Discussion
+            Description, Timeline, Updates, Discussion, TabNav
         },
         data() {
             return {
@@ -148,27 +141,73 @@
                 updates_post_data: '',
                 discussion_replies_data: '',
                 errors: [],
-                ideas: []
+                ideas: [],
+                tab_nav: [
+                    {
+                        id: 'description',
+                        label: 'Description',
+                        route: '/add-new-idea',
+                        active: this.$route.name === 'description' ? true : false
+                    },
+                    {
+                        id: 'timeline',
+                        label: 'Timeline',
+                        route: '',
+                        active: this.$route.name === 'timeline' ? true : false,
+                    },
+                    {
+                        id: 'discussion',
+                        label: 'Discussion',
+                        route: '',
+                        active: this.$route.name === 'discussion' ? true : false,
+                    },
+                    {
+                        id: 'updates',
+                        label: 'Updates',
+                        route: '',
+                        active: this.$route.name === 'updates' ? true : false,
+                    }
+                ],
             }
         },
         beforeMount() {
             console.log("%c IndividualIdea.vue", this.$ud_store.state.consoleLog.component)
             this.$ud_store.commit('SET_IDEA_ID', this.$route.params.id );
             this.handeGetInitialData();
-            // axios.post('/ai/idea/get/' + this.$route.params.id)
-            // .then(response => {
-            //     this.idea_data = response.data;
-            //     this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
-            //     console.warn('JUST SET STORE DESC');
-            // });
+            this.setAsActive();
+        },
+        watch: {
+            $route: ["setAsActive"]
         },
         methods: {
-            setAsActive(event) {
-                event.preventDefault();
-                console.warn('set me as active => ', event)
-                console.warn('set me as active => ', event.target)
-                console.warn('set me as active => ', event.target.innerText)
-                this.subNavActive = event.target.innerText;
+            // re-sets the current active tab_nav item
+            setAsActive() {
+                this.tab_nav = [
+                    {
+                        id: 'description',
+                        label: 'Description',
+                        route: '/add-new-idea',
+                        active: this.$route.name === 'description' ? true : false
+                    },
+                    {
+                        id: 'timeline',
+                        label: 'Timeline',
+                        route: '',
+                        active: this.$route.name === 'timeline' ? true : false,
+                    },
+                    {
+                        id: 'discussion',
+                        label: 'Discussion',
+                        route: '',
+                        active: this.$route.name === 'discussion' ? true : false,
+                    },
+                    {
+                        id: 'updates',
+                        label: 'Updates',
+                        route: '',
+                        active: this.$route.name === 'updates' ? true : false,
+                    }
+                ];
             },
             handeGetInitialData() {
                 console.log('TCL: handeGetInitialData -> handeGetInitialData');

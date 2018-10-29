@@ -5,32 +5,40 @@ import Vuex from 'vuex';
 import router from './routes.js';
 import VueCookie from 'vue-cookie';
 import ud_store from './store';
-import storePlugin from './storePlugin'
-import './components/global/_globals'
+// import './components/global/_globals'
 import App from './App.vue';
+
+import storePlugin from './storePlugin'
+import LoadingComp from './plugins/loading.js'
 
 import VueAnime from './plugins/vue-anime';
 import vueAnime from './plugins/vue-anime';
 require('typeface-pt-sans')
 
-// Vue.component( Loading, require('./components/global/Loading.vue') )
-
 Vue.use( Vuex )
 Vue.use( VueCookie )
 Vue.use( storePlugin )
-// Vue.use( Loading )
+Vue.use( LoadingComp, { componentName: "loading" } )
 Vue.use( VueAnime );
 
+// global components
+// <loading/>
+
 router.beforeEach((to, from, next) => {
-    console.log('from => ', from.params.id)
-    console.log('to => ', to.params.id)
-    console.log('next => ', next)
     window.scrollTo(0, 0);
 
     console.log('to.path => ', to.name)
 
+    console.log('window.checkAuth => ', window.checkAuth);
+
+    // check if user has logged out 
+    // if () {
+    //     this.$ud_store.commit('SET_USER_DATA', 'guest');
+    //     this.$ud_store.commit('SET_USER_LOGGED_IN', false);
+    // }
+
+    // push category parmas to store for use on category page
     if (to.name === 'category') {
-        // push category parmas to store for use on category page
         ud_store.commit('SET_CATEGORY_ID', to.params.id );
     }
 
@@ -42,13 +50,10 @@ router.beforeEach((to, from, next) => {
         if (ud_store.state.data.loggedIn === false) {
             console.log('loggedIn === false => ', ud_store.state)
         }
-        if (ud_store.state.data.loggedIn === true) {
-            console.log('loggedIn === true => ', ud_store.data.user_data)
-        }
         
         next();
     } else {
-        alert('welcome to the login page');
+        // alert('welcome to the login page');
         next();
     }
 

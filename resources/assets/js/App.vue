@@ -37,11 +37,11 @@
                                     <router-link :to="{name: 'register' }">Sign Up</router-link>
                                 </div>
                             </div>
-                            <div :class="'user ' + this.openUserState">
+                            <div v-else :class="'user ' + this.openUserState">
                                 <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
                                 </span>
                                 <div class="user_items" v-on:click="openUser()">
-                                    <router-link :to="`/user/${user_id}`">View Account</router-link>
+                                    <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
                                     <p @click="handleSignOut">Sign Out</p>
                                 </div>
                             </div>
@@ -109,25 +109,6 @@
 
 <style lang="scss">
     @import '~@/App.scss';
-
-    // global 
-    .bold {
-        font-weight: $w-bold;
-    }
-    * {
-        font-family: $font-family-sans-serif;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        color: $text-title-color;
-    }
-    h6 {
-        font-size: $size-h6;
-    }
-    p {
-        font-weight: $w-regular;
-        color: $p-color;
-    }
 
     // App.vue specific
     .navbar-wrapper {
@@ -320,6 +301,9 @@
                             justify-content: center;
                             border-radius: 10px;
                             box-shadow: 0px 0px 15px 0px rgba(137, 137, 137, 0.25);
+                            p {
+                                margin: 0 auto;
+                            }
                         }
                     }
                 }
@@ -427,11 +411,14 @@ import CategoriesSlider from './components/CategoriesSlider'
                     }
                 })
                 .then(res => {
-                    console.log('úser_logged out')
+                    console.log('úser_logged out', res)
 
-                    // if (res.status === 200) {
-                    //     this.$router.push({name: 'search'})
-                    // }
+                    // window.location('/')
+                    if (res.status === 200) {
+                        this.$ud_store.commit('SET_USER_DATA', 'guest');
+                        this.$ud_store.commit('SET_USER_LOGGED_IN', false);
+                        this.$router.push({name: 'home'})
+                    }
                 })
                 .catch(error => {
                     console.error(error);

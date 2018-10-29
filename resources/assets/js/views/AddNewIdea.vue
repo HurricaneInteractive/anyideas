@@ -203,14 +203,10 @@
                 this.loaded = true;
             },
 
-            // on click gets titles of all ideas and console logs them
             handleGetIdeaData() {
-                axios.get('/ai/idea/get/').then( (res) => {
-                    console.log('​handleGetIdeaData -> this.ideaData', res.dat);
-                    this.ideaData = res.data
-                    console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
-                })
+                console.log('IDEA SUBMITTED')
             },
+
             handleSubmit() {
                 if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null) {
                     axios({

@@ -14,13 +14,13 @@
                     </ul>
                     <ul>
                         <li>
-                        Facebook: {{this.user_data.social_media.facebook}}
+                        Facebook: {{user_data.social_media.facebook}}
                         </li>
                         <li>
-                        Instagram: {{this.user_data.social_media.instagram}}
+                        Instagram: {{user_data.social_media.instagram}}
                         </li>
                         <li>
-                        YouTube: {{this.user_data.social_media.youtube}}
+                        YouTube: {{user_data.social_media.youtube}}
                         </li>
                     </ul>
                 </header>
@@ -88,9 +88,11 @@
                     </form>
                 </div>
 
+                <TabNav v-bind:props="tab_nav"/>
+
                 <div>
                     <h2>users ideas</h2>
-                    <div>
+                    <div class="idea_wrapper">
                         <div v-for="(value, key) in this.user_ideas" :key="key">
                             <IdeaCard key={{key}} :props='value'/>
                         </div>
@@ -102,10 +104,11 @@
 </template>
 
 <script>
-import IdeaCard from '../components/IdeaCard'
+    import IdeaCard from '../components/IdeaCard'
+    import TabNav from '../components/TabNav'
     export default {
         components: {
-            IdeaCard
+            IdeaCard, TabNav
         },
         data() {
             return {
@@ -125,12 +128,24 @@ import IdeaCard from '../components/IdeaCard'
                 },
                 user_ideas: '',
                 user_data: '',
-                errors: [],
-                ideas: []
+                tab_nav: [
+                    {
+                        id: 'ideas',
+                        label: 'Users Ideas',
+                        route: '/ideas',
+                        active: this.$route.name === 'ideas' ? true : false
+                    },
+                    {
+                        id: 'about',
+                        label: 'About',
+                        route: '',
+                        active: this.$route.name === 'about' ? true : false,
+                    }
+                ],
             }
         },
         // figure out passing MySQL data to Vue
-        mounted() {
+        beforeMount() {
             console.log('this.$ud_store.state.data.user_data => ', this.$ud_store.state.data.user_data);
             axios({
               method: 'POST',
@@ -146,7 +161,26 @@ import IdeaCard from '../components/IdeaCard'
               this.user_data = response.data
             });
         },
+        mounted() {
+            
+        },
         methods: {
+            setAsActive() {
+                this.tab_nav = [
+                    {
+                        id: 'ideas',
+                        label: 'User Ideas',
+                        route: '/ideas',
+                        active: this.$route.name === 'ideas' ? true : false
+                    },
+                    {
+                        id: 'about',
+                        label: 'About',
+                        route: '',
+                        active: this.$route.name === 'about' ? true : false,
+                    }
+                ];
+            },
             handleUpdateUserMeta() {
                 axios({
                     method: 'POST',
