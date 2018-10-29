@@ -1,111 +1,168 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">AddNewIdea.vue</div>
-                    <button @click="handleGetIdeaData">get all idea data</button>
+        <div class="wrapper">
 
-                    <div class="card-body">
-                        <form method="POST">
-                            <div class="form-group row">
-                                <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
+            <!-- <button @click="handleGetIdeaData">get all idea data</button> -->
+            <div v-if="this.$ud_store.state.data.loggedIn !== true" class="please_log_in">
+                <p>Hi user - please login to start sharing your ideas with the world</p>
+            </div>
 
-                                <div class="col-md-6">
-                                    <input value="Idea no.42" id="title" type="text" class="form-control" v-model="idea.title" required autofocus>
+            <div v-else class="form-wrapper ">
+                <form>
+                <!-- <form method="POST"> -->
+                    <header class="header-container">
+                        <div class="header-wrapper fixed_width">
+                            <div class="form no-label" id="title">
+                                <label for="title">Name of Idea</label>
+                                <div>
+                                    <input value="Name of Idea" id="title" type="text" class="form-control" v-model="idea.title" required autofocus>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
+                            <div class="form-group row no-label" id="elevator">
+                                <label for="pitch">Elevator Pitch (240 Characters)</label>
 
-                                <div class="col-md-6">
-                                    <!-- <input type="text" class="form-control" > -->
-                                    <select id="category" v-model="idea.category" name="cars">
-                                        <option value="aec">Arts, Entertainment & Culture</option>
-                                        <option value="law">Life & Well-being</option>
-                                        <option value="ib">Industry & Business</option>
-                                        <option value="its">Innovation, Technology & Science</option>
+                                <div>
+                                    <input value="Elevator Pitch (240 Characters)" id="pitch" type="text" class="form-control" v-model="idea.pitch" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row no-label" id="status">
+                                <label for="status">Status</label>
+
+                                <div>
+                                    <select v-model="idea.status">
+                                        <option v-for="(value, key) in this.$ud_store.state.status" :key="key" :value="$ud_store.state.status[key]">
+                                            {{$ud_store.state.status[key]}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row no-label" id="category">
+                                <label for="category">Category</label>
+                                <div>
+                                    <select v-model="idea.category">
+                                        <option v-for="(value, key) in this.$ud_store.state.categories" :key="key" :value="$ud_store.state.categories[key]">
+                                            {{$ud_store.state.categories[key]}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- get array out of data... somehow -->
-                            <div class="form-group row">
-                                <label for="tags" class="col-md-4 col-form-label text-md-right">Tags</label>
+                            <div class="form-group row" id="tags">
+                                <label for="tags">Tags</label>
 
-                                <div class="col-md-6">
+                                <div>
                                     <input id="tags" type="text" class="form-control" v-model="idea.tags">
                                 </div>
                             </div>
+                        </div>
+                    </header>
 
-                            <div class="form-group row">
-                                <label for="pitch" class="col-md-4 col-form-label text-md-right">Pitch</label>
+                    <TabNav v-bind:props="tab_nav"/>
 
-                                <div class="col-md-6">
-                                    <input value="MySQL seemed like a good idea at the time" id="pitch" type="text" class="form-control" v-model="idea.pitch" required>
-                                </div>
-                            </div>
+                    <div class="form-group row fixed_width" id="description_container">
 
-                            <div class="form-group row">
-                                <label for="status" class="col-md-4 col-form-label text-md-right">Status</label>
-
-                                <div class="col-md-6">
-                                    <input value="pre-alpha 0.0.0.1" id="status" type="text" class="form-control" v-model="idea.status" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="description" class="col-md-4 col-form-label text-md-right">Description.md</label>
-
-                                <div id="editor" class="col-md-6">
-                                    <textarea :value="idea.description" @input="update" id="description" type="text" class="form-control" required/>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="image" class="col-md-4 col-form-label text-md-right">Image (url to ->)</label>
-
-                                <div class="col-md-6">
-                                    <input value="image to match idea" id="image" type="text" class="form-control" v-model="idea.image" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" @click="handleSubmit">
-                                        Confirm Idea
-                                    </button>
-                                </div>
-                            </div>
-
-                            
-                            <div v-html="compiledMarkdown"></div>
-                        </form>
+                        <div class="description_input" id="editor">
+                            <div class="form-control editSection" :value="idea.description" @input="update" id="description" type="text" required/>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group row">
+                        <div>
+                            <button type="submit" class="btn btn-primary" @click="handleSubmit">
+                                Post Idea
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
 </template>
 
+<style lang="scss">
+@import '~@/App.scss';
+
+.form-wrapper {
+    .no-label {
+        label {
+            display: none;
+        }
+    }
+}
+.header-container {
+    width: 100%;
+    background-color: $white;
+    padding: 48px;
+    .header-wrapper {
+        margin: 0 auto;
+    }
+}
+.description_input {
+    width: 100%;
+    margin: 48px 0;
+    textarea {
+        width: 100%;
+    }   
+}
+
+</style>
+
 <script>
     // import lodash from 'lodash'
-    import marked from 'marked'
+    require('codemirror/lib/codemirror.css') // codemirror
+    require('tui-editor/dist/tui-editor.css'); // editor ui
+    require('tui-editor/dist/tui-editor-contents.css'); // editor content
+    require('highlight.js/styles/github.css'); // code block highlight
 
-    var debounce = require('lodash.debounce');
+    var Editor = require('tui-editor');
+    import TabNav from '../components/TabNav'
     export default {
+        name: 'AddNewIdea',
+        components: {
+            TabNav
+        },
         data() {
             return {
                 idea: {
-                    title: 'filler title',
-                    category: ['development', 'photography', 'cooking'],
-                    tags: ['vue', 'nikon', 'cheese'],
-                    description: '# hello',
-                    pitch: 'filler pitch',
-                    status: 'filler status',
-                    image: 'filler image',
+                    title: 'Name of Idea',
+                    pitch: 'Elevator Pitch (240 Characters)',
+                    category: 'Category',
+                    tags: '',
+                    description: 'Add Description',
+                    status: 'Status'
                 },
+                tab_nav: [
+                    {
+                        id: 'description',
+                        label: 'Description',
+                        route: '/add-new-idea',
+                        active: 'true',
+                    },
+                    // {
+                    //     id: 'timeline',
+                    //     label: 'Timeline',
+                    //     route: '',
+                    //     active: 'false',
+                    // },
+                    // {
+                    //     id: 'discussion',
+                    //     label: 'Discussion',
+                    //     route: '',
+                    //     active: 'false',
+                    // },
+                    // {
+                    //     id: 'updates',
+                    //     label: 'Updates',
+                    //     route: '',
+                    //     active: 'false',
+                    // }
+                ],
+                ideaData: [],
                 errors: [],
                 ideas: []
             }
@@ -119,24 +176,39 @@
         mounted() {
             console.log('AddNewIdea.vue page');
             // console.log(this.idea.tags);
+            this.setDescription();
+        },
+        updated() {
+            this.setDescription();
         },
         methods: {
             // delays updating the rendered markdown input
-            update: debounce(function (e) {
-                this.idea.description = e.target.value
-            }, 300),
-
-            // on click gets titles of all ideas and console logs them
-            handleGetIdeaData() {
-                axios.get('/ai/idea-get-all').then( (response) => {
-                    this.ideaData = response.data
-                    console.log('​handleGetIdeaData -> this.ideaData', this.ideaData);
-                })
+            setDescription() {
+                
+                console.warn('run setDescription Func')
+                console.log('run =>', this.$ud_store.state.idea.description )
+                // var viewer = Editor.factory({
+                //     el: document.querySelector('#viewerSection'),
+                //     viewer: true,
+                //     height: '500px',
+                //     initialValue: 'Add Description (use markdown)'
+                // });
+                var editor = new Editor({
+                    el: document.querySelector('#description'),
+                    initialEditType: 'wysiwyg',
+                    previewStyle: 'vertical',
+                    height: '300px',
+                    initialValue: 'Add Description (use markdown)'
+                });
+                this.loaded = true;
             },
-            handleSubmit(e) {
-                e.preventDefault()
 
-                if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null && this.image !== null) {
+            handleGetIdeaData() {
+                console.log('IDEA SUBMITTED')
+            },
+
+            handleSubmit() {
+                if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null) {
                     axios({
                         method: 'POST',
                         url: '/ai/idea/create',
@@ -146,20 +218,22 @@
                             tags: this.idea.tags,
                             description: this.idea.description,
                             pitch: this.idea.pitch,
-                            status: this.idea.status,
-                            image: this.idea.image
+                            status: this.idea.status
                         },
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                         }
                     })
-                    .then(response => {
-                        console.log('​handleSubmit -> response', response);
-                        if (response.status === 200) {
-                            window.location = '/';
-                        }
+                    .then(res => {
+                        console.warn('​handleSubmit -> response', res);
+                        // if (response.status === 200) {
+                        //     window.location = '/';
+                        // }
+                        console.log('run this.handleGetIdeaData()');
+                        this.handleGetIdeaData()
                     })
                     .catch(error => {
+                        console.log('érror is coming')
                         console.error(error);
                     });
                 } else {

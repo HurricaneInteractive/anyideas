@@ -10,14 +10,22 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- @auth
+        @if(auth()->check())
+        <script>
+            window.checkAuth = {!! auth()->user()  !!}
+            // alert('user logged in')
+        </script>
+        @endif
+
+        @auth
             user logged in blade
         @else
             guest user
-        @endauth -->
+        @endauth
         <div id="app">
-            <app/> <!-- vue here m8 -->
+            <app /> <!-- vue here m8 -->
         </div>
+        
         @include ('footer')
         <script src="{{ mix('js/App.js') }}"></script>
     </body>

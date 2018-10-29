@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from './store'
 
 Vue.use( VueRouter )
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Vue.component( 'Home', require( './views/Home.vue' ) ),
+    name: 'index',
+    component: Vue.component( 'Index', require( './views/Index.vue' ) ),
   },
   {
     path: '/login/guest',
@@ -23,23 +22,58 @@ const routes = [
   {
     path: '/add-new-idea',
     name: 'add-new-idea',
-    component: Vue.component( 'Cafe', require( './views/AddNewIdea.vue' ) )
-  },
-  {
-    path: '/idea-view',
-    name: 'idea-view',
-    component: Vue.component( 'IdeaPage', require( './views/IdeaPage.vue' ) )
+    component: Vue.component( 'AddNewIdea', require( './views/AddNewIdea.vue' ) ),
+    meta: { requiresAuth: true }
   },
   {
     path: '/idea/:id',
     name: 'idea',
-    component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) )
+    redirect: '/idea/:id/description',
+    component: Vue.component( 'IndividualIdea', require( './views/IndividualIdea.vue' ) ),
+    children: [
+      {
+        name: 'description',
+        path: 'description',
+        component: Vue.component( 'Description', require( './components/idea/Description.vue' ) )
+      },
+      {
+        name: 'timeline',
+        path: 'timeline',
+        component: Vue.component( 'Timeline', require( './components/idea/Timeline.vue' ) )
+      },
+      {
+        name: 'discussion',
+        path: 'discussion',
+        component: Vue.component( 'Discussion', require( './components/idea/Discussion.vue' ) )
+      },
+      {
+        name: 'updates',
+        path: 'updates',
+        component: Vue.component( 'Updates', require( './components/idea/Updates.vue' ) )
+      }
+    ]
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    component: Vue.component( 'CategoriesPage', require( './views/CategoriesPage.vue' ) )
+  },
+  {
+    path: '/category/:id',
+    name: 'category',
+    component: Vue.component( 'IndividualCategory', require( './views/IndividualCategory.vue' ) )
   },
   {
     path: '/user/:id',
     name: 'user',
     component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) ),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/search',
+    name: 'search',
+    props: true,
+    component: Vue.component( 'SearchResults', require( './views/SearchResults.vue' ) )
   },
 ];
 // routes here

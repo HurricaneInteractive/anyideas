@@ -15,14 +15,22 @@
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
+        "node-sass": "^4.9.3",
         "popper.js": "^1.12",
+        "sass-loader": "^7.1.0",
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "animejs": "^2.2.0",
+        "hero-patterns": "^2.0.1",
         "lodash.debounce": "^4.0.8",
         "marked": "^0.5.0",
         "npm": "^6.4.1",
+        "tui-editor": "^1.2.6",
+        "typeface-pt-sans": "0.0.54",
         "vue-cookie": "^1.1.4",
+        "vue-lottie": "^0.2.1",
+        "vue-perfect-scrollbar": "^0.1.0",
         "vue-router": "^3.0.1",
         "vuedraggable": "^2.16.0",
         "vuex": "^3.0.1"

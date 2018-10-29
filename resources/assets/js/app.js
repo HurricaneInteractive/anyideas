@@ -4,54 +4,63 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import router from './routes.js';
 import VueCookie from 'vue-cookie';
+import ud_store from './store';
+// import './components/global/_globals'
 import App from './App.vue';
-import store from './store';
-import axios from 'axios';
+
 import storePlugin from './storePlugin'
+import LoadingComp from './plugins/loading.js'
+
+import VueAnime from './plugins/vue-anime';
+import vueAnime from './plugins/vue-anime';
+require('typeface-pt-sans')
 
 Vue.use( Vuex )
 Vue.use( VueCookie )
 Vue.use( storePlugin )
+Vue.use( LoadingComp, { componentName: "loading" } )
+Vue.use( VueAnime );
+
+// global components
+// <loading/>
 
 router.beforeEach((to, from, next) => {
-    console.log('2. beforeResolve');
-    console.log('to.fullPath =>', to.fullPath)
     window.scrollTo(0, 0);
-    console.log('ROUTER BEFOREEACH: store.state.user_data.name', store.state.user_data);
+
+    console.log('to.path => ', to.name)
+
+    console.log('window.checkAuth => ', window.checkAuth);
+
+    // check if user has logged out 
+    // if () {
+    //     this.$ud_store.commit('SET_USER_DATA', 'guest');
+    //     this.$ud_store.commit('SET_USER_LOGGED_IN', false);
+    // }
+
+    // push category parmas to store for use on category page
+    if (to.name === 'category') {
+        ud_store.commit('SET_CATEGORY_ID', to.params.id );
+    }
 
     if (to.fullPath !== "/login/guest") {
-        
-        let user_name = "guest";
-        console.log('TCL: user_name ', user_name );
-        console.log('store.state.user_data =>', store.state.user_data);
-        if (typeof store.state.user_data !== undefined && typeof store.state.user_data.name !== undefined) {
-            console.log('store.state => ', store.state)
-            console.log('store.state.user_data => ', store.state.user_data)
-            console.log('store.state.user_data.name => ', store.state.user_data.name)
-            user_name = store.state.user_data.name
+        // if path is NOT /login/guest
+        if (typeof ud_store.state.data.user_data !== undefined) {
+            console.log('user_data !== undefined => ', ud_store.state)
         }
-
-        // console.log('just a guest')
-        // axios.post('/ai/user/get/current').then(response => {
-        //     console.assert('we ran boiz')     
-        //     console.log('axios response.data.user =>', response.data.user);
-        //     store.commit('SET_USER_DATA', response.data.user);
-        //     // store.SET_USER_DATA(response.data.user)
-        //     next();
-        // }).catch(error => {
-        //     console.error('ROUTER BEFOREEACH: error', error);
-        //     next()
-        // })
+        if (ud_store.state.data.loggedIn === false) {
+            console.log('loggedIn === false => ', ud_store.state)
+        }
+        
         next();
     } else {
-        alert('welcome to the login page');
+        // alert('welcome to the login page');
         next();
     }
 
 });
 
 router.beforeResolve((to, from, next) => {
-    console.log("3. beforeResolve")
+    // console.log("3. beforeResolve")
     next();
 })
 
@@ -59,15 +68,18 @@ const app = new Vue({
     el: '#app',
     components: { App },
     router,
-    store,
+    ud_store,
     data: {
         user_data_app: 'placeholder user_data_app string',
-        store_data: store.state.user_data
+        store_data: ud_store.state.data.user_data
     },
     methods: {
         getUserAuth: function() {
-            return this.this.user_data_app
+            return ud_store.state.data.user_data
         }
+    },
+    mounted() {
+        // console.log("anime => ", anime);
     }
 });
 

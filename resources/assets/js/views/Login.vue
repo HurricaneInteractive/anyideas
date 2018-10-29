@@ -5,7 +5,7 @@
                 <div class="card card-default">
                     <div class="card-header">Login</div>
                     <h2>log in page</h2>
-                    <h3>{{$ud_store.state.user_data.name}}</h3>
+                    <h3>{{$ud_store.state.data.user_data.name}}</h3>
 
                     <div class="card-body">
                         <form method="POST" action="/login">
@@ -52,8 +52,7 @@
         },
         mounted: function(){
             // working -> -> -> -> ->
-            // console.log('user_id => ', $ud_store.state.user_data.user_id)
-            // console.warn("CHILD this.store_state => ", $ud_store.state.user_data)
+            console.log('(Login.vue) this.$ud_store => ', this.$ud_store.state.data.user_data);
         },
         methods : {
             handleSubmit(e){
@@ -71,7 +70,14 @@
                     })
                     .then(response => {
                         if (response.status === 200) {
-                            this.$ud_store.commit('SET_USER_DATA', response.data.user);
+                            console.warn('it seems /login worked')
+                            let new_data = {
+                                user_data: response.data.user,
+                                loggedIn: true
+                            }
+                            this.$ud_store.commit('SET_USER_DATA', new_data);
+                            this.$ud_store.commit('SET_USER_LOGGED_IN', true);
+                            console.log('we set user data + loggin status')
                             window.location = '/';
                         }
                     })
