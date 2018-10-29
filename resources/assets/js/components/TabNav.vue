@@ -1,13 +1,12 @@
 <template>
-<!-- &#183 -->
     <nav class="tab-nav-container fixed_width" >
       <div class="tab-nav-wrapper" v-bind:style="{ gridTemplateColumns: 'repeat(' + propsLength + ', 1fr)'}"> 
-        <div :class="'tab-nav-item ' + props[key].active" v-for="(value, key) in props" :key="props[key].id">
+        <router-link :to="{ name: props[key].id}" :class='props[key].active' v-for="(value, key) in props" :key="props[key].id">
+          <div class='tab-nav-item'  >
           <!-- <router-link :to="props[key].route"> -->
-          <router-link :to="{ name: props[key].id}">
             {{props[key].label}}
-          </router-link>
-        </div>
+          </div>
+        </router-link>
       </div>
     </nav>
 </template>
@@ -23,19 +22,15 @@
     width: 100%;
     display: grid;
     align-items: center;
-    .true {
-      border-bottom: 2px solid black;
-      a {
-        font-weight: $w-bold;
-      }
-    }
-    .tab-nav-item {
+    a {
       text-align: center;
       padding: 24px 0;
-      a {
-        text-decoration: none;
-        color: $black-light;
-      }
+      text-decoration: none;
+      color: $black-light;
+    }
+    .router-link-active {
+      border-bottom: 2px solid black;
+      font-weight: $w-bold;
     }
   }
 }
@@ -56,11 +51,9 @@
         },
         beforeMount: function() {
           this.setData();
-          console.log('TCL: this.props', this.props);
         },
         methods: {
           setData() {
-            console.log('[TabNav] setData => ', this.props)
             this.navData = this.props;
           }
         }

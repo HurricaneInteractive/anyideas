@@ -25,6 +25,11 @@ class DatabaseSeeder extends Seeder
             'user_id' => '1234',
             'id' => '4321',
             'occupation' => 'Web Dev',
+            'bio' => "# Once a young boy
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultricies nibh nunc, vitae malesuada urna commodo eget. Etiam eget lobortis lorem. Donec malesuada enim id nisl blandit sollicitudin. Mauris feugiat ligula quis mattis iaculis. Aenean ac dui eget tortor vestibulum sollicitudin. Sed pulvinar est eu sem condimentum, ac molestie nunc auctor. Integer sagittis magna in dolor fringilla mattis. Ut scelerisque felis ut porttitor congue. Aliquam vestibulum magna faucibus eleifend volutpat. Proin tellus urna, dignissim dictum velit a, pretium mollis enim. Nunc dictum congue lacus eget tempus. Vestibulum bibendum luctus interdum. Fusce a volutpat turpis.
+            > All our dreams can come true, if we have the courage to pursue them. – Walt Disney
+            Praesent posuere, massa eu pretium ullamcorper, magna eros hendrerit mauris, ut pretium mauris orci sed metus. Integer non neque efficitur, facilisis nisl id, consectetur metus. Quisque vel massa egestas, blandit leo eu, volutpat ex. Fusce massa nisl, aliquet sed felis et, semper rutrum turpis. Nunc arcu leo, hendrerit vel nibh vitae, semper posuere est. Praesent eleifend nisl vel enim blandit auctor quis et metus. In fringilla efficitur volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean ligula ligula, varius et bibendum quis, varius eget ligula. Curabitur in euismod enim, vitae accumsan diam. Morbi vestibulum turpis ut mauris iaculis, eget volutpat enim ultrices. Phasellus pellentesque lectus purus, non hendrerit sem bibendum ac. Nullam a viverra ante. Proin tellus ipsum, sagittis ac massa sed, convallis finibus orci.
+            ",
             'website' => 'google.com',
             'avatar' => 'https://i.scdn.co/image/3a836196bfb341f736c7fe2704fb75de53f8dfbb',
             'social_media' => '{

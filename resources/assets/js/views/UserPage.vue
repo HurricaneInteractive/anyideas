@@ -90,14 +90,9 @@
 
                 <TabNav v-bind:props="tab_nav"/>
 
-                <div>
-                    <h2>users ideas</h2>
-                    <div class="idea_wrapper">
-                        <div v-for="(value, key) in this.user_ideas" :key="key">
-                            <IdeaCard key={{key}} :props='value'/>
-                        </div>
-                    </div>
-                </div>
+                <router-view>
+                    <!-- ideas / about -->
+                </router-view>
             </div>
         </div>
     </div>
@@ -133,7 +128,7 @@
                         id: 'ideas',
                         label: 'Users Ideas',
                         route: '/ideas',
-                        active: this.$route.name === 'ideas' ? true : false
+                        active: this.$route.name === 'ideas' ? true : false,
                     },
                     {
                         id: 'about',
@@ -146,25 +141,33 @@
         },
         // figure out passing MySQL data to Vue
         beforeMount() {
-            console.log('this.$ud_store.state.data.user_data => ', this.$ud_store.state.data.user_data);
-            axios({
-              method: 'POST',
-              url: '/ai/idea/get-by-user/' + this.$route.params.id,
-            }).then( (response) => {
-              this.user_ideas = response.data
-            });
-            axios({
-              method: 'POST',
-              url: '/ai/user/get/' + this.$route.params.id,
-            }).then( (response) => {
-            //   console.log('TCL: search -> user get', response.data);
-              this.user_data = response.data
-            });
+            this.getUserData();
         },
         mounted() {
-            
+            this.getUserIdeas();
         },
         methods: {
+            getUserData() {
+                axios({
+                method: 'POST',
+                url: '/ai/user/get/' + this.$route.params.id,
+                }).then( (res) => {
+                    // console.log('TCL: search -> user get', res.data);
+                    this.user_data = res.data
+                    console.log('TCL: beforeMount -> res.data', res.data);
+                    // push to viewing_user_state store
+                    this.$ud_store.commit('SET_CURRENT_USER_DATA', res.data);
+                });
+            },
+            getUserIdeas() {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/get-by-user/' + this.$route.params.id,
+                }).then( (res) => {
+                    this.user_ideas = res.data
+                    this.$ud_store.commit('SET_CURRENT_USER_IDEAS', res.data);
+                });
+            },
             setAsActive() {
                 this.tab_nav = [
                     {

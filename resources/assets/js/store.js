@@ -26,6 +26,8 @@ export default new Vuex.Store({
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
         },
+        current_user_view: {},
+        current_user_ideas: {},
         icons: icons,
         categories: categories,
         status: status,
@@ -80,6 +82,15 @@ export default new Vuex.Store({
         SET_CATEGORY_ID(state, newValue) {
             if (this.debug) console.log('SET_CATEGORY_ID triggered with', newValue)
             state.current_category_id = newValue;
+        },
+
+        SET_CURRENT_USER_DATA(state, newValue) {
+            if (this.debug) console.log('SET_CURRENT_USER_DATA triggered with', newValue)
+            state.current_user_view = newValue;
+        },
+        SET_CURRENT_USER_IDEAS(state, newValue) {
+            if (this.debug) console.log('SET_CURRENT_USER_DATA triggered with', newValue)
+            state.current_user_ideas = newValue;
         }
     }
   })
