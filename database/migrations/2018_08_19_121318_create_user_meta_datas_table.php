@@ -20,6 +20,7 @@ class CreateUserMetaDatasTable extends Migration
             $table->increments('id');
             $table->string('occupation')->nullable($value = true);
             $table->string('website')->nullable($value = true);
+            $table->mediumText('bio')->nullable($value = true);
             $table->string('avatar')->nullable($value = true);
             $table->mediumText('following')->nullable($value = true); // IDEAS YOU FOLLOW
             $table->mediumText('followers')->nullable($value = true); // PEOPLE FOLLOWING YOUR IDEAS / SUPPORTERS

@@ -66,8 +66,21 @@ const routes = [
   {
     path: '/user/:id',
     name: 'user',
+    redirect: '/user/:id/ideas',
     component: Vue.component( 'UserPage', require( './views/UserPage.vue' ) ),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children: [
+      {
+        name: 'ideas',
+        path: 'ideas',
+        component: Vue.component( 'Ideas', require( './components/user/Ideas.vue' ) )
+      },
+      {
+        name: 'about',
+        path: 'about',
+        component: Vue.component( 'About', require( './components/user/About.vue' ) )
+      }
+    ]
   },
   {
     path: '/search',

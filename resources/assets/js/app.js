@@ -25,7 +25,9 @@ Vue.use( VueAnime );
 // <loading/>
 
 router.beforeEach((to, from, next) => {
-    window.scrollTo(0, 0);
+    // if (to.name !== 'ideas' || to.name !== 'about') {
+    //     window.scrollTo(0, 0);
+    // }
 
     console.log('to.path => ', to.name)
 
