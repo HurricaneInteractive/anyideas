@@ -1,109 +1,109 @@
 <!-- App.vue acts as a wrapper for the whole application -->
 <!-- use this.$ud_store in child components -->
 <template>
-        <div>
-            <nav class="navbar">
-                <div class="container">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
+    <div>
+        <nav class="navbar fixed_width">
+            <div class="container">
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-wrapper navbar-left">
+                    <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
+                    </li>
+                    <!-- display full logo on larger screens -->
+                    <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
+                    </li> -->
+                </ul>
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-wrapper navbar-right">
+                    <li class="search">
+                        <li class="search_text_container">
+                            <div :class="'search_expand ' + this.openSearchState">
+                                <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
+                                <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text" />
+                            </div>
                         </li>
-                        <!-- display full logo on larger screens -->
-                        <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
-                        </li> -->
+                        <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                        </li>
+                        <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
+                        </li>
+                    </li>
+                    <li>
+                        <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
+                        </span>
+                        <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
+                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
+                            </span> -->
+                            <div class="user_items" v-on:click="openUser()">
+                                <router-link :to="{name: 'login' }">Log In</router-link>
+                                <router-link :to="{name: 'register' }">Sign Up</router-link>
+                            </div>
+                        </div>
+                        <div v-else :class="'user ' + this.openUserState">
+                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
+                            </span> -->
+                            <div class="user_items" v-on:click="openUser()">
+                                <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
+                                <p @click="handleSignOut">Sign Out</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li v-if="this.$route.name === 'add-new-idea'">
+                        <div v-on:click="openUser()" class="post-idea">
+                            <p> POST IDEA</p>
+                        </div>
+                    </li>
+                    <li v-else>
+                        <router-link :to="{ name: 'register' }" class="add-idea">
+                            <span v-html="this.$ud_store.state.icons.plus"></span>
+                            <p> Sign Up</p>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
+        <main>
+            <router-view>
+                <!-- Child components run here -->
+            </router-view>
+        </main>
+        <footer class="footer-container">
+            <div class="fixed_width">
+                <div class="footer footer-left">
+                    <ul>
+                        <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Account</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
                     </ul>
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-wrapper navbar-right">
-                        <li class="search">
-                            <li class="search_text_container">
-                                <div :class="'search_expand ' + this.openSearchState">
-                                    <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
-                                    <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
-                                </div>
-                            </li>
-                            <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
-                            </li>
-                            <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
-                            </li>
-                        </li>
-                        <li>
-                            <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
-                            </span>
-                            <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
-                                <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                                </span>
-                                <div class="user_items" v-on:click="openUser()">
-                                    <router-link :to="{name: 'login' }">Log In</router-link>
-                                    <router-link :to="{name: 'register' }">Sign Up</router-link>
-                                </div>
-                            </div>
-                            <div v-else :class="'user ' + this.openUserState">
-                                <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                                </span>
-                                <div class="user_items" v-on:click="openUser()">
-                                    <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
-                                    <p @click="handleSignOut">Sign Out</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li v-if="this.$route.name === 'add-new-idea'">
-                            <div v-on:click="openUser()" class="post-idea">
-                                <p> POST IDEA</p>
-                            </div>
-                        </li>
-                        <li v-else>
-                            <router-link :to="{ name: 'add-new-idea' }" class="add-idea">
-                                <span v-html="this.$ud_store.state.icons.plus"></span>
-                                <p> Idea</p>
-                            </router-link>
-                        </li>
+                    <ul>
+                        <li><router-link :to="{ name: 'login' }">About</router-link></li>
+                        <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
+                    </ul>
+                    
+                    <ul>
+                        <li><a href="https://sunset-studios.netlify.com" target="_blank" rel="noopener noreferrer">Built by <span>Sunset Studios</span></a></li>
                     </ul>
                 </div>
-            </nav>
-            <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
-            <main>
-                <router-view>
-                    <!-- Child components run here -->
-                </router-view>
-            </main>
-            <footer class="footer-container">
-                <div class="fixed_width">
-                    <div class="footer footer-left">
-                        <ul>
-                            <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Account</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
-                        </ul>
-                        <ul>
-                            <li><router-link :to="{ name: 'login' }">About</router-link></li>
-                            <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
-                        </ul>
+                <div class="footer footer-right">
+                    <ul>
+                        <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
+                        <li><router-link :to="{ name: 'register' }">Sign Up</router-link></li>
                         
-                        <ul>
-                            <li><a href="#">Built by <span>Sunset Studios</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="footer footer-right">
-                        <ul>
-                            <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
-                            
-                        </ul>
-                        <ul>
-                            <li><a href="https://facebook.com">FB icon</a></li>
-                            <li><a href="https://facebook.com">Twitter icon</a></li>
-                            <li><a href="https://facebook.com">Instagram icon</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-logo">
-                        <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
-                    </div>
+                    </ul>
+                    <ul>
+                        <li><a href="https://facebook.com">FB icon</a></li>
+                        <li><a href="https://facebook.com">Twitter icon</a></li>
+                        <li><a href="https://facebook.com">Instagram icon</a></li>
+                    </ul>
                 </div>
-            </footer>
-        </div>
-    </template>
+                <div class="footer-logo">
+                    <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
+                </div>
+            </div>
+        </footer>
+    </div>
+</template>
 
 <!-- App.vue is imported into app.blade.php -->
 
@@ -130,7 +130,7 @@
         }
         .container {
             display: flex;
-            margin: 35px;
+            padding: 35px 0;
             min-height: 64px;
             .navbar-wrapper {
                 list-style-type: none;
@@ -256,12 +256,14 @@
                     }
                     .user {
                         position: absolute;
-                        top: 15px;
-                        width: 128px;
-                        height: 128px;
+                        // top: 15px;
+                        top: 100%;
+                        // width: 128px;
+                        // height: 128px;
                         z-index: -100;
-                        left: -200%;
+                        left: calc(50% - 100px);
                         opacity: 0;
+                        // transform: translateX(-50%);
                         .arrow {
                             position: relative;
                             bottom: -12%;
@@ -291,18 +293,27 @@
                         }
                         .user_items {
                             z-index: 100;
-                            height: 100%;
+                            // height: 100%;
+                            min-width: 200px;
                             width: 100%;
                             position: relative;
                             background-color: $white;
                             opacity: 1;
-                            display: grid;
-                            align-content: center;
-                            justify-content: center;
+                            // display: grid;
+                            // align-content: center;
+                            // justify-content: center;
                             border-radius: 10px;
                             box-shadow: 0px 0px 15px 0px rgba(137, 137, 137, 0.25);
-                            p {
-                                margin: 0 auto;
+                            padding: 30px;
+                            a {
+                                display: block;
+                                text-align: center;
+                                margin: 0;
+                                &:not(:first-child) {
+                                    padding-top: 15px;
+                                    margin-top: 15px;
+                                    border-top: 1px solid rgba($black, 0.05);
+                                }
                             }
                         }
                     }
