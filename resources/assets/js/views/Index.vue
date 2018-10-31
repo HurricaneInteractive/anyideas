@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <div class="header-container">
+    <div class="container fixed_width">
+        <div class="header-container" :style="{'background-image': `url(${require('../../images/anyideas-icon-pattern.svg')})`}">
             <div class="card card-default">
                 <div class="home-header">
                     <!-- https://codepen.io/jerrylow/pen/KaPvNa -->
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center page-wrapper">
             <!-- <button @click="searchDatabase">Run search query</button> -->
             <div class="idea_wrapper">
                 <div class="fixed_width" v-for="(value, key) in this.user_ideas" :key="key">
@@ -22,26 +22,45 @@
 </template>
 
 <style lang="scss">
-
-.header-container {
-    background-color: #F5F5F5;
-    width: 100%;
-    min-height: 400px;
-    margin: 0;
-    padding: 0;
-    transition: .5s;
-    text-align: center;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-}
-.idea_wrapper {
-    margin-top: 48px;
-    div {
-        max-width: 750px;
-        margin: 0 auto;
+    @import '~@/_variables.scss';
+    .header-container {
+        background-color: #F5F5F5;
+        background-repeat: repeat;
+        width: 100%;
+        min-height: 400px;
+        margin: 0;
+        padding: 0;
+        transition: .5s;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .home-header {
+            font-size: $size-h1;
+            font-weight: $w-bold;
+            padding: 25px 45px;
+            background: $pure;
+        }
     }
-}
+    .idea_wrapper {
+        // margin-top: 48px;
+        > div {
+            max-width: 750px;
+            margin: 0 auto;
+            &:last-child {
+                .card,
+                .idea-card-container {
+                    margin-bottom: 0;
+                }
+            }
+            &:first-child {
+                .card,
+                .idea-card-container {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
 </style>
 
 <script>
