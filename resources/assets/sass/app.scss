@@ -7,6 +7,7 @@ html, body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: $font-family-sans-serif;
 }
 
 // global styles
@@ -14,7 +15,7 @@ html, body {
   font-weight: $w-bold;
 }
 * {
-  font-family: $font-family-sans-serif;
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -107,3 +108,8 @@ p {
 .bg_Abandoned {
   @include bg_category($abandoned)
 };
+
+.page-wrapper {
+  padding-top: 95px;
+  padding-bottom: 95px;
+}
