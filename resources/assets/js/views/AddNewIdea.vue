@@ -44,16 +44,17 @@
                                 </div>
                             </div>
 
+                            <input-tag v-model="idea.tags" :tags="idea.tags" placeholder="tags"></input-tag>
                             <!-- get array out of data... somehow -->
                             <div class="form-group row" id="tags">
-                                <label @click="printTagsData" for="tags">Tags</label>
+                                <label for="tags">Tags</label>
 
                                 <div class="tags_select">
-                                    <v-select v-model="idea.tags" :searchable="false" noDrop multiple taggable push-tags label="tags">
-                                    </v-select>
+                                    <!-- <v-select :options="['tags']" v-model="idea.tags" noDrop multiple taggable push-tags label="tags"></v-select> -->
+                                    <!-- <v-select v-model="idea.tags" :options="idea.tags" multiple taggable push-tags></v-select> -->
                                 </div>
                             </div>
-                            <button @click="printTagsData"> print tags data</button>
+                            <button @click="printTagsData(printTagsData)"> print tags data</button>
                         </div>
                     </header>
 
@@ -62,7 +63,7 @@
                     <div class="form-group row fixed_width" id="description_container">
 
                         <div class="description_input" id="editor">
-                            <div class="form-control editSection" :value="idea.description" @input="updated" id="description" type="text" required/>
+                            <div class="form-control editSection" :value="idea.description" @input="update" id="description" type="text" required/>
                         </div>
                     </div>
 
@@ -227,6 +228,9 @@
     require('tui-editor/dist/tui-editor.css'); // editor ui
     require('tui-editor/dist/tui-editor-contents.css'); // editor content
     require('highlight.js/styles/github.css'); // code block highlight
+    require('vue-select');
+
+    import InputTag from 'vue-input-tag'
 
     var Editor = require('tui-editor');
     import TabNav from '../components/TabNav'
@@ -242,7 +246,7 @@
                     pitch: '',
                     status: null,
                     category: null,
-                    tags: ['test', 'tags'],
+                    tags: '',
                     description: 'Add Description',
                 },
                 options_category: [
@@ -310,14 +314,14 @@
             
             this.setDescription();
         },
-        updated() {
+        update() {
             this.setDescription();
         },
         methods: {
             // delays updating the rendered markdown input
-            printTagsData() {
-                console.log('this.idea.tags => ', this.idea.tags)
-                console.log('this.idea.tags => ', this.idea.tags)
+            printTagsData(val) {
+                console.log('VAL this.idea.tags => ', val)
+                console.log('VAL this.idea.tags => ', val)
                 console.log('this.idea.tags => ', this.idea.tags)
                 console.log('this.idea.tags => ', this.idea.tags)
             },

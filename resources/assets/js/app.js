@@ -8,6 +8,7 @@ import ud_store from './store';
 // import './components/global/_globals'
 import App from './App.vue';
 import vSelect from 'vue-select'
+import InputTag from 'vue-input-tag'
 
 import storePlugin from './storePlugin'
 import LoadingComp from './plugins/loading.js'
@@ -22,6 +23,8 @@ Vue.use( storePlugin )
 Vue.use( LoadingComp, { componentName: "loading" } )
 Vue.use( VueAnime );
 Vue.use( capitalise );
+
+Vue.component('input-tag', InputTag)
 Vue.component('v-select', vSelect)
 
 // global components
