@@ -15,7 +15,7 @@
                             <div class="form no-label" id="title">
                                 <label for="title">Name of Idea</label>
                                 <div>
-                                    <input placeholder="Name of Idea" type="text" class="input_reset" v-model="idea.title" required autofocus>
+                                    <input placeholder="Name of Idea" type="text" class="input_reset" :v-model="idea.title" required>
                                 </div>
                             </div>
 
@@ -23,7 +23,7 @@
                                 <label for="pitch">Elevator Pitch (240 Characters)</label>
 
                                 <div>
-                                    <textarea placeholder="Elevator Pitch (240 Characters)" type="text" class="input_reset" v-model="idea.pitch" required/>
+                                    <textarea placeholder="Elevator Pitch (240 Characters)" type="text" class="input_reset" :v-model="idea.pitch" required/>
                                 </div>
                             </div>
 
@@ -39,21 +39,21 @@
                                 <div class="form-group row no-label" id="category">
                                     <label for="category">Category</label>
                                     <div>
-                                        <v-select placeholder="Category" label="categories" :options="options_category"></v-select>
+                                        <v-select :v-model="idea.category" placeholder="Category" label="categories" :options="options_category"></v-select>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- get array out of data... somehow -->
                             <div class="form-group row" id="tags">
-                                <label for="tags">Tags</label>
+                                <label @click="printTagsData" for="tags">Tags</label>
 
-                                <div>
-                                    <button>Tags</button>
-                                    <v-select searchable=false noDrop=true clearSearchOnSelect=false multiple taggable push-tags placeholder="Tags go here" label="tags"></v-select>
-                                    <!-- <input id="tags" type="text" class="form-control" v-model="idea.tags"> -->
+                                <div class="tags_select">
+                                    <v-select v-model="idea.tags" :searchable="false" noDrop multiple taggable push-tags label="tags">
+                                    </v-select>
                                 </div>
                             </div>
+                            <button @click="printTagsData"> print tags data</button>
                         </div>
                     </header>
 
@@ -62,14 +62,17 @@
                     <div class="form-group row fixed_width" id="description_container">
 
                         <div class="description_input" id="editor">
-                            <div class="form-control editSection" :value="idea.description" @input="update" id="description" type="text" required/>
+                            <div class="form-control editSection" :value="idea.description" @input="updated" id="description" type="text" required/>
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group post-idea-container fixed_width">
                         <div>
-                            <button type="submit" class="btn btn-primary" @click="handleSubmit">
-                                Post Idea
+                            <button class="btn btn-primary" @click="handleDelete">
+                                D
+                            </button>
+                            <button type="submit" class="post-idea" @click="handleSubmit">
+                                <p>Post Idea</p>
                             </button>
                         </div>
                     </div>
@@ -82,12 +85,48 @@
 
 <style lang="scss">
 @import '~@/_variables.scss';
-
+.tui-editor-defaultUI {
+    border: none;
+}
 .form-wrapper {
     .no-label {
         label {
             display: none;
         }
+    }
+}
+.post-idea-container {
+    padding: 0 0 48px;
+    > div {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 8px;
+        }
+    }
+}
+.post-idea {
+    display: inline-flex;
+    background-color: $primary;
+    color: $pure;
+    align-content: center;
+    justify-content: center;
+    border-radius: 25px;
+    padding: 0 16px;
+    text-decoration: none;
+    border: none;
+    > span {
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+    p {
+        margin: 8px;
+        color: $pure;
     }
 }
 .input_reset {
@@ -156,7 +195,7 @@
             font-size: 14px;
             color: black;
             margin: 16px 0;
-            > div {
+            .tags_select {
                 width: 100%;
                 color: white;
                 margin: 8px 0;
@@ -165,6 +204,7 @@
                     > div {
                         border-radius: 0px;
                         border: none;
+                        border-bottom: 2px solid black;
                     }
                 }
             }
@@ -180,7 +220,7 @@
 }
 
 </style>
-
+    
 <script>
     // import lodash from 'lodash'
     require('codemirror/lib/codemirror.css') // codemirror
@@ -200,10 +240,10 @@
                 idea: {
                     title: '',
                     pitch: '',
-                    category: '',
-                    tags: '',
+                    status: null,
+                    category: null,
+                    tags: ['test', 'tags'],
                     description: 'Add Description',
-                    status: 'Status'
                 },
                 options_category: [
                     { categories: this.$capitalise(this.$ud_store.state.categories[0]) },
@@ -267,6 +307,7 @@
         mounted() {
             console.log('AddNewIdea.vue page');
             // console.log(this.idea.tags);
+            
             this.setDescription();
         },
         updated() {
@@ -274,6 +315,15 @@
         },
         methods: {
             // delays updating the rendered markdown input
+            printTagsData() {
+                console.log('this.idea.tags => ', this.idea.tags)
+                console.log('this.idea.tags => ', this.idea.tags)
+                console.log('this.idea.tags => ', this.idea.tags)
+                console.log('this.idea.tags => ', this.idea.tags)
+            },
+            handleDelete() {
+                window.location.reload;
+            },
             setDescription() {
                 
                 console.warn('run setDescription Func')
@@ -289,7 +339,7 @@
                     initialEditType: 'wysiwyg',
                     previewStyle: 'vertical',
                     height: '300px',
-                    initialValue: 'Add Description (use markdown)'
+                    initialValue: ''
                 });
                 this.loaded = true;
             },
