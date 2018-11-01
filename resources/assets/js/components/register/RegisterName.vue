@@ -6,24 +6,52 @@
         </blockquote>
         <div class="form-block">
             <div class="input-field">
-                <input type="text" name="user-name" id="user-name">
-                <label for="user-name">Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    v-on:input="onChange"
+                    :class="nameHasContent"
+                    autofocus
+                    autocomplete="off"
+                />
+                <label for="name">Name</label>
             </div>
             <div class="input-field">
-                <input type="text" name="user-username" id="user-username">
-                <label for="user-name">Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    v-on:input="onChange"
+                    :class="usernameHasContent"
+                    autocomplete="off"
+                />
+                <label for="name">Username</label>
             </div>
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
-
 <script>
     export default {
-        name: 'RegisterName'
+        name: 'RegisterName',
+        props: ['name', 'username'],
+        methods: {
+            onChange(e) {
+                this.$emit('onchange', e)
+            }
+        },
+        computed: {
+            nameHasContent: function() {
+                return {
+                    'has-content': this.name
+                }
+            },
+            usernameHasContent: function() {
+                return {
+                    'has-content': this.username
+                }
+            }
+        }
     }
 </script>
-
