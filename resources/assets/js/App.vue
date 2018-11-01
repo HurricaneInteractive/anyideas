@@ -46,14 +46,19 @@
                             </div>
                         </div>
                     </li>
-                    <li v-if="this.$route.name === 'add-new-idea'">
-                        <div v-on:click="openUser()" class="post-idea">
+
+                    <li>
+                        <div v-if="this.$route.name === 'add-new-idea'" class="post-idea">
+                            <!-- needs to be functional on the add-new-idea page -->
                             <p> POST IDEA</p>
                         </div>
-                    </li>
-                    <li v-else>
-                        <router-link :to="{ name: 'register' }" class="add-idea">
+
+                        <router-link v-else-if="this.$ud_store.state.data.loggedIn !== 'guest'" :to="{ name: 'add-new-idea' }" class="add-idea">
                             <span v-html="this.$ud_store.state.icons.plus"></span>
+                            <p> IDEA</p>
+                        </router-link>
+
+                        <router-link v-else :to="{ name: 'register' }" class="add-idea">
                             <p> Sign Up</p>
                         </router-link>
                     </li>

@@ -9,6 +9,11 @@
   </section>
 </template>
 
+<style lang="scss">
+@import '~@/_variables.scss';
+
+</style>
+
 <script>
 import IdeaCard from '../IdeaCard.vue'
     export default {

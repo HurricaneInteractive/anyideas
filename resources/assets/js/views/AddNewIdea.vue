@@ -15,7 +15,7 @@
                             <div class="form no-label" id="title">
                                 <label for="title">Name of Idea</label>
                                 <div>
-                                    <input value="Name of Idea" id="title" type="text" class="form-control" v-model="idea.title" required autofocus>
+                                    <input placeholder="Name of Idea" type="text" class="input_reset" :v-model="idea.title" required>
                                 </div>
                             </div>
 
@@ -23,41 +23,38 @@
                                 <label for="pitch">Elevator Pitch (240 Characters)</label>
 
                                 <div>
-                                    <input value="Elevator Pitch (240 Characters)" id="pitch" type="text" class="form-control" v-model="idea.pitch" required>
+                                    <textarea placeholder="Elevator Pitch (240 Characters)" type="text" class="input_reset" :v-model="idea.pitch" required/>
                                 </div>
                             </div>
 
-                            <div class="form-group row no-label" id="status">
-                                <label for="status">Status</label>
+                            <div class="status_category">
+                                <div class="form-group row no-label" id="status">
+                                    <label for="status">Status</label>
 
-                                <div>
-                                    <select v-model="idea.status">
-                                        <option v-for="(value, key) in this.$ud_store.state.status" :key="key" :value="$ud_store.state.status[key]">
-                                            {{$ud_store.state.status[key]}}
-                                        </option>
-                                    </select>
+                                    <div>
+                                        <v-select placeholder="Status" label="status" :options="options"></v-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row no-label" id="category">
+                                    <label for="category">Category</label>
+                                    <div>
+                                        <v-select :v-model="idea.category" placeholder="Category" label="categories" :options="options_category"></v-select>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row no-label" id="category">
-                                <label for="category">Category</label>
-                                <div>
-                                    <select v-model="idea.category">
-                                        <option v-for="(value, key) in this.$ud_store.state.categories" :key="key" :value="$ud_store.state.categories[key]">
-                                            {{$ud_store.state.categories[key]}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
+                            <input-tag v-model="idea.tags" :tags="idea.tags" placeholder="tags"></input-tag>
                             <!-- get array out of data... somehow -->
                             <div class="form-group row" id="tags">
                                 <label for="tags">Tags</label>
 
-                                <div>
-                                    <input id="tags" type="text" class="form-control" v-model="idea.tags">
+                                <div class="tags_select">
+                                    <!-- <v-select :options="['tags']" v-model="idea.tags" noDrop multiple taggable push-tags label="tags"></v-select> -->
+                                    <!-- <v-select v-model="idea.tags" :options="idea.tags" multiple taggable push-tags></v-select> -->
                                 </div>
                             </div>
+                            <button @click="printTagsData(printTagsData)"> print tags data</button>
                         </div>
                     </header>
 
@@ -70,10 +67,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group post-idea-container fixed_width">
                         <div>
-                            <button type="submit" class="btn btn-primary" @click="handleSubmit">
-                                Post Idea
+                            <button class="btn btn-primary" @click="handleDelete">
+                                D
+                            </button>
+                            <button type="submit" class="post-idea" @click="handleSubmit">
+                                <p>Post Idea</p>
                             </button>
                         </div>
                     </div>
@@ -85,8 +85,10 @@
 </template>
 
 <style lang="scss">
-@import '~@/App.scss';
-
+@import '~@/_variables.scss';
+.tui-editor-defaultUI {
+    border: none;
+}
 .form-wrapper {
     .no-label {
         label {
@@ -94,12 +96,120 @@
         }
     }
 }
+.post-idea-container {
+    padding: 0 0 48px;
+    > div {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 8px;
+        }
+    }
+}
+.post-idea {
+    display: inline-flex;
+    background-color: $primary;
+    color: $pure;
+    align-content: center;
+    justify-content: center;
+    border-radius: 25px;
+    padding: 0 16px;
+    text-decoration: none;
+    border: none;
+    > span {
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+    p {
+        margin: 8px;
+        color: $pure;
+    }
+}
+.input_reset {
+    -webkit-appearance: none;
+    border: none;
+    background-color: transparent;
+}
 .header-container {
     width: 100%;
     background-color: $white;
     padding: 48px;
     .header-wrapper {
+        width: 100%;
         margin: 0 auto;
+        
+        #title {
+            div {
+                input {
+                    font-size: 64px;
+                    font-weight: $w-bold;
+                    color: $grey-dark;
+                }
+            }
+        }
+        #elevator {
+            margin: 24px 0 0;
+            div {
+                display: flex;
+                align-content: flex-start;
+                justify-content: flex-start;
+                textarea {
+                    color: $grey-med;
+                    min-width: 448px; 
+                    height: 148px;
+                    font-family: $font-family-sans-serif;
+                }
+            }
+        }
+        .status_category {
+            width: 256px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 16px;
+        }
+        #status, #category {
+            /* width: 148px; */
+            font-size: 12px;
+            color: black;
+            > div {
+                > div {
+                    > div {
+                        border-radius: 0px;
+                        border: none;
+                        border-bottom: 2px solid black;
+                    }
+                }
+            }
+        }
+        .v-select.single .selected-tag {
+            background-color: transparent;
+            border-color: transparent;
+            position: absolute;
+        }
+        #tags {
+            width: 256px;
+            font-size: 14px;
+            color: black;
+            margin: 16px 0;
+            .tags_select {
+                width: 100%;
+                color: white;
+                margin: 8px 0;
+                /* display: inline-flex; */
+                > div {
+                    > div {
+                        border-radius: 0px;
+                        border: none;
+                        border-bottom: 2px solid black;
+                    }
+                }
+            }
+        }
     }
 }
 .description_input {
@@ -111,13 +221,16 @@
 }
 
 </style>
-
+    
 <script>
     // import lodash from 'lodash'
     require('codemirror/lib/codemirror.css') // codemirror
     require('tui-editor/dist/tui-editor.css'); // editor ui
     require('tui-editor/dist/tui-editor-contents.css'); // editor content
     require('highlight.js/styles/github.css'); // code block highlight
+    require('vue-select');
+
+    import InputTag from 'vue-input-tag'
 
     var Editor = require('tui-editor');
     import TabNav from '../components/TabNav'
@@ -129,18 +242,40 @@
         data() {
             return {
                 idea: {
-                    title: 'Name of Idea',
-                    pitch: 'Elevator Pitch (240 Characters)',
-                    category: 'Category',
+                    title: '',
+                    pitch: '',
+                    status: null,
+                    category: null,
                     tags: '',
                     description: 'Add Description',
-                    status: 'Status'
                 },
+                options_category: [
+                    { categories: this.$capitalise(this.$ud_store.state.categories[0]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[1]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[2]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[3]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[4]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[5]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[6]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[7]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[8]) },
+                    { categories: this.$capitalise(this.$ud_store.state.categories[9]) }
+                ],
+                options: [
+                    { status: this.$ud_store.state.status[0] },
+                    { status: this.$ud_store.state.status[1] },
+                    { status: this.$ud_store.state.status[2] },
+                    { status: this.$ud_store.state.status[3] },
+                    { status: this.$ud_store.state.status[4] },
+                    { status: this.$ud_store.state.status[5] },
+                    { status: this.$ud_store.state.status[6] },
+                    { status: this.$ud_store.state.status[7] }
+                ],
                 tab_nav: [
                     {
                         id: 'description',
                         label: 'Description',
-                        route: '/add-new-idea',
+                        route: null,
                         active: 'true',
                     },
                     // {
@@ -176,13 +311,23 @@
         mounted() {
             console.log('AddNewIdea.vue page');
             // console.log(this.idea.tags);
+            
             this.setDescription();
         },
-        updated() {
+        update() {
             this.setDescription();
         },
         methods: {
             // delays updating the rendered markdown input
+            printTagsData(val) {
+                console.log('VAL this.idea.tags => ', val)
+                console.log('VAL this.idea.tags => ', val)
+                console.log('this.idea.tags => ', this.idea.tags)
+                console.log('this.idea.tags => ', this.idea.tags)
+            },
+            handleDelete() {
+                window.location.reload;
+            },
             setDescription() {
                 
                 console.warn('run setDescription Func')
@@ -198,7 +343,7 @@
                     initialEditType: 'wysiwyg',
                     previewStyle: 'vertical',
                     height: '300px',
-                    initialValue: 'Add Description (use markdown)'
+                    initialValue: ''
                 });
                 this.loaded = true;
             },
