@@ -23,6 +23,7 @@ class UserController extends Controller
         };
         return ['user' => $user, 'id' => $id];
     }
+
     public function getUserById($id) { 
         $user = User::all()->where('id', $id)->first();
         $meta = DB::table('user_meta_datas')->where('user_id', $id)->first();
@@ -36,10 +37,21 @@ class UserController extends Controller
             'social_media' => $social
         ]);
     }
+
     public function updateUser($user_meta) {
         $data = $request->user_meta_update;
         return response()->json([
             'data' => $data
+        ]);
+    }
+
+    public function validateRegisterField(Request $request) {
+        $field = $request['key'];
+        $value = $request['value'];
+        $user = User::where($field, $value)->first();
+
+        return response()->json([
+            'user' => $user
         ]);
     }
 }
