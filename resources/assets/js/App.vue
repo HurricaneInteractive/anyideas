@@ -2,8 +2,8 @@
 <!-- use this.$ud_store in child components -->
 <template>
     <div>
-        <nav class="navbar fixed_width">
-            <div class="container">
+        <nav class="navbar" v-bind:class="{profile: isUserProfilePage}">
+            <div class="container fixed_width">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-left">
                     <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
@@ -42,7 +42,7 @@
                             </span> -->
                             <div class="user_items" v-on:click="openUser()">
                                 <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
-                                <p @click="handleSignOut">Sign Out</p>
+                                <a href="#logout" @click="handleSignOut">Sign Out</a>
                             </div>
                         </div>
                     </li>
@@ -53,7 +53,7 @@
                             <p> POST IDEA</p>
                         </div>
 
-                        <router-link v-else-if="this.$ud_store.state.data.loggedIn !== 'guest'" :to="{ name: 'add-new-idea' }" class="add-idea">
+                        <router-link v-else-if="this.$ud_store.state.data.loggedIn !== false" :to="{ name: 'add-new-idea' }" class="add-idea">
                             <span v-html="this.$ud_store.state.icons.plus"></span>
                             <p> IDEA</p>
                         </router-link>
@@ -78,8 +78,8 @@
                         <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
                         <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
                         <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Account</router-link></li>
-                        <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
+                        <li><router-link v-if="this.$ud_store.state.data.loggedIn !== false" :to="`/user/${$ud_store.state.data.user_data.id}`">Account</router-link></li>
+                        <li><router-link v-if="this.$ud_store.state.data.loggedIn !== false" :to="`/user/${$ud_store.state.data.user_data.id}`">Settings</router-link></li>
                     </ul>
                     <ul>
                         <li><router-link :to="{ name: 'login' }">About</router-link></li>
@@ -96,10 +96,10 @@
                         <li><router-link :to="{ name: 'register' }">Sign Up</router-link></li>
                         
                     </ul>
-                    <ul>
-                        <li><a href="https://facebook.com">FB icon</a></li>
-                        <li><a href="https://facebook.com">Twitter icon</a></li>
-                        <li><a href="https://facebook.com">Instagram icon</a></li>
+                    <ul class="social-media">
+                        <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.facebook" /></li>
+                        <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.instagram" /></li>
+                        <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.youtube" /></li>
                     </ul>
                 </div>
                 <div class="footer-logo">
@@ -128,6 +128,9 @@
     }
 
     .navbar {
+        &.profile {
+            background: $white;
+        }
         .navbar-icon {
             fill: none;
             color: $black;
@@ -360,6 +363,14 @@
                         }
                     }
                 }
+                .social-media {
+                    a, svg {
+                        display: block;
+                        width: 21px;
+                        height: 21px;
+                        margin-left: auto;
+                    }
+                }
             }
             .footer-logo {
                 grid-area: 2 / 1 / 2 / 3;
@@ -418,7 +429,8 @@ import CategoriesSlider from './components/CategoriesSlider'
             }
         },
         methods: {
-            handleSignOut() {
+            handleSignOut(e) {
+                e.preventDefault();
                 axios({
                     method: 'POST',
                     url: '/logout',
@@ -433,7 +445,8 @@ import CategoriesSlider from './components/CategoriesSlider'
                     if (res.status === 200) {
                         this.$ud_store.commit('SET_USER_DATA', 'guest');
                         this.$ud_store.commit('SET_USER_LOGGED_IN', false);
-                        this.$router.push({name: 'home'})
+                        // this.$router.push({name: 'home'})
+                        window.location = '/'
                     }
                 })
                 .catch(error => {
@@ -553,6 +566,13 @@ import CategoriesSlider from './components/CategoriesSlider'
                     console.error(error);
                 });
             },
+        },
+        computed: {
+            isUserProfilePage() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'user' || (typeof route.parent !== 'undefined' && route.parent.name === 'user')
+                })
+            }
         }
     }
 </script>
