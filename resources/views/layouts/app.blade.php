@@ -14,7 +14,7 @@
         @if(auth()->check())
         <script>
             window.checkAuth = {!! auth()->user()  !!}
-            // alert('user logged in')
+            console.log('user logged in')
         </script>
         @endif
 

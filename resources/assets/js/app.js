@@ -32,6 +32,11 @@ Vue.component('v-select', vSelect)
 // global components
 // <loading/>
 
+// global plugins (add 'this.$' to use in Vue)
+// ud_store
+// anime
+// capitalise
+
 router.beforeEach((to, from, next) => {
     // if (to.name !== 'ideas' || to.name !== 'about') {
     //     window.scrollTo(0, 0);
@@ -40,11 +45,18 @@ router.beforeEach((to, from, next) => {
     console.log('to.path => ', to.name)
 
     console.log('window.checkAuth => ', window.checkAuth);
+    console.log(' ud_store.state.data.user_data => ', ud_store.state.data.user_data);
+    console.log(' ud_store.state.data.user_data => ', ud_store.state.data.user_data.id);
 
     // check if user has logged out 
-    // if () {
-    //     this.$ud_store.commit('SET_USER_DATA', 'guest');
-    //     this.$ud_store.commit('SET_USER_LOGGED_IN', false);
+    // if (window.checkAuth === undefined) {
+    //     console.log('undefined auth')
+    //     ud_store.commit('SET_USER_DATA', 'guest');
+    //     ud_store.commit('SET_USER_LOGGED_IN', false);
+    // } else {
+    //     console.log('defined auth')
+    //     ud_store.commit('SET_USER_DATA', window.checkAuth);
+    //     ud_store.commit('SET_USER_LOGGED_IN', true);
     // }
 
     // push category parmas to store for use on category page

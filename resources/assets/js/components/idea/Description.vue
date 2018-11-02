@@ -1,6 +1,6 @@
 <template>
-  <section class="description fixed_width">    
-    <div id="editSection" class="editSection"/>
+  <section class="description fixed_width">
+    <div v-if="loaded" id="editSection" class="editSection"/>
   </section>
 </template>
 
@@ -27,6 +27,7 @@
       },
       mounted() {
         console.log("%c Description.vue", this.$ud_store.state.consoleLog.component)
+        console.log("%c Description.vue (this.$parent.isUsersIdea)", this.$parent.isUsersIdea)
         this.setDescription();
       },
       methods: {
@@ -38,6 +39,8 @@
         },
         setDescription() {
           console.warn('run setDescription Func')
+          console.log(this.$parent.idea_data)
+          console.log("%c Description.vue (this.$parent.isUsersIdea)", this.$parent.isUsersIdea)
           if (this.$parent.isUsersIdea) {
             console.log('this.$parent.isUsersIdea TRUE')
             var editor = new Editor({
@@ -45,7 +48,7 @@
               initialEditType: 'wysiwyg',
               previewStyle: 'vertical',
               height: '740px',
-              initialValue: this.$ud_store.state.idea.description,
+              initialValue: 'this.$parent.idea_data.description',
               events: {
                 blur: () => this.onBlur(editor),
               }
@@ -55,7 +58,8 @@
             var editor = Editor.factory({
               el: document.querySelector('#editSection'),
               viewer: true,
-              initialValue: this.$ud_store.state.idea.description
+              height: '740px',
+              initialValue: 'this.$parent.idea_data.description'
             });
           }
           this.loaded = true;

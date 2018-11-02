@@ -16,7 +16,7 @@
                         <ul>
                             <li class="category"><router-link :to="`/category/${idea_data.category}`">{{idea_data.category}}</router-link></li>
                             <li :class="'status bg_' + idea_data.status">{{idea_data.status}}</li>
-                            <li class="tags" v-for="(value, key) in JSON.parse(idea_data.tags)" :key="key">
+                            <li class="tags" v-for="(value, key) in idea_current_tags" :key="key">
                                 {{value}}
                             </li>
                         </ul>
@@ -158,6 +158,8 @@
                 isUsersIdea: false,
                 subNavActive: 'Description',
                 description_to_update: '',
+                idea_current_tags: [],
+                idea_current_description: '',
                 timeline: {
                     title: '',
                     message: ''
@@ -219,10 +221,71 @@
             }
         },
         beforeMount() {
-            console.log("%c IndividualIdea.vue", this.$ud_store.state.consoleLog.component)
+            console.log("%c IndividualIdea.vue beforeMount(start)", this.$ud_store.state.consoleLog.component)
             this.$ud_store.commit('SET_IDEA_ID', this.$route.params.id );
             this.handeGetInitialData();
             this.setAsActive();
+            console.warn('this.$ud_store.state.idea (IndividualIdea.vue) => ', this.$ud_store.state.idea)
+            console.warn('this.$ud_store.state.idea.description (IndividualIdea.vue) => ', this.$ud_store.state.idea.description)
+            console.warn('this.idea_current_description (IndividualIdea.vue) => ', this.idea_current_description)
+            console.log("%c IndividualIdea.vue beforeMount(end)", this.$ud_store.state.consoleLog.component)
+            if (this.reqStatus === 200) {
+                console.log('we good')
+            }
+        },
+        mounted() {
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("this.$ud_store.state.idea", this.$ud_store.state.idea)
+             console.log("this.$ud_store.state.idea", this.$ud_store.state.idea.id)
+             console.log("this.$ud_store.state.idea", this.$ud_store.state.idea.title)
+             console.log("this.$ud_store.state.idea", this.$ud_store.state.idea.description)
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
+             console.log("%c IndividualIdea.vue mounted(end)")
         },
         watch: {
             $route: ["setAsActive"]
@@ -257,25 +320,35 @@
                     }
                 ];
             },
-            handeGetInitialData(value) {
+            handeGetInitialData() {
                 console.log('handeGetInitialData()')
-                let idea_id = this.$route.params.id
-                if (value !== undefined) {
-                    idea_id = value;
-                }
-                console.log('TCL: handeGetInitialData -> idea_id', idea_id);
-                axios.post('/ai/idea/get/' + idea_id)
-                .then(response => {
-                    this.idea_data = response.data;
-                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
+                console.log('TCL: handeGetInitialData -> idea_id', this.$route.params.id);
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/get/' + this.$route.params.id,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then(res => {
+                    console.log('handeGetInitialData res => ', res.data)
+                    console.log('handeGetInitialData res => ', res.status)
+                    this.reqStatus = res.status;
 
-                    let res_user = response.data.user_id;
+                    this.idea_data = res.data;
+                    this.idea_current_tags = JSON.parse(res.data.tags)
+                    this.idea_current_description = res.data.description;
+                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', res.data.description );
+                    console.warn('this.$ud_store.state.idea.description (IndividualIdea.vue) => ', this.$ud_store.state.idea.description)
+
+                    let res_user = res.data.user_id;
+                    console.log('TCL: handeGetInitialData -> res_user', res_user);
                     let current_user = this.$ud_store.state.data.user_data.id;
+                    console.log('TCL: handeGetInitialData -> current_user', current_user);
 
                     if (res_user === current_user) {
                         this.isUsersIdea = true;
+                        console.log('TCL: handeGetInitialData -> this.isUsersIdea', this.isUsersIdea);
                     }
-
                 });
             },
             handleDeleteIdea(e) {
@@ -288,8 +361,6 @@
 
             handleUpdateIdea() {
                 console.log('handleUpdateIdea')
-                console.log('this.description_to_update => ', this.description_to_update)
-                console.log('this.$route.params.id => ', this.$route.params.id)
                 let updatedDescriptionVal = this.description_to_update;
                 console.log('updatedDescriptionVal => ', updatedDescriptionVal)
                 axios({
@@ -303,7 +374,9 @@
                     }
                 }).then(res => {
                     console.log('handleUpdateIdea res => ', res)
-                    this.handeGetInitialData(res.data.id);
+                    console.log('handleUpdateIdea res.data => ', res.data)
+                    
+                    this.handeGetInitialData();
                 });
             },
 

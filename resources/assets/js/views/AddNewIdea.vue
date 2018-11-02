@@ -90,7 +90,7 @@
     min-height: 75px;
     display: grid;
     align-items: center;
-    margin: 0 0 48px;
+    margin: 0 auto 48px;
     > div {
         text-align: center;
         padding: 24px 0;

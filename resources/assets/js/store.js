@@ -36,10 +36,12 @@ export default new Vuex.Store({
     mutations: {
         SET_USER_DATA(state, newValue) {
             // state.data.user_data = newValue;
+            console.log('SET_USER_DATA', newValue)
             if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.user_data = newValue;
         },
         SET_USER_LOGGED_IN(state, newValue) {
+            console.log('SET_USER_LOGGED_IN', newValue)
             if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.loggedIn = newValue;
         },

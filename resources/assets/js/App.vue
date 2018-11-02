@@ -420,7 +420,6 @@ import CategoriesSlider from './components/CategoriesSlider'
             console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
         },
         mounted: function(){
-            console.log('window.offsetWidth => ', window)
             if (window.checkAuth === undefined) {
                 this.$ud_store.commit('SET_USER_DATA', "guest" );
                 this.$ud_store.commit('SET_USER_LOGGED_IN', false );

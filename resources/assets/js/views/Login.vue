@@ -92,14 +92,20 @@
                 .then(response => {
                     if (response.status === 200) {
                         console.warn('it seems /login worked')
-                        let new_data = {
-                            user_data: response.data.user,
-                            loggedIn: true
-                        }
-                        this.$ud_store.commit('SET_USER_DATA', new_data);
+                        // let new_data = {
+                        //     user_data: response.data.user,
+                        //     loggedIn: true
+                        // }
+                        console.log('TCL: handleSubmit -> response', response);
+                        console.log('TCL: handleSubmit -> response.data', response.data);
+                        console.log('TCL: handleSubmit -> response.data.user', response.data.user);
+                        // console.log('TCL: handleSubmit -> new_data', new_data);
+                        console.log('window.checkAuth => ', window.checkAuth)
+                        
+                        this.$ud_store.commit('SET_USER_DATA', response.data.user);
                         this.$ud_store.commit('SET_USER_LOGGED_IN', true);
                         console.log('we set user data + loggin status')
-                        window.location = '/';
+                        // window.location = '/';
                     }
                 })
                 .catch((error) => {
