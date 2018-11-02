@@ -1,5 +1,5 @@
 <template>
-  <section class="timeline">
+  <section class="timeline fixed_width">
     <h2>Timeline Goes Below</h2>
 
     <div>
@@ -74,6 +74,12 @@
   </div>
   </section>
 </template>
+
+<style lang="scss">
+@import '~@/_variables.scss';
+
+
+</style>
 
 <script>
     export default {

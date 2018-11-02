@@ -1,15 +1,17 @@
 <template>
-  <section class="description">
-    <h2>Description Goes Below</h2>
-    <p v-html="this.$ud_store.state.idea.description"></p>
-    <div id="viewerSection"/>
+  <section class="description fixed_width">    
+    <!-- <div id="editSection"/> -->
 
-    <hr/>
+    <div id="editSection" class="editSection"/>
 
-    <h4>if this is the users idea</h4>
-    <div class="editSection" id="editSection"/>
   </section>
 </template>
+
+<style lang="scss">
+@import '~@/_variables.scss';
+
+
+</style>
 
 <script>
     require('codemirror/lib/codemirror.css') // codemirror
@@ -34,21 +36,42 @@
         setDescription() {
           
           console.warn('run setDescription Func')
-          console.log('run =>', this.$ud_store.state.idea.description )
-          var viewer = Editor.factory({
-            el: document.querySelector('#viewerSection'),
-            viewer: true,
-            height: '500px',
-            initialValue: this.$ud_store.state.idea.description
-          });
-          var editor = new Editor({
-            el: document.querySelector('#editSection'),
-            initialEditType: 'wysiwyg',
-            previewStyle: 'vertical',
-            height: '300px',
-            initialValue: this.$ud_store.state.idea.description
-          });
+          // console.log('run =>', this.$ud_store.state.idea.description )
+          if (this.$parent.isUsersIdea) {
+            console.log('this.$parent.isUsersIdea TRUE')
+            var editor = new Editor({
+              el: document.querySelector('#editSection'),
+              initialEditType: 'wysiwyg',
+              previewStyle: 'vertical',
+              height: '740px',
+              initialValue: this.$ud_store.state.idea.description
+            });
+          } else {
+            console.log('this.$parent.isUsersIdea FALSE')
+            var editor = Editor.factory({
+              el: document.querySelector('#editSection'),
+              viewer: true,
+              initialValue: this.$ud_store.state.idea.description
+            });
+          }
+
           this.loaded = true;
+
+          // console.log('this.markdown_id (BEFORE) => ', this.markdown_id)
+          // if (this.$parent.idea_data.user_id === this.$ud_store.state.data.user_data.id) {
+          //   console.log('values match - this is the users idea');
+          //   this.markdown_id = 'editSection';
+          //   console.log('TCL: setDescription -> this.markdown_id', this.markdown_id);
+
+          //   editor = new Editor({
+          //     el: document.querySelector('#editSection'),
+          //     initialEditType: 'wysiwyg',
+          //     previewStyle: 'vertical',
+          //     height: '300px',
+          //     initialValue: this.$parent.idea_data.description
+          //   });
+          //   // this.changeMarkdownValue('editSection')
+          // }
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <section class="updates">
+  <section class="updates fixed_width">
     <h2>Updates Goes Below</h2>
     <h1>Idea ID = {{this.$route.params.id}}</h1>
 
@@ -79,6 +79,12 @@
     </section>
   </section>
 </template>
+
+<style lang="scss">
+@import '~@/_variables.scss';
+
+
+</style>
 
 <script>
     export default {

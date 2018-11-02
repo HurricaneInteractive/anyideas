@@ -34,7 +34,7 @@
 </template>
 
 <style lang="scss">
-    @import '~@/App.scss';
+@import '~@/App.scss';
 
 .meta_data {
     display: flex;
@@ -151,7 +151,7 @@
         data() {
             return {
                 idea_data: '',
-                idea_id: '5678',
+                isUsersIdea: false,
                 subNavActive: 'Description',
                 timeline: {
                     title: '',
@@ -257,9 +257,20 @@
                 axios.post('/ai/idea/get/' + this.$route.params.id)
                 .then(response => {
                     this.idea_data = response.data;
-                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
                     
-                    console.log('idea_data.tags => ', response.data.tags)
+                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
+
+                    let res_user = response.data.user_id;
+                    let current_user = this.$ud_store.state.data.user_data.id;
+
+                    console.log('res_user: ', res_user)
+                    console.log('current_user', current_user)
+
+                    if (res_user === current_user) {
+                        console.warn('THEY ARE THE FRICKEN SAME DUMBASS')
+                        this.isUsersIdea = true;
+                    }
+
                 });
             },
             handleDeleteIdea(e) {
