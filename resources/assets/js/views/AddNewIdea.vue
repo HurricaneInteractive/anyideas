@@ -49,7 +49,7 @@
 
                     <div class="tab-nav-wrapper fixed_width"> 
                         <div>
-                            <div class='tab-nav-item'>
+                            <div>
                                 Description
                             </div>
                         </div>
@@ -90,7 +90,8 @@
     min-height: 75px;
     display: grid;
     align-items: center;
-    div {
+    margin: 0 0 48px;
+    > div {
         text-align: center;
         padding: 24px 0;
         text-decoration: none;
@@ -167,7 +168,10 @@
         
         #title {
             div {
+                display: flex;
+                align-content: flex-start;
                 input {
+                    text-align: left;
                     font-size: 64px;
                     font-weight: $w-bold;
                     color: $black;

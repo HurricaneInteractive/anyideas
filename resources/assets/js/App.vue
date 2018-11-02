@@ -33,15 +33,15 @@
                             <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
                             </span> -->
                             <div class="user_items" v-on:click="openUser()">
-                                <router-link :to="{name: 'login' }">Log In</router-link>
-                                <router-link :to="{name: 'register' }">Sign Up</router-link>
+                                <router-link v-on:click="menuState(false)" :to="{name: 'login' }">Log In</router-link>
+                                <router-link v-on:click="menuState(false)" :to="{name: 'register' }">Sign Up</router-link>
                             </div>
                         </div>
                         <div v-else :class="'user ' + this.openUserState">
                             <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
                             </span> -->
                             <div class="user_items" v-on:click="openUser()">
-                                <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
+                                <router-link v-on:click="menuState(false)" :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
                                 <p @click="handleSignOut">Sign Out</p>
                             </div>
                         </div>
@@ -314,7 +314,11 @@
                             border-radius: 10px;
                             box-shadow: 0px 0px 15px 0px rgba(137, 137, 137, 0.25);
                             padding: 30px;
-                            a {
+                            p {
+                                cursor: pointer;
+                                text-decoration: underline;
+                            }
+                            a, p {
                                 display: block;
                                 text-align: center;
                                 margin: 0;
@@ -423,6 +427,7 @@ import CategoriesSlider from './components/CategoriesSlider'
         },
         methods: {
             handleSignOut() {
+                this.menuState(false);
                 axios({
                     method: 'POST',
                     url: '/logout',
@@ -445,6 +450,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 });
             },
             handleSearch(e) {
+                this.toggleSearchState(false);
                 e.preventDefault();
                 console.log('handleSearch(search_text)')
                 if (this.search_text !== '' || this.search_text !== null) {
@@ -538,24 +544,6 @@ import CategoriesSlider from './components/CategoriesSlider'
                 } else {
                     this.menuState(false)
                 }
-            },
-            // user logout function 
-            handleLogout(e) {
-                e.preventDefault()
-                axios({
-                    method: 'POST',
-                    url: '/logout'
-                })
-                .then(response => {
-                    if (response.status === 200) {
-                        this.$ud_store.commit('SET_USER_DATA', "guest" );
-                        this.$ud_store.commit('SET_USER_LOGGED_IN', false );
-                        window.location = 'index';
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
             },
         }
     }

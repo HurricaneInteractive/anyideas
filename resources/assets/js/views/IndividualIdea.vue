@@ -37,6 +37,7 @@
     @import '~@/App.scss';
 
 .meta_data {
+    display: flex;
     > ul {
         list-style-type: none;
         display: inline-flex;
@@ -48,6 +49,7 @@
         }
         .status, .category {
             font-weight: $w-bold;
+            text-transform: uppercase;
         }
         .tags {
             border: 1px solid $black;
@@ -77,6 +79,7 @@
         
         #title {
             h2 {
+                text-align: left;
                 margin: 8px 0;
                 font-size: 64px;
                 font-weight: $w-bold;
@@ -89,9 +92,10 @@
             justify-content: flex-start;
             margin: 16px 0 24px;
             p {
+                text-align: left;
                 margin: 0;
                 color: $black-light;
-                width: 448px;
+                width: 648px;
                 font-family: $font-family-sans-serif;
             }
         }
@@ -254,6 +258,8 @@
                 .then(response => {
                     this.idea_data = response.data;
                     this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
+                    
+                    console.log('idea_data.tags => ', response.data.tags)
                 });
             },
             handleDeleteIdea(e) {
