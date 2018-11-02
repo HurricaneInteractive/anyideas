@@ -29,7 +29,6 @@ export const validEmail = (email) => {
     }
 
     let re = /[^\s@]+@[^\s@]+\.[^\s@]+/;
-    console.log(re.test(email))
     if (re.test(email) === false) {
         return {
             valid: false,
@@ -70,6 +69,26 @@ export const validPassword = (password, confirm_password) => {
         return {
             valid: false,
             msg: `Password must between ${lenMin}-${lenMax} characters long`
+        }
+    }
+
+    return {
+        valid: true
+    }
+}
+
+export const validInterests = (interests) => {
+    if (interests.length === 0) {
+        return {
+            valid: false,
+            msg: 'Please select at least one interest'
+        }
+    }
+
+    if (interests.length > 3) {
+        return {
+            valid: false,
+            msg: 'You\'ve hacked the system!!'
         }
     }
 
