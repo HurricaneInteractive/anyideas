@@ -1,5 +1,5 @@
 <template>
-  <section class="updates">
+  <section class="updates fixed_width">
     <h2>Discussion Posts Go Below</h2>
     <section>
       <div>
@@ -89,6 +89,12 @@
     </section>
   </section>
 </template>
+
+<style lang="scss">
+@import '~@/_variables.scss';
+
+
+</style>
 
 <script>
     export default {

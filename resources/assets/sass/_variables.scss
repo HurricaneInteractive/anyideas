@@ -33,14 +33,14 @@ $p-color: #2C2C2C;
 $error-color: #f03d3d;
 
 // categories
-$ideation: #f03d3d;
-$planning: #ffc64a;
-$creating: #61e272;
-$evaluating: #6dedf6;
-$refining: #3490dc;
-$completed: #d13ff6;
-$on-hold: #ff4af6;
-$abandoned: #222222;
+$ideation: #F45F5F;
+$planning: #F5DB2F;
+$creating: #7CCB1F;
+$evaluating: #1FCBBE;
+$refining: #3BABDD;
+$completed: #C682D6;
+$on-hold: #FC64D9;
+$abandoned: #989898;
 
 
 
@@ -99,28 +99,28 @@ $abandoned: #222222;
   @include category($abandoned)
 };
 
-.bg_Ideation {
+.bg_ideation {
   @include bg_category($ideation)
 };
-.bg_Planning {
+.bg_planning {
   @include bg_category($planning)
 };
-.bg_Creating {
+.bg_creating {
     @include bg_category($creating)
 };
-.bg_Evaluating {
+.bg_evaluating {
   @include bg_category($evaluating)
 };
-.bg_Refining {
+.bg_refining {
   @include bg_category($refining)
 };
-.bg_Completed {
+.bg_completed {
   @include bg_category($completed)
 };
-.bg_On-hold {
+.bg_on-hold {
   @include bg_category($on-hold)
 };
-.bg_Abandoned {
+.bg_abandoned {
   @include bg_category($abandoned)
 };
 
