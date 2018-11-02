@@ -24,18 +24,25 @@ class UserController extends Controller
         return ['user' => $user, 'id' => $id];
     }
 
-    public function getUserById($id) { 
+    public function getUserById($id) {
+
+        $res = array();
+
         $user = User::all()->where('id', $id)->first();
         $meta = DB::table('user_meta_datas')->where('user_id', $id)->first();
-        $interests = json_decode($user->interests);
-        $social = json_decode($meta->social_media);
 
-        return response()->json([
-            'user' => $user,
-            'interests' => $interests,
-            'user_meta' => $meta,
-            'social_media' => $social
-        ]);
+        $res['user'] = $user;
+        $res['user_meta'] = $meta;
+        
+        if (isset($user->interests)) {
+            $res['interests'] = json_decode($user->interests);
+        }
+
+        if (!is_null($meta) && isset($meta->social_media)) {
+            $res['social_media'] = json_decode($meta->social_media);
+        }
+
+        return response()->json($res);
     }
 
     public function updateUser($user_meta) {

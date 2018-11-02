@@ -1,32 +1,50 @@
 <template>
     <div class="container">
         <div class="row">
-            <div>
+            <template>
                 <header>
-                    <img :src="this.user_data.avatar" :alt="this.user_data.avatar"/>
-                    <h1>{{user_data.user.name}}</h1>
-                    <h2>@{{user_data.user.username}}</h2>
-                    <h5>Interests</h5>
-                    <ul v-for="(value, key) in this.user_data.interests" :key="key">
-                        <li key={{key}}>
-                        {{value}}
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                        Facebook: {{user_data.social_media.facebook}}
-                        </li>
-                        <li>
-                        Instagram: {{user_data.social_media.instagram}}
-                        </li>
-                        <li>
-                        YouTube: {{user_data.social_media.youtube}}
-                        </li>
-                    </ul>
+                    <div class="fixed_width">
+                        <div class="profile-image-wrapper">
+                            <template v-if="user_data.user_meta && user_data.user_meta.avatar">
+                                <div class="profile-image" :style="{'background-image': `url(${user_data.user_meta.avatar})})`}"></div>
+                            </template>
+                            <template v-else>
+                                <div class="profile-image" :style="{'background-image': `url(${require('../../images/profile.jpg')})`}"></div>
+                            </template>
+                            <div class="total-likes">
+                                <p>{{ totalLikes }}</p><span v-html="this.$ud_store.state.icons.dart" />
+                            </div>
+                        </div>
+
+                        <div class="profile-information" v-if="user_data.user">
+                            <span class="username">@{{user_data.user.username}}</span>
+                            <h1>{{user_data.user.name}}</h1>
+                            <ul v-if="user_data.social_media" class="social-media">
+                                <li v-if="user_data.social_media.facebook">
+                                    <a :href="user_data.social_media.facebook" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.facebook" />
+                                </li>
+                                <li v-if="user_data.social_media.instagram">
+                                    <a :href="user_data.social_media.instagram" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.instagram" />
+                                </li>
+                                <li v-if="user_data.social_media.youtube">
+                                    <a :href="user_data.social_media.youtube" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.youtube" />
+                                </li>
+                            </ul>
+                        </div>
+
+                        <a
+                            href="#share-profile"
+                            class="share-profile"
+                            @click="doCopy"
+                        >
+                            <span v-if="copy_successful" v-html="this.$ud_store.state.icons.check" />
+                            <span v-else v-html="this.$ud_store.state.icons.share" />
+                        </a>
+                    </div>
                 </header>
 
                 <!-- <div v-if="this.$ud_store.state.data.user_data.id === this.user_data.user.id"> -->
-                <div>
+                <div style="display: none;">
                     <h1>Edit user meta</h1>
                     <form method="POST">
                         <div class="form-group row">
@@ -88,19 +106,127 @@
                     </form>
                 </div>
 
-                <TabNav v-bind:props="tab_nav"/>
-
-                <router-view>
-                    <!-- ideas / about -->
-                </router-view>
-            </div>
+                <div class="page-wrapper">
+                    <TabNav v-bind:props="tab_nav"/>
+                    <router-view>
+                        <!-- ideas / about -->
+                    </router-view>
+                </div>
+            </template>
         </div>
     </div>
 </template>
 
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
+    header {
+        background-color: $white;
+        padding-top: 65px;
+        > div {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            .share-profile {
+                background: white;
+                box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+                border-radius: 50%;
+                width: 42px;
+                height: 42px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                top: calc(100% - 21px);
+                right: 0;
+                color: $black;
+                span {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 24px;
+                    width: 24px;
+                    svg {
+                        display: block;
+                    }
+                }
+            }
+        }
+        .profile-image-wrapper {
+            position: relative;
+            .profile-image {
+                width: 165px;
+                height: 165px;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center center;
+                border-radius: 50%;
+            }
+            .total-likes {
+                padding: 5px 15px;
+                background: white;
+                border-radius: 200px;
+                line-height: 1;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+                position: absolute;
+                left: 50%;
+                top: calc(100% - 20px);
+                transform: translateX(-50%);
+                p {
+                    margin: 0 15px 0 0;
+                    flex-grow: 2;
+                    font-size: 1.3em;
+                    font-weight: $w-bold;
+                }
+                span {
+                    width: 34px;
+                    span svg {
+                        display: block;
+                    }
+                }
+            }
+        }
+        .profile-information {
+            margin-left: 40px;
+            .username {
+                font-size: 0.9em;
+                color: rgba($black, 0.5);
+            }
+            h1 {
+                margin: 0;
+                line-height: 1.2;
+                font-size: 2.3em;
+            }
+            .social-media {
+                margin: 7px 0 0;
+                padding: 0;
+                list-style: none;
+                &:after {
+                    content: '';
+                    clear: both;
+                    display: table;
+                }
+                li {
+                    float: left;
+                    margin-right: 15px;
+                    a, svg {
+                        display: block;
+                        width: 21px;
+                        height: 21px;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
 <script>
     import IdeaCard from '../components/IdeaCard'
     import TabNav from '../components/TabNav'
+
     export default {
         components: {
             IdeaCard, TabNav
@@ -121,12 +247,12 @@
                     website: '',
                     occupation: '',
                 },
-                user_ideas: '',
+                user_ideas: null,
                 user_data: '',
                 tab_nav: [
                     {
                         id: 'ideas',
-                        label: 'Users Ideas',
+                        label: 'Ideas',
                         route: '/ideas',
                         active: this.$route.name === 'ideas' ? true : false,
                     },
@@ -137,9 +263,9 @@
                         active: this.$route.name === 'about' ? true : false,
                     }
                 ],
+                copy_successful: false
             }
         },
-        // figure out passing MySQL data to Vue
         beforeMount() {
             this.getUserData();
         },
@@ -149,40 +275,41 @@
         methods: {
             getUserData() {
                 axios({
-                method: 'POST',
-                url: '/ai/user/get/' + this.$route.params.id,
-                }).then( (res) => {
-                    // console.log('TCL: search -> user get', res.data);
+                    method: 'POST',
+                    url: '/ai/user/get/' + this.$route.params.id,
+                })
+                .then( (res) => {
                     this.user_data = res.data
-                    console.log('TCL: beforeMount -> res.data', res.data);
                     // push to viewing_user_state store
                     this.$ud_store.commit('SET_CURRENT_USER_DATA', res.data);
-                });
+                })
+                .catch(e => console.error(e))
             },
             getUserIdeas() {
                 axios({
                     method: 'POST',
                     url: '/ai/idea/get-by-user/' + this.$route.params.id,
-                }).then( (res) => {
-                    this.user_ideas = res.data
-                    this.$ud_store.commit('SET_CURRENT_USER_IDEAS', res.data);
-                });
+                })
+                .then((res) => {
+                    if (Object.keys(res.data.ideas).length > 0) {
+                        this.user_ideas = res.data.ideas
+                    }
+                    else {
+                        this.user_ideas = null
+                    }
+
+                    this.$ud_store.commit('SET_CURRENT_USER_IDEAS', this.user_ideas);
+                })
+                .catch(e => console.error(e))
             },
             setAsActive() {
-                this.tab_nav = [
-                    {
-                        id: 'ideas',
-                        label: 'User Ideas',
-                        route: '/ideas',
-                        active: this.$route.name === 'ideas' ? true : false
-                    },
-                    {
-                        id: 'about',
-                        label: 'About',
-                        route: '',
-                        active: this.$route.name === 'about' ? true : false,
-                    }
-                ];
+                let navs = this.tab_nav
+
+                this.tab_nav.forEach((nav, i) => {
+                    navs[i].active = this.$route.name === nav.id ? true : false
+                });
+
+                this.tab_nav = navs
             },
             handleUpdateUserMeta() {
                 axios({
@@ -200,14 +327,44 @@
                     }
                 }).then( (response) => {
                     this.user_ideas = response.data
-                    console.warn('TCL: handleUpdateUserMeta -> this.user_ideas', this.user_ideas);
+                    // console.warn('TCL: handleUpdateUserMeta -> this.user_ideas', this.user_ideas);
                 });
+            },
+            doCopy(e) {
+                e.preventDefault();
+                this.$copyText(window.location.href)
+                    .then(res => {
+                        this.copy_successful = true
+                    })
+                    .catch(res => {
+                        alert('Could not copy, please try again.')
+                    })
+            }
+        },
+        computed: {
+            totalLikes() {
+                if (this.user_ideas === null || this.user_ideas.length === 0) {
+                    return 0
+                }
+                else {
+                    let total = Object.keys(this.user_ideas).reduce((total, key) => {
+                        return total + this.user_ideas[key].darts
+                    }, 0);
+
+                    return total;
+                }
+            }
+        },
+        watch: {
+            $route: function(to, from) {
+                if (to.params.id !== from.params.id) {
+                    this.getUserData();
+                    this.getUserIdeas();
+                }
+
+                this.copy_successful = false
+                this.setAsActive();
             }
         }
-
     }
 </script>
-
-<!--
-    https://api.netlify.com/build_hooks/5b8f4d8073f2cf07b2c54431 
--->

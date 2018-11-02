@@ -28,6 +28,7 @@
         "npm": "^6.4.1",
         "tui-editor": "^1.2.6",
         "typeface-pt-sans": "0.0.54",
+        "vue-clipboard2": "^0.2.1",
         "vue-cookie": "^1.1.4",
         "vue-input-tag": "^2.0.1",
         "vue-lottie": "^0.2.1",

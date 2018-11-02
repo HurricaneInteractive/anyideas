@@ -16,10 +16,57 @@
                 <div class="fixed_width" v-for="(value, key) in this.user_ideas" :key="key">
                     <IdeaCard key={{key}} :props='value'/>
                 </div>
+
+                <div class="actions" v-if="user_ideas.length < totalIdeas">
+                    <a href="#load-more" class="btn btn-load-more" :class="{ disabled: loading }" @click="loadMore">
+                        <template v-if="!loading">
+                            Load more
+                        </template>
+                        <template v-else>
+                            <loading />
+                        </template>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </template>
+
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
+    .actions {
+        margin-top: 60px;
+        text-align: center;
+        .btn {
+            color: $black;
+            background: $white;
+            padding: 18px 24px 16px;
+            text-transform: uppercase;
+            font-weight: $w-bold;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            min-width: 200px;
+            font-size: 1.3em;
+            overflow: hidden;
+            &.disabled {
+                opacity: 0.5;
+                pointer-events: none !important;
+            }
+            .loading {
+                width: 27px;
+                height: 27px;
+                > div {
+                    width: 27px !important;
+                    height: 27px !important;
+                    svg {
+                        fill: $primary !important;
+                    }
+                }
+            }
+        }
+    }
+</style>
 
 <style lang="scss">
     @import '~@/_variables.scss';
@@ -66,6 +113,7 @@
 <script>
     import Lottie from 'vue-lottie';
     import IdeaCard from '../components/IdeaCard'
+    
     export default {
         components: {
             IdeaCard
@@ -76,17 +124,22 @@
                     title: '',
                     description: ''
                 },
-                user_ideas: '',
+                user_ideas: [],
                 search_results: '',
                 errors: [],
-                ideas: []
+                ideas: [],
+                query: {
+                    limit: 5,
+                    offset: 0,
+                    not_in: []
+                },
+                totalIdeas: 99999999999,
+                getInterestedInPostsState: true,
+                loading: false
             }
         },
         mounted() {
-            axios.post('/ai/idea/get-by-user/1234')
-                .then(response => {
-                    this.user_ideas = response.data;
-            });
+            this.getInterestedInPosts();
         },
         methods: {
             searchDatabase() {
@@ -99,6 +152,73 @@
                 }).then( (response) => {
                     console.log('TCL: search -> response', response);
                 });
+            },
+            loadMore(e) {
+                e.preventDefault();
+                this.loading = true;
+
+                if (this.getInterestedInPostsState === true) {
+                    this.getInterestedInPosts();
+                }
+                else {
+                    axios({
+                        method: 'POST',
+                        url: '/ai/idea/populateFeed',
+                        data: { ...this.query }
+                    })
+                    .then(res => {
+                        this.changeData(res)
+                    })
+                    .catch(e => console.log(e))
+                }
+            },
+            getInterestedInPosts() {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/populateAuthFeed',
+                    data: {
+                        ...this.query,
+                        offset: 0
+                    }
+                })
+                .then(({data}) => {
+                    this.user_ideas.push(...data.ideas)
+                    this.query.not_in = data.not_in
+                    this.totalIdeas = data.total_count
+
+                    if (data.ideas.length < this.query.limit) {
+                        let dif = this.query.limit - data.ideas.length
+                        
+                        this.fillOutReturnResponse(dif)
+                            .then(res => {
+                                this.changeData(res)
+                            })
+                            .catch(e => console.error(e))
+                    }
+                    else {
+                        this.loading = false
+                    }
+                })
+                .catch(e => console.error(e))
+            },
+            fillOutReturnResponse(dif) {
+                return axios({
+                    method: 'POST',
+                    url: '/ai/idea/populateFeed',
+                    data: {
+                        not_in: this.query.not_in,
+                        limit: dif,
+                        offset: 0
+                    }
+                })
+            },
+            changeData(response) {
+                this.user_ideas.push(...response.data.ideas)
+                this.query.offset = response.data.offset
+                this.totalIdeas = response.data.total_count
+                this.not_in = response.data.not_in
+                this.getInterestedInPostsState = false
+                this.loading = false
             }
         }
 

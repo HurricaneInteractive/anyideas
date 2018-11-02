@@ -32,6 +32,8 @@ Route::group(['prefix' => 'ai/'], function() {
 
     //idea routes
     Route::post('/idea/get/all', 'IdeasController@getAll');
+    Route::post('/idea/populateFeed', 'IdeasController@populateHomeFeed');
+    Route::post('/idea/populateAuthFeed', 'IdeasController@getAuthUserInterestedInIdeas');
 
     Route::post('/idea/create', 'IdeasController@createIdea');
     Route::post('/idea/delete/{id}', 'IdeasController@deleteIdea');

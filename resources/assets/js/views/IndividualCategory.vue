@@ -2,7 +2,7 @@
     <div class="container fixed_width">
         <div class="row">
             <CategoryTitleCard :props="currentRoute" class="category-header"/>
-            <div class="ideas-wrapper fixed_width page-wrapper">
+            <div class="idea_wrapper page-wrapper">
               <template v-if="category_data.length !== 0">
                 <template v-for="(value, key) in category_data">
                     <IdeaCard :key="key" :props='value' />
