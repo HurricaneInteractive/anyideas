@@ -1,9 +1,6 @@
 <template>
   <section class="description fixed_width">    
-    <!-- <div id="editSection"/> -->
-
     <div id="editSection" class="editSection"/>
-
   </section>
 </template>
 
@@ -33,10 +30,14 @@
         this.setDescription();
       },
       methods: {
+        onBlur(val) {
+          console.log('onBlur')
+          let newContent = val.getMarkdown();
+          this.$parent.description_to_update = newContent;
+          console.warn('this.$parent.description_to_update => ', this.$parent.description_to_update)
+        },
         setDescription() {
-          
           console.warn('run setDescription Func')
-          // console.log('run =>', this.$ud_store.state.idea.description )
           if (this.$parent.isUsersIdea) {
             console.log('this.$parent.isUsersIdea TRUE')
             var editor = new Editor({
@@ -44,7 +45,10 @@
               initialEditType: 'wysiwyg',
               previewStyle: 'vertical',
               height: '740px',
-              initialValue: this.$ud_store.state.idea.description
+              initialValue: this.$ud_store.state.idea.description,
+              events: {
+                blur: () => this.onBlur(editor),
+              }
             });
           } else {
             console.log('this.$parent.isUsersIdea FALSE')
@@ -54,25 +58,8 @@
               initialValue: this.$ud_store.state.idea.description
             });
           }
-
           this.loaded = true;
-
-          // console.log('this.markdown_id (BEFORE) => ', this.markdown_id)
-          // if (this.$parent.idea_data.user_id === this.$ud_store.state.data.user_data.id) {
-          //   console.log('values match - this is the users idea');
-          //   this.markdown_id = 'editSection';
-          //   console.log('TCL: setDescription -> this.markdown_id', this.markdown_id);
-
-          //   editor = new Editor({
-          //     el: document.querySelector('#editSection'),
-          //     initialEditType: 'wysiwyg',
-          //     previewStyle: 'vertical',
-          //     height: '300px',
-          //     initialValue: this.$parent.idea_data.description
-          //   });
-          //   // this.changeMarkdownValue('editSection')
-          // }
-        }
+        },
       }
     }
 </script>

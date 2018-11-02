@@ -29,6 +29,10 @@
             <router-view>
                 <!-- Description / Timeline / Discussion / Updates here -->
             </router-view>
+
+            <button @click="handleUpdateIdea">
+                handleUpdateIdea
+            </button>
         </div>
     </div>
 </template>
@@ -153,6 +157,7 @@
                 idea_data: '',
                 isUsersIdea: false,
                 subNavActive: 'Description',
+                description_to_update: '',
                 timeline: {
                     title: '',
                     message: ''
@@ -252,22 +257,22 @@
                     }
                 ];
             },
-            handeGetInitialData() {
-                console.log('TCL: handeGetInitialData -> handeGetInitialData');
-                axios.post('/ai/idea/get/' + this.$route.params.id)
+            handeGetInitialData(value) {
+                console.log('handeGetInitialData()')
+                let idea_id = this.$route.params.id
+                if (value !== undefined) {
+                    idea_id = value;
+                }
+                console.log('TCL: handeGetInitialData -> idea_id', idea_id);
+                axios.post('/ai/idea/get/' + idea_id)
                 .then(response => {
                     this.idea_data = response.data;
-                    
                     this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
 
                     let res_user = response.data.user_id;
                     let current_user = this.$ud_store.state.data.user_data.id;
 
-                    console.log('res_user: ', res_user)
-                    console.log('current_user', current_user)
-
                     if (res_user === current_user) {
-                        console.warn('THEY ARE THE FRICKEN SAME DUMBASS')
                         this.isUsersIdea = true;
                     }
 
@@ -278,6 +283,27 @@
                 axios.post('/ai/idea/delete/' + this.$route.params.id)
                     .then(response => {
                         console.log('TCL: handleDeleteIdea -> response', response);
+                });
+            },
+
+            handleUpdateIdea() {
+                console.log('handleUpdateIdea')
+                console.log('this.description_to_update => ', this.description_to_update)
+                console.log('this.$route.params.id => ', this.$route.params.id)
+                let updatedDescriptionVal = this.description_to_update;
+                console.log('updatedDescriptionVal => ', updatedDescriptionVal)
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/update/' + this.$route.params.id,
+                    data: {
+                        description: updatedDescriptionVal,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then(res => {
+                    console.log('handleUpdateIdea res => ', res)
+                    this.handeGetInitialData(res.data.id);
                 });
             },
 
