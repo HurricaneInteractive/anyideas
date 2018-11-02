@@ -83,17 +83,15 @@ class IdeasController extends Controller
     {
         $user_id = Auth::id();
 
-        $category_array = json_encode($request->category);
-        $tags_array = json_encode($request->tags);
 
         $idea = new Ideas([
             'user_id' => $user_id,
             'success' => false,
             'title' => $request->title,
-            'category' => $category_array,
-            'tags' => $tags_array,
             'pitch' => $request->pitch,
+            'category' => $request->category,
             'status' => $request->status,
+            'tags' => $request->tags,
             'description' => $request->description
         ]);
 

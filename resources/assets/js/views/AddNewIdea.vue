@@ -3,19 +3,17 @@
         <div class="wrapper">
 
             <!-- <button @click="handleGetIdeaData">get all idea data</button> -->
-            <div v-if="this.$ud_store.state.data.loggedIn !== true" class="please_log_in">
-                <p>Hi user - please login to start sharing your ideas with the world</p>
-            </div>
+            
 
-            <div v-else class="form-wrapper ">
-                <form>
-                <!-- <form method="POST"> -->
+            <div  class="form-wrapper">
+                <div>
+                <!-- <div method="POST"> -->
                     <header class="header-container">
                         <div class="header-wrapper fixed_width">
                             <div class="form no-label" id="title">
                                 <label for="title">Name of Idea</label>
                                 <div>
-                                    <input placeholder="Name of Idea" type="text" class="input_reset" :v-model="idea.title" required>
+                                    <input placeholder="Name of Idea" type="text" class="input_reset" v-model="idea.title" required>
                                 </div>
                             </div>
 
@@ -23,7 +21,7 @@
                                 <label for="pitch">Elevator Pitch (240 Characters)</label>
 
                                 <div>
-                                    <textarea placeholder="Elevator Pitch (240 Characters)" type="text" class="input_reset" :v-model="idea.pitch" required/>
+                                    <textarea placeholder="Elevator Pitch (240 Characters)" type="text" class="input_reset" v-model="idea.pitch" required/>
                                 </div>
                             </div>
 
@@ -32,62 +30,98 @@
                                     <label for="status">Status</label>
 
                                     <div>
-                                        <v-select placeholder="Status" label="status" :options="options"></v-select>
+                                        <v-select v-model="idea.status" placeholder="Status" label="status" :options="options_status"></v-select>
                                     </div>
                                 </div>
 
                                 <div class="form-group row no-label" id="category">
                                     <label for="category">Category</label>
                                     <div>
-                                        <v-select :v-model="idea.category" placeholder="Category" label="categories" :options="options_category"></v-select>
+                                        <v-select v-model="idea.category" placeholder="Category" label="categories" :options="options_category"></v-select>
                                     </div>
                                 </div>
                             </div>
 
-                            <input-tag v-model="idea.tags" :tags="idea.tags" placeholder="tags"></input-tag>
                             <!-- get array out of data... somehow -->
                             <div class="form-group row" id="tags">
                                 <label for="tags">Tags</label>
 
                                 <div class="tags_select">
+                                    <input-tag v-model="idea.tags" placeholder="+"></input-tag>
                                     <!-- <v-select :options="['tags']" v-model="idea.tags" noDrop multiple taggable push-tags label="tags"></v-select> -->
                                     <!-- <v-select v-model="idea.tags" :options="idea.tags" multiple taggable push-tags></v-select> -->
                                 </div>
                             </div>
-                            <button @click="printTagsData(printTagsData)"> print tags data</button>
                         </div>
                     </header>
 
-                    <TabNav v-bind:props="tab_nav"/>
-
-                    <div class="form-group row fixed_width" id="description_container">
-
-                        <div class="description_input" id="editor">
-                            <div class="form-control editSection" :value="idea.description" @input="update" id="description" type="text" required/>
+                    <!-- <TabNav v-bind:props="tab_nav"/> -->
+                    <div class="tab-nav-wrapper"> 
+                        <div>
+                            <div class='tab-nav-item'>
+                                Description
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <!-- eslint-disable-next-line vue/valid-v-model -->`
+                    <div class="editSection" id="editSection" />
+                    <!-- <div id="viewerSection"/> -->
+                    
+                            <!-- <div class="form-control editSection" :value="idea.description" @input="update" id="editSection"/> -->
                     <div class="form-group post-idea-container fixed_width">
                         <div>
-                            <button class="btn btn-primary" @click="handleDelete">
-                                D
-                            </button>
                             <button type="submit" class="post-idea" @click="handleSubmit">
                                 <p>Post Idea</p>
                             </button>
                         </div>
                     </div>
 
-                </form>
+                    
+                </div>
+
+                <button @click="consoleLogMe">
+                    COnsole log sHizZzzz
+                </button>
             </div>
+
+            <!-- <div v-else class="please_log_in">
+                <p>Hi user - please login to start sharing your ideas with the world</p>
+            </div> -->
+
+
         </div>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
 @import '~@/_variables.scss';
+
+.tab-nav-wrapper {
+    min-height: 75px;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    div {
+        text-align: center;
+        padding: 24px 0;
+        text-decoration: none;
+        color: $black-light;
+        border-bottom: 2px solid black;
+        font-weight: $w-bold;
+    }
+}
 .tui-editor-defaultUI {
     border: none;
+}
+.vue-input-tag-wrapper {
+    background-color: transparent;
+}
+.please_log_in {
+    width: 100%;
+    padding: 25vh 25%;
+    text-align: center;
 }
 .form-wrapper {
     .no-label {
@@ -228,26 +262,21 @@
     require('tui-editor/dist/tui-editor.css'); // editor ui
     require('tui-editor/dist/tui-editor-contents.css'); // editor content
     require('highlight.js/styles/github.css'); // code block highlight
-    require('vue-select');
-
-    import InputTag from 'vue-input-tag'
 
     var Editor = require('tui-editor');
-    import TabNav from '../components/TabNav'
+
     export default {
         name: 'AddNewIdea',
-        components: {
-            TabNav
-        },
         data() {
             return {
+                loaded: false,
                 idea: {
                     title: '',
                     pitch: '',
                     status: null,
                     category: null,
-                    tags: '',
-                    description: 'Add Description',
+                    tags: [],
+                    description: 'initial val',
                 },
                 options_category: [
                     { categories: this.$capitalise(this.$ud_store.state.categories[0]) },
@@ -261,7 +290,7 @@
                     { categories: this.$capitalise(this.$ud_store.state.categories[8]) },
                     { categories: this.$capitalise(this.$ud_store.state.categories[9]) }
                 ],
-                options: [
+                options_status: [
                     { status: this.$ud_store.state.status[0] },
                     { status: this.$ud_store.state.status[1] },
                     { status: this.$ud_store.state.status[2] },
@@ -271,79 +300,61 @@
                     { status: this.$ud_store.state.status[6] },
                     { status: this.$ud_store.state.status[7] }
                 ],
-                tab_nav: [
-                    {
-                        id: 'description',
-                        label: 'Description',
-                        route: null,
-                        active: 'true',
-                    },
-                    // {
-                    //     id: 'timeline',
-                    //     label: 'Timeline',
-                    //     route: '',
-                    //     active: 'false',
-                    // },
-                    // {
-                    //     id: 'discussion',
-                    //     label: 'Discussion',
-                    //     route: '',
-                    //     active: 'false',
-                    // },
-                    // {
-                    //     id: 'updates',
-                    //     label: 'Updates',
-                    //     route: '',
-                    //     active: 'false',
-                    // }
-                ],
                 ideaData: [],
-                errors: [],
-                ideas: []
             }
         },
-        computed: {
-            // handles the description input as markdown
-            compiledMarkdown: function () {
-                return marked(this.idea.description, { sanitize: true })
-            }
-        },
+        // computed: {
+        //     // handles the description input as markdown
+        //     compiledMarkdown: function () {
+        //         return marked(this.idea.description, { sanitize: true })
+        //     }
+        // },
         mounted() {
             console.log('AddNewIdea.vue page');
             // console.log(this.idea.tags);
+            console.log(this.$ud_store.state.current_user_view.user)
+            console.log('this.idea.tags => ', this.idea.tags)
+            console.log('this.idea.description => ', this.idea.description)
             
-            this.setDescription();
+            this.setDescription(this.idea.description);
         },
         update() {
-            this.setDescription();
+            this.setDescription(this.idea.description);
         },
         methods: {
-            // delays updating the rendered markdown input
-            printTagsData(val) {
-                console.log('VAL this.idea.tags => ', val)
-                console.log('VAL this.idea.tags => ', val)
-                console.log('this.idea.tags => ', this.idea.tags)
-                console.log('this.idea.tags => ', this.idea.tags)
+            consoleLogMe() {
+                console.log('fk u')
+                console.log(
+                    'title', this.idea.title,
+                    'pitch', this.idea.pitch,
+                    'status', this.idea.status,
+                    'category', this.idea.category,
+                    'tags', this.idea.tags,
+                    'tags stringify', JSON.stringify(this.idea.tags),
+                    'description', this.idea.description
+                )
             },
-            handleDelete() {
-                window.location.reload;
+            // delays updating the rendered markdown input
+            setNewDescriptionVal(val) {
+                console.log('new value => ', val)
+            },
+            onBlur(val) {
+                console.log('onBlur')
+                let newContent = val.getMarkdown();
+                this.idea.description = newContent;
             },
             setDescription() {
-                
                 console.warn('run setDescription Func')
-                console.log('run =>', this.$ud_store.state.idea.description )
-                // var viewer = Editor.factory({
-                //     el: document.querySelector('#viewerSection'),
-                //     viewer: true,
-                //     height: '500px',
-                //     initialValue: 'Add Description (use markdown)'
-                // });
                 var editor = new Editor({
-                    el: document.querySelector('#description'),
-                    initialEditType: 'wysiwyg',
+                    el: document.querySelector('#editSection'),
+                    initialEditType: 'markdown',
                     previewStyle: 'vertical',
-                    height: '300px',
-                    initialValue: ''
+                    // height: '600px',
+                    // initialValue: '# this.$ud_store.state.current_user_view.user_meta.bio'
+                    initialValue: this.idea.description,
+                    events: {
+                        blur: () => this.onBlur(editor),
+                    }
                 });
                 this.loaded = true;
             },
@@ -353,17 +364,26 @@
             },
 
             handleSubmit() {
-                if (this.title !== '' && this.description !== null && this.pitch !== null && this.status !== null) {
+                console.log(
+                    'title', this.idea.title,
+                    'pitch', this.idea.pitch,
+                    'status', this.idea.status,
+                    'category', this.idea.category,
+                    'tags', this.idea.tags,
+                    'tags stringify', JSON.stringify(this.idea.tags),
+                    'description', this.idea.description
+                )
+                if (this.idea.title !== '' && this.idea.description !== null && this.idea.pitch !== null && this.idea.status !== null) {
                     axios({
                         method: 'POST',
                         url: '/ai/idea/create',
                         data: {
                             title: this.idea.title,
-                            category: this.idea.category,
-                            tags: this.idea.tags,
-                            description: this.idea.description,
                             pitch: this.idea.pitch,
-                            status: this.idea.status
+                            category: this.idea.category,
+                            status: this.idea.status,
+                            tags: JSON.stringify(this.idea.tags),
+                            description: this.idea.description,
                         },
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
