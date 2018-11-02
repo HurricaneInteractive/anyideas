@@ -1,13 +1,8 @@
 <template>
     <div class="container">
         <div class="wrapper">
-
-            <!-- <button @click="handleGetIdeaData">get all idea data</button> -->
-            
-
             <div  class="form-wrapper">
                 <div>
-                <!-- <div method="POST"> -->
                     <header class="header-container">
                         <div class="header-wrapper fixed_width">
                             <div class="form no-label" id="title">
@@ -37,26 +32,22 @@
                                 <div class="form-group row no-label" id="category">
                                     <label for="category">Category</label>
                                     <div>
-                                        <v-select v-model="idea.category" placeholder="Category" label="categories" :options="options_category"></v-select>
+                                        <v-select v-model="idea.category" placeholder="Category" label="category" :options="options_category"></v-select>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- get array out of data... somehow -->
                             <div class="form-group row" id="tags">
                                 <label for="tags">Tags</label>
 
                                 <div class="tags_select">
                                     <input-tag v-model="idea.tags" placeholder="+"></input-tag>
-                                    <!-- <v-select :options="['tags']" v-model="idea.tags" noDrop multiple taggable push-tags label="tags"></v-select> -->
-                                    <!-- <v-select v-model="idea.tags" :options="idea.tags" multiple taggable push-tags></v-select> -->
                                 </div>
                             </div>
                         </div>
                     </header>
 
-                    <!-- <TabNav v-bind:props="tab_nav"/> -->
-                    <div class="tab-nav-wrapper"> 
+                    <div class="tab-nav-wrapper fixed_width"> 
                         <div>
                             <div class='tab-nav-item'>
                                 Description
@@ -64,11 +55,8 @@
                         </div>
                     </div>
                     
-                    <!-- eslint-disable-next-line vue/valid-v-model -->`
-                    <div class="editSection" id="editSection" />
-                    <!-- <div id="viewerSection"/> -->
-                    
-                            <!-- <div class="form-control editSection" :value="idea.description" @input="update" id="editSection"/> -->
+                    <div class="editSection fixed_width" id="editSection" />
+
                     <div class="form-group post-idea-container fixed_width">
                         <div>
                             <button type="submit" class="post-idea" @click="handleSubmit">
@@ -79,28 +67,27 @@
 
                     
                 </div>
-
-                <button @click="consoleLogMe">
-                    COnsole log sHizZzzz
-                </button>
             </div>
-
-            <!-- <div v-else class="please_log_in">
-                <p>Hi user - please login to start sharing your ideas with the world</p>
-            </div> -->
-
 
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 @import '~@/_variables.scss';
 
+.vue-input-tag-wrapper {
+    background-color: teal;
+}
+.input-tag {
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+}
+
 .tab-nav-wrapper {
     min-height: 75px;
-    width: 100%;
     display: grid;
     align-items: center;
     div {
@@ -131,7 +118,7 @@
     }
 }
 .post-idea-container {
-    padding: 0 0 48px;
+    padding: 48px 0;
     > div {
         display: flex;
         justify-content: flex-end;
@@ -169,12 +156,13 @@
     border: none;
     background-color: transparent;
 }
+
 .header-container {
     width: 100%;
     background-color: $white;
     padding: 48px;
     .header-wrapper {
-        width: 100%;
+        /* width: 100%; */
         margin: 0 auto;
         
         #title {
@@ -182,7 +170,7 @@
                 input {
                     font-size: 64px;
                     font-weight: $w-bold;
-                    color: $grey-dark;
+                    color: $black;
                 }
             }
         }
@@ -193,7 +181,7 @@
                 align-content: flex-start;
                 justify-content: flex-start;
                 textarea {
-                    color: $grey-med;
+                    color: $black-light;
                     min-width: 448px; 
                     height: 148px;
                     font-family: $font-family-sans-serif;
@@ -210,12 +198,15 @@
             /* width: 148px; */
             font-size: 12px;
             color: black;
+            button {
+                display: none;
+            }
             > div {
                 > div {
                     > div {
                         border-radius: 0px;
                         border: none;
-                        border-bottom: 2px solid black;
+                        border-bottom: 2px solid $black;
                     }
                 }
             }
@@ -226,20 +217,36 @@
             position: absolute;
         }
         #tags {
-            width: 256px;
+            width: 428px;
             font-size: 14px;
-            color: black;
+            color: $black;
             margin: 16px 0;
+            
             .tags_select {
                 width: 100%;
                 color: white;
                 margin: 8px 0;
+                background-color: transparent;
                 /* display: inline-flex; */
+                border-bottom: 2px solid $black;
                 > div {
-                    > div {
+                    border: none;
+                    .input-tag {
+                        background-color: $black;
+                        color: white;
+                        border-radius: 50px;
+                        padding: 4px 12px;
+                        border: none;
+                        .remove {
+                            color: white;
+                        }
+                    }
+                    input {
                         border-radius: 0px;
                         border: none;
-                        border-bottom: 2px solid black;
+                        color: $grey-dark;
+                        border-radius: 50px;
+                        margin-left: 8px;
                     }
                 }
             }
@@ -273,22 +280,22 @@
                 idea: {
                     title: '',
                     pitch: '',
-                    status: null,
-                    category: null,
+                    status: '',
+                    category: '',
                     tags: [],
                     description: 'initial val',
                 },
                 options_category: [
-                    { categories: this.$capitalise(this.$ud_store.state.categories[0]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[1]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[2]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[3]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[4]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[5]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[6]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[7]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[8]) },
-                    { categories: this.$capitalise(this.$ud_store.state.categories[9]) }
+                    { category: this.$capitalise(this.$ud_store.state.categories[0]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[1]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[2]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[3]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[4]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[5]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[6]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[7]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[8]) },
+                    { category: this.$capitalise(this.$ud_store.state.categories[9]) }
                 ],
                 options_status: [
                     { status: this.$ud_store.state.status[0] },
@@ -303,41 +310,14 @@
                 ideaData: [],
             }
         },
-        // computed: {
-        //     // handles the description input as markdown
-        //     compiledMarkdown: function () {
-        //         return marked(this.idea.description, { sanitize: true })
-        //     }
-        // },
         mounted() {
-            console.log('AddNewIdea.vue page');
-            // console.log(this.idea.tags);
-            console.log(this.$ud_store.state.current_user_view.user)
-            console.log('this.idea.tags => ', this.idea.tags)
-            console.log('this.idea.description => ', this.idea.description)
-            
             this.setDescription(this.idea.description);
         },
         update() {
             this.setDescription(this.idea.description);
         },
         methods: {
-            consoleLogMe() {
-                console.log('fk u')
-                console.log(
-                    'title', this.idea.title,
-                    'pitch', this.idea.pitch,
-                    'status', this.idea.status,
-                    'category', this.idea.category,
-                    'tags', this.idea.tags,
-                    'tags stringify', JSON.stringify(this.idea.tags),
-                    'description', this.idea.description
-                )
-            },
             // delays updating the rendered markdown input
-            setNewDescriptionVal(val) {
-                console.log('new value => ', val)
-            },
             onBlur(val) {
                 console.log('onBlur')
                 let newContent = val.getMarkdown();
@@ -347,10 +327,9 @@
                 console.warn('run setDescription Func')
                 var editor = new Editor({
                     el: document.querySelector('#editSection'),
-                    initialEditType: 'markdown',
+                    initialEditType: 'wysiwyg',
                     previewStyle: 'vertical',
                     // height: '600px',
-                    // initialValue: '# this.$ud_store.state.current_user_view.user_meta.bio'
                     initialValue: this.idea.description,
                     events: {
                         blur: () => this.onBlur(editor),
@@ -364,11 +343,13 @@
             },
 
             handleSubmit() {
+                console.log('status', this.idea.status)
+                console.log('category', this.idea.category)
                 console.log(
                     'title', this.idea.title,
                     'pitch', this.idea.pitch,
-                    'status', this.idea.status,
-                    'category', this.idea.category,
+                    'status', this.idea.status.status,
+                    'category', this.idea.category.category,
                     'tags', this.idea.tags,
                     'tags stringify', JSON.stringify(this.idea.tags),
                     'description', this.idea.description
@@ -380,8 +361,8 @@
                         data: {
                             title: this.idea.title,
                             pitch: this.idea.pitch,
-                            category: this.idea.category,
-                            status: this.idea.status,
+                            category: this.idea.category.category,
+                            status: this.idea.status.status,
                             tags: JSON.stringify(this.idea.tags),
                             description: this.idea.description,
                         },
@@ -394,8 +375,10 @@
                         // if (response.status === 200) {
                         //     window.location = '/';
                         // }
+                        this.$router.push({ path: `/idea/${res.data.id}`})
+                        
                         console.log('run this.handleGetIdeaData()');
-                        this.handleGetIdeaData()
+                        // this.handleGetIdeaData()
                     })
                     .catch(error => {
                         console.log('érror is coming')

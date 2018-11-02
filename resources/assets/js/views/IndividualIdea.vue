@@ -2,26 +2,27 @@
     <div class="container">
         <div class="row">
 
-            <header>
-                <h1>{{idea_data.title}}</h1>
-                <h4>Category: {{idea_data.category}}</h4>
-                <div>Tags: {{idea_data.tags}}</div>
-                <i>{{idea_data.status}}</i>
-                <hr/>
-                <p>Pitch: {{idea_data.pitch}}</p>
-                <hr/>
-            </header>
+            <header class="header-container">
+                <div class="header-wrapper fixed_width">
+                    <div id="title">
+                        <h2>{{idea_data.title}}</h2>
+                    </div>
 
-            <section class="meta_data">
-                <ul>
-                    <li class="category"><router-link to="index">{{idea_data.category}}</router-link></li>
-                    <li :class="'status bg_' + idea_data.status"><router-link to="index">{{idea_data.status}}</router-link></li>
-                    <li class="tags">tag</li>
-                    <li class="tags">items</li>
-                    <li class="tags">go</li>
-                    <li class="tags">here</li>
-                </ul>
-            </section>
+                    <div id="elevator">
+                        <p>{{idea_data.pitch}}</p>
+                    </div>
+
+                    <section class="meta_data">
+                        <ul>
+                            <li class="category"><router-link :to="`/category/${idea_data.category}`">{{idea_data.category}}</router-link></li>
+                            <li :class="'status bg_' + idea_data.status">{{idea_data.status}}</li>
+                            <li class="tags" v-for="(value, key) in JSON.parse(idea_data.tags)" :key="key">
+                                {{value}}
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </header>
 
             <TabNav v-bind:props="tab_nav"/>
 
@@ -39,11 +40,18 @@
     > ul {
         list-style-type: none;
         display: inline-flex;
+        padding: 0;
+        margin: 0;
         .category {
             background-color: $black;
+            margin-left: 0;
+        }
+        .status, .category {
+            font-weight: $w-bold;
         }
         .tags {
-            background-color: $grey-med;
+            border: 1px solid $black;
+            color: $black;
         }
         > li {
             padding: 8px 16px;
@@ -57,6 +65,37 @@
             }
         }
     } 
+}
+
+.header-container {
+    width: 100%;
+    background-color: $white;
+    padding: 48px;
+    .header-wrapper {
+        /* width: 100%; */
+        margin: 0 auto;
+        
+        #title {
+            h2 {
+                margin: 8px 0;
+                font-size: 64px;
+                font-weight: $w-bold;
+                color: $black;
+            }
+        }
+        #elevator {
+            display: flex;
+            align-content: flex-start;
+            justify-content: flex-start;
+            margin: 16px 0 24px;
+            p {
+                margin: 0;
+                color: $black-light;
+                width: 448px;
+                font-family: $font-family-sans-serif;
+            }
+        }
+    }
 }
 
 .idea_navigation {
@@ -215,8 +254,6 @@
                 .then(response => {
                     this.idea_data = response.data;
                     this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
-                    console.warn('JUST SET STORE DESC');
-                    console.log('response -> handeGetInitialData');
                 });
             },
             handleDeleteIdea(e) {

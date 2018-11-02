@@ -27,14 +27,11 @@ import IdeaCard from '../IdeaCard.vue'
         }
       },
       mounted() {
-        console.log("User Ideas");
         this.getIdeaData();
       },
       methods: {
         getIdeaData() {
           this.user_ideas = this.$ud_store.state.current_user_ideas;
-          console.warn('this.$ud_store.state.current_user_view ', this.$ud_store.state.current_user_view.user_meta)
-          console.warn('this.$ud_store.state.current_user_ideas ', this.$ud_store.state.current_user_ideas)
         }
       }
     }
