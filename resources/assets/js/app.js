@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 import router from './routes.js';
 import VueCookie from 'vue-cookie';
 import ud_store from './store';
+import VueClipboard from 'vue-clipboard2'
 // import './components/global/_globals'
 import App from './App.vue';
 import vSelect from 'vue-select'
@@ -23,6 +24,7 @@ Vue.use( storePlugin )
 Vue.use( LoadingComp, { componentName: "loading" } )
 Vue.use( VueAnime );
 Vue.use( capitalise );
+Vue.use( VueClipboard );
 
 Vue.component('input-tag', InputTag)
 Vue.component('v-select', vSelect)
