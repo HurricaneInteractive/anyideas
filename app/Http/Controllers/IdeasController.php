@@ -101,11 +101,16 @@ class IdeasController extends Controller
     public function updateIdea(Request $request, $id)
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
-        $status = Ideas::find($id)->first()->update($filtered_idea_data);
+        $found_id = Ideas::find($id)->first()->update($filtered_idea_data);
+
+        $updated_idea = Ideas::find($id)->first();
 
         $new_idea_data = $this->getById($id);
         return response()->json([
-            'status' => $status,
+            'updated_idea' => $updated_idea,
+            'f-data' => $filtered_idea_data,
+            'id' => $id,
+            // 'status' => $status,
             'message' => $new_idea_data ? 'Idea updated' : 'Error updating Idea'
         ]);
     }
