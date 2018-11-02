@@ -37,6 +37,9 @@
                         text-transform: uppercase;
                         text-decoration: none;
                         color: $p-color;
+                        &.router-link-exact-active {
+                          font-weight: $w-bold;
+                        }
                     }
                 }
             }
