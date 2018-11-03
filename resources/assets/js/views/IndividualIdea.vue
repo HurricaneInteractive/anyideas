@@ -81,7 +81,6 @@
     .header-wrapper {
         /* width: 100%; */
         margin: 0 auto;
-        
         #title {
             h2 {
                 text-align: left;
@@ -534,23 +533,23 @@
                     }
                 });
             },
-            handleDartsAdd(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/darts/add/' + value,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                    }
-                });
-            },
-            handleTimelineDelete(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/delete/' + value,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
+            // handleDartsAdd(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/darts/add/' + value,
+            //         headers: {
+            //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            //         }
+            //     });
+            // },
+            // handleTimelineDelete(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/delete/' + value,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
             getTimelineData(e) {
                 e.preventDefault();
                 axios({

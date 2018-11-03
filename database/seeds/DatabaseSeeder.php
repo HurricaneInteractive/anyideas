@@ -183,21 +183,28 @@ class DatabaseSeeder extends Seeder
             'id' => '9876',
             'title' => 'Initial Idea',
             'message' => 'Lorem ipsum dolor amet deep croix pabst chicharrones XOXO man braid gentrify shabby chic. Disrupt trust fund whatever kale chips unicorn VHS.',
-            'darts' => '8'
+            'link' => 'google.com.au',
+            'darts' => '8',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
 
         DB::table('updates_posts')->insert([
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '1120',
-            'message' => 'updates message'
+            'message' => 'updates message',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
 
         DB::table('updates_posts')->insert([
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '1121',
-            'message' => 'updates message number two'
+            'message' => 'updates message number two',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
 
         DB::table('discussions')->insert([
@@ -205,7 +212,9 @@ class DatabaseSeeder extends Seeder
             'idea_id' => '5678',
             'id' => '2120',
             'message' => 'sick idea man - have you tried turning it around?',
-            'title' => 'Turn it around'
+            'title' => 'Turn it around',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
 
         DB::table('discussion_replies')->insert([
@@ -214,7 +223,9 @@ class DatabaseSeeder extends Seeder
             'discussions_id' => '2120',
             'id' => '5555',
             'message' => 'sick idea man - have you tried turning it around?',
-            'darts' => '2'
+            'darts' => '2',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
 
         DB::table('discussion_replies')->insert([
@@ -223,7 +234,9 @@ class DatabaseSeeder extends Seeder
             'discussions_id' => '2120',
             'id' => '5556',
             'message' => 'super dooper, have you tried green?',
-            'darts' => '48'
+            'darts' => '48',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
         ]);
     }
 }

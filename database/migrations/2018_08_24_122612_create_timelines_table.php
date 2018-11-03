@@ -24,6 +24,7 @@ class CreateTimelinesTable extends Migration
             $table->string('title');
             $table->mediumText('message');
             $table->mediumInteger('darts')->default('0');
+            $table->string('link');
             $table->timestamps();
         });
     }

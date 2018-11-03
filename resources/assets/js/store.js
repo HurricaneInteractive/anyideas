@@ -26,7 +26,7 @@ export default new Vuex.Store({
             user_data: {},
             data: {},
             description: 'default val',
-            timeline: {},
+            timeline: [],
             updates: {},
             discussion: {},
         },
@@ -58,7 +58,6 @@ export default new Vuex.Store({
         SET_IDEA_DATA(state, newValue) {
             state.current_page_idea.data = newValue;
         },
-
         SET_IDEA_DESCRIPTION(state, newValue) {
             state.current_page_idea.description = newValue;
         },
@@ -67,6 +66,9 @@ export default new Vuex.Store({
         },
         SET_IDEA_USER_INFO(state, newValue) {
             state.current_page_idea.user_data = newValue;
+        },
+        SET_IDEA_TIMELINE(state, newValue) {
+            state.current_page_idea.timeline = newValue;
         },
 
         // search
@@ -117,6 +119,7 @@ export default new Vuex.Store({
         getLoggedInState: (state) => state.data.loggedIn,
         getCurrentIdea: (state) => state.current_page_idea,
         getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
-        getCurrentIdeaDescription: (state) => state.current_page_idea.description
+        getCurrentIdeaDescription: (state) => state.current_page_idea.description,
+        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline
     }
   })
