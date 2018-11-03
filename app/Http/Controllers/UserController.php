@@ -61,4 +61,24 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        $success = Auth::attempt($credentials);
+
+        if ($success) {
+            $user = Auth::user();
+            return response()->json(array(
+                'success' => $success,
+                'user' => $user
+            ));
+        }
+        else {
+            return response()->json(array(
+                'success' => $success,
+                'message' => 'Provided details did not work, please try again.'
+            ));
+        }
+    }
 }

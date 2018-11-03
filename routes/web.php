@@ -23,6 +23,7 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/user/get/{id}', 'UserController@getUserById');
     Route::post('/user/update/{id}', 'UserController@updateUser');
     Route::post('/user/validateRegister', 'UserController@validateRegisterField');
+    Route::post('/user/auth', 'UserController@authenticate');
 
     // search routes
     Route::post('/search', 'SearchController@searchQuery');
