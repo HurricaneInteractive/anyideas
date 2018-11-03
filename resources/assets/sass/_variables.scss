@@ -49,6 +49,11 @@ $abandoned: #989898;
   width: 1080px;
   margin: 0 auto;
 }
+// used on sub routes on the idea page (not timeline)
+.sub_width {
+  width: 60%;
+  margin: 48px auto;
+}
 // to be placed on the element directly above the IdeaCard component (usually in a loop)
 .idea_wrapper {
   width: 750px;
