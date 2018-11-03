@@ -2,7 +2,7 @@
     <nav class="tab-nav-container fixed_width" >
       <div class="tab-nav-wrapper" v-bind:style="{ gridTemplateColumns: 'repeat(' + propsLength + ', 1fr)'}"> 
         <router-link
-          :to="{ name: props[key].id}"
+          :to="{ name: props[key].id, params: $route.params }"
           v-bind:class="{ active: value.active }"
           v-for="(value, key) in props"
           :key="props[key].id"
