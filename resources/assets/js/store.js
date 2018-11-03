@@ -10,7 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         data: {
-            user_data: 'guest',
+            user_data: null,
             loggedIn: false
         },
         idea: {
@@ -105,6 +105,7 @@ export default new Vuex.Store({
             else {
                 return Object.keys(state.current_user_ideas).length
             }
-        }
+        },
+        getUserData: (state) => state.data.user_data
     }
   })
