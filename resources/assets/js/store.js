@@ -102,6 +102,9 @@ export default new Vuex.Store({
         },
         SET_CURRENT_USER_INTERESTS(state, interests) {
             state.current_user_view.interests = interests
+        },
+        SET_CURRENT_USER_BIO(state, bio) {
+            state.current_user_view.user_meta.bio = bio
         }
     },
     getters: {
