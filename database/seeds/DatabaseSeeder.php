@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'username' => env('SEED_USER'),
             'email' => env('SEED_EMAIL'),
             'password' => bcrypt(env('SEED_PASS')),
-            'interests' => '[Technology", "Entertainment"]',
+            'interests' => '["Technology", "Entertainment"]',
         ]);
 
         DB::table('user_meta_datas')->insert([
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 "instagram": "instagram",
                 "youtube": "youtube.com"
             }',
-            "following" => '"2235"]',
+            "following" => '["2235"]',
             "followers" => '["1235"]',
             'likes' => '{
                 "discussions": ["1234", "1235"],
