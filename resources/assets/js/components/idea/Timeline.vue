@@ -20,6 +20,13 @@
               <input id="timeline.message" type="text" class="form-control" v-model="timeline.message" required>
               </div>
           </div>
+          <div class="form-group row">
+              <label for="timeline.link" class="col-md-4 col-form-label text-md-right">Link</label>
+
+              <div class="col-md-6">
+              <input id="timeline.link" type="text" class="form-control" v-model="timeline.link" required>
+              </div>
+          </div>
           <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
               <button type="submit" class="btn btn-primary" @click="handleTimelineSubmit">
@@ -30,12 +37,13 @@
       </form>
       <div id="timeline_data">
           <!-- @{{ timeline_data }} -->
-          <ul v-for="(value, key) in this.timeline_data" :key="key">
+          <ul v-for="(value, key) in this.currentTimelineData" :key="key">
               <li key={{key}}>
                   <h4>{{value.title}}</h4>
                   <p>{{value.message}}</p>
+                  <a :href="value.link" target="_blank">Link</a>
                   <button @click="handleTimelineDelete(value.id)">Delete entry</button>
-                  <button @click="handleDartsAdd(value.id)">{{value.darts}}</button>
+                  <button @click="handleTimelineDartsAdd(value.id)">{{value.darts}}</button>
               </li>
           </ul>
       </div>
@@ -60,6 +68,13 @@
 
               <div class="col-md-6">
               <input id="timeline_update.message" type="text" class="form-control" v-model="timeline_update.message" required>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label for="timeline_update.link" class="col-md-4 col-form-label text-md-right">Link</label>
+
+              <div class="col-md-6">
+              <input id="timeline_update.link" type="text" class="form-control" v-model="timeline_update.link" required>
               </div>
           </div>
           <div class="form-group row mb-0">
@@ -88,57 +103,94 @@
           return {
             timeline: {
               title: '',
-              message: ''
+              message: '',
+              link: ''
             },
             timeline_data: '',
             timeline_update: {
               title: '',
               message: '',
+              link: ''
             },
+          }
+      },
+      computed: {
+          currentTimelineData() {
+              return this.$ud_store.getters.getCurrentIdeaTimeline
           }
       },
       mounted() {
         console.log("%c Timeline.vue", this.$ud_store.state.consoleLog.component)
+        this.hanldeGetTimelineData();
+        console.warn('currentTimelineData => ', this.currentTimelineData)
+        console.warn('currentTimelineData => ', this.currentTimelineData[0])
+        console.warn('currentTimelineData => ', this.currentTimelineData[0].title)
+        console.warn('currentTimelineData => ', this.currentTimelineData)
       },
       methods: {
-        hanldeGetTimelineData() {
-          axios({
-              method: 'POST',
-              url: '/ai/idea/timeline/get/' + this.$route.params.id,
-          }).then( (response) => {
-              this.timeline_data = response.data;
-          });
-        },
-        handleTimelineSubmit(e){
-          e.preventDefault();
-          axios({
-              method: 'POST',
-              url: '/ai/idea/timeline/create/' + this.$route.params.id,
-              data: {
-                  title: this.timeline.title,
-                  message: this.timeline.message,
-              },
-          }).then( (response) => {
-              if (response.data === "") {
-                  alert('error creating timeline entry');
-              }
-          });
-        },
-        handleTimelineUpdate(e){
-            let value = this.timeline_update.id;
-            axios({
-                method: 'POST',
-                url: '/ai/idea/timeline/update/' + value,
-                data: {
-                    title: this.timeline_update.title,
-                    message: this.timeline_update.message,
-                },
-            }).then( (response) => {
-                if (response.data === "") {
-                    alert('error creating timeline entry');
-                }
-            });
-        },
-      }
+            hanldeGetTimelineData() {
+                console.log('run hanldeGetTimelineData()')
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/get/' + this.$route.params.id,
+                }).then( (res) => {
+                    console.log('TCL: hanldeGetTimelineData -> res', res);
+                    // push to store getter
+                    this.$ud_store.commit('SET_IDEA_TIMELINE', res.data );
+                    this.timeline_data = res.data;
+                });
+            },
+            handleTimelineSubmit(e){
+                e.preventDefault();
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/create/' + this.$route.params.id,
+                    data: {
+                        title: this.timeline.title,
+                        message: this.timeline.message,
+                        link: this.timeline.link
+                    },
+                }).then( (res) => {
+                    console.log('TCL: hanldeGetTimelineData -> res', res.data);
+                    this.hanldeGetTimelineData()
+                });
+            },
+            handleTimelineUpdate(e){
+                let value = this.timeline_update.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/update/' + value,
+                    data: {
+                        title: this.timeline_update.title,
+                        message: this.timeline_update.message,
+                        lnik: this.timeline_update.link
+                    },
+                }).then( (res) => {
+                    console.log('TCL: hanldeGetTimelineData -> res', res);
+                    this.hanldeGetTimelineData()
+                });
+            },
+            handleTimelineDelete(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/delete/' + value,
+                }).then( (res) => {
+                    console.log('delete => ', res)
+                    this.hanldeGetTimelineData()
+                });
+            },
+            handleTimelineDartsAdd(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/timeline/darts/add/' + value,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then(res => {
+                    console.log('dartsAdd => ', res)
+                    this.hanldeGetTimelineData()
+                });
+            },
+        }
     }
 </script>

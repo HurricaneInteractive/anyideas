@@ -6,6 +6,7 @@
                 <div class="header-wrapper fixed_width">
                     <div id="title">
                         <h2>{{currentIdeaData.data.title}}</h2>
+                        <h4>Posted by <router-link :to='"/user/" + currentIdeaData.user_data.id' >{{this.$capitalise(currentIdeaData.user_data.name)}}</router-link></h4>
                     </div>
 
                     <div id="elevator">
@@ -80,7 +81,6 @@
     .header-wrapper {
         /* width: 100%; */
         margin: 0 auto;
-        
         #title {
             h2 {
                 text-align: left;
@@ -88,6 +88,22 @@
                 font-size: 64px;
                 font-weight: $w-bold;
                 color: $black;
+            }
+            h4, a {
+                text-align: left;
+                margin: 8px 0;
+                font-size: 16px;
+                font-weight: $w-regular;
+                color: $grey-dark;
+                text-decoration: none;
+                a {
+                    color: $grey-dark;
+                    transition: .5s;
+                    &:hover {
+                        color: $black;
+                        transition: .5s;
+                    }
+                }
             }
         }
         #elevator {
@@ -323,6 +339,17 @@
                         this.isUsersIdea = true;
                         console.log('TCL: handeGetInitialData -> this.isUsersIdea', this.isUsersIdea);
                     }
+                    axios({
+                        method: 'POST',
+                        url: '/ai/user/get/' + res.data.user_id,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                        }
+                    }).then(res => {
+                        console.log('user of current idea');
+                        
+                        this.$ud_store.commit('SET_IDEA_USER_INFO', res.data.user );
+                    })
                 });
                 console.log("%c IndividualIdea.vue handeGetInitialData(end)", this.$ud_store.state.consoleLog.component)
 
@@ -506,23 +533,23 @@
                     }
                 });
             },
-            handleDartsAdd(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/darts/add/' + value,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                    }
-                });
-            },
-            handleTimelineDelete(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/delete/' + value,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
+            // handleDartsAdd(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/darts/add/' + value,
+            //         headers: {
+            //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            //         }
+            //     });
+            // },
+            // handleTimelineDelete(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/delete/' + value,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
             getTimelineData(e) {
                 e.preventDefault();
                 axios({

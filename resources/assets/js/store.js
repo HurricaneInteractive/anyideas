@@ -23,9 +23,10 @@ export default new Vuex.Store({
         // },
         current_page_idea: {
             user_id: '0',
+            user_data: {},
             data: {},
             description: 'default val',
-            timeline: {},
+            timeline: [],
             updates: {},
             discussion: {},
         },
@@ -43,37 +44,34 @@ export default new Vuex.Store({
     },
     mutations: {
         SET_USER_DATA(state, newValue) {
-            // state.data.user_data = newValue;
-            console.log('SET_USER_DATA', newValue)
-            if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.user_data = newValue;
         },
         SET_USER_LOGGED_IN(state, newValue) {
-            console.log('SET_USER_LOGGED_IN', newValue)
-            if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.loggedIn = newValue;
         },
         CLEAR_USER_DATA(state) {
-            if (this.debug) console.log('STORE MUTATIONS: clearUserData triggered -> ') 
             state.data.user_data = '';
             state.data.loggedIn = false;
         },
 
+        // idea 
         SET_IDEA_DATA(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_ID triggered with', newValue)
             state.current_page_idea.data = newValue;
         },
-
         SET_IDEA_DESCRIPTION(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_DESCRIPTION triggered with', newValue)
             state.current_page_idea.description = newValue;
         },
-
         SET_IDEA_USER_ID(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_USER_ID triggered with', newValue)
             state.current_page_idea.user_id = newValue;
         },
+        SET_IDEA_USER_INFO(state, newValue) {
+            state.current_page_idea.user_data = newValue;
+        },
+        SET_IDEA_TIMELINE(state, newValue) {
+            state.current_page_idea.timeline = newValue;
+        },
 
+        // search
         SET_CURRENT_SEARCH(state, newValue) {
             if (this.debug) console.log('SET_CURRENT_SEARCH triggered with', newValue)
             console.error('newValue => ', newValue)
@@ -84,11 +82,13 @@ export default new Vuex.Store({
             state.current_search = '';
         },
 
+        //category
         SET_CATEGORY_ID(state, newValue) {
             if (this.debug) console.log('SET_CATEGORY_ID triggered with', newValue)
             state.current_category_id = newValue;
         },
 
+        // current user **not currently logged in user**
         SET_CURRENT_USER_DATA(state, newValue) {
             if (this.debug) console.log('SET_CURRENT_USER_DATA triggered with', newValue)
             state.current_user_view = newValue;
@@ -122,6 +122,7 @@ export default new Vuex.Store({
         getLoggedInState: (state) => state.data.loggedIn,
         getCurrentIdea: (state) => state.current_page_idea,
         getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
-        getCurrentIdeaDescription: (state) => state.current_page_idea.description
+        getCurrentIdeaDescription: (state) => state.current_page_idea.description,
+        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline
     }
   })

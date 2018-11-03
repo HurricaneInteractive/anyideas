@@ -1,14 +1,5 @@
 <?php
 
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-
-// class Users extends Controller
-// {
-    
-// }
-
 namespace App\Http\Controllers;
 
 use App\Ideas;
@@ -45,7 +36,8 @@ class TimelineController extends Controller
             'user_id' => Auth::id(),
             'idea_id' => $idea_id,
             'title' => $request->title,
-            'message' => $request->message
+            'message' => $request->message,
+            'link' => $request->link
         ]);
 
         $timeline->save();
