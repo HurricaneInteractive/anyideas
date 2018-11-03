@@ -13,6 +13,7 @@ import InputTag from 'vue-input-tag'
 
 import storePlugin from './storePlugin'
 import LoadingComp from './plugins/loading.js'
+import NoIdeasComp from './plugins/noideas.js'
 
 import VueAnime from './plugins/vue-anime';
 import capitalise from './plugins/capitalise';
@@ -22,6 +23,7 @@ Vue.use( Vuex )
 Vue.use( VueCookie )
 Vue.use( storePlugin )
 Vue.use( LoadingComp, { componentName: "loading" } )
+Vue.use( NoIdeasComp, { componentName: "noideas" } )
 Vue.use( VueAnime );
 Vue.use( capitalise );
 Vue.use( VueClipboard );
@@ -99,6 +101,11 @@ router.beforeEach((to, from, next) => {
         if (state_user !== null) {
             router.push({ name: 'index' })
         }
+    }
+
+    // push category parmas to store for use on category page
+    if (to.name === 'category') {
+        ud_store.commit('SET_CATEGORY_ID', to.params.id );
     }
 
     next();
