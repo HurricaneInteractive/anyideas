@@ -99,6 +99,9 @@ export default new Vuex.Store({
         },
         SET_CURRENT_USER_META(state, payload) {
             state.current_user_view.user[payload.key] = payload.value
+        },
+        SET_CURRENT_USER_INTERESTS(state, interests) {
+            state.current_user_view.interests = interests
         }
     },
     getters: {

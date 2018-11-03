@@ -13,12 +13,29 @@
         </div>
       </div>
 
-      <div class="interests-wrapper" v-if="userMeta.interests">
-        <h3>Interests</h3>
-        <ul class="interests">
-          <li v-for="interest in userMeta.interests" :key="interest">
-            <router-link :to="`/category/${interest}`">{{interest}}</router-link>
-          </li>
+      <div class="interests-wrapper" v-if="userMeta && userMeta.interests">
+        <h3>Interests
+          <template v-if="showEditingControls">
+            <template v-if="!editing_interests">
+              <a href="#edit-interests" @click="toggleEditing"><span v-html="this.$ud_store.state.icons.edit" /></a>
+            </template>
+            <template v-else>
+              <a href="#edit-interests" @click="toggleEditing"><span v-html="this.$ud_store.state.icons.x" /></a>
+              <a href="#save-interests" @click="saveInterests"><span v-html="this.$ud_store.state.icons.check" /></a>
+            </template>
+          </template>
+        </h3>
+        <ul class="interests" :class="{ editing: editing_interests }">
+          <template v-if="!editing_interests">
+            <li v-for="interest in userMeta.interests" :key="interest">
+              <router-link :to="`/category/${interest}`">{{interest}}</router-link>
+            </li>
+          </template>
+          <template v-else>
+            <li v-for="category in categories" :key="category">
+              <a href="#select-interest" :class="{ active: interests.indexOf(category) > -1 }" @click="onInterestClick($event, category)">{{ category }}</a>
+            </li>
+          </template>
         </ul>
       </div>
 
@@ -84,6 +101,14 @@
     text-align: center;
     h3 {
       margin: 0 0 25px;
+      display: inline-flex;
+      align-items: center;
+      > a {
+        margin-left: 10px;
+        width: 20px;
+        height: 20px;
+        color: $black;
+      }
     }
     .interests {
       display: flex;
@@ -96,6 +121,9 @@
       li {
         margin: 0 7px 7px 0;
         font-size: 1em;
+        &:last-child {
+          margin-right: 0;
+        }
         a {
           color: white;
           font-weight: $w-bold;
@@ -105,9 +133,18 @@
           text-transform: capitalize;
           text-decoration: none;
           display: block;
-          transition: background 250ms ease-in-out;
+          transition: background 250ms ease-in-out, color 250ms ease-in-out;
+          border: 1px solid $black;
           &:hover {
             background: lighten($black, 20%);
+          }
+        }
+      }
+      &.editing {
+        li {
+          a:not(.active) {
+            background: $pure;
+            color: $black;
           }
         }
       }
@@ -116,76 +153,109 @@
 </style>
 
 <script>
-    require('codemirror/lib/codemirror.css') // codemirror
-    require('tui-editor/dist/tui-editor.css'); // editor ui
-    require('tui-editor/dist/tui-editor-contents.css'); // editor content
-    require('highlight.js/styles/github.css'); // code block highlight
+  import categories from '../../data/categories'
+  // require('codemirror/lib/codemirror.css') // codemirror
+  // require('tui-editor/dist/tui-editor.css'); // editor ui
+  // require('tui-editor/dist/tui-editor-contents.css'); // editor content
+  // require('highlight.js/styles/github.css'); // code block highlight
 
-    var Editor = require('tui-editor');
-    export default {
-      name: 'About',
-      props: ['data'],
-      data() {
-        return {
-          userOwns: false,
-          loaded: false
+  // var Editor = require('tui-editor');
+  export default {
+    name: 'About',
+    props: ['data'],
+    data() {
+      return {
+        userOwns: false,
+        loaded: false,
+        editing_interests: false,
+        interests: [],
+        categories: categories
+      }
+    },
+    beforeMount() {
+    },
+    mounted() {
+    },
+    methods: {
+      toggleEditing(e) {
+        e.preventDefault();
+
+        let state = this.editing_interests
+        this.editing_interests = !state
+
+        if (this.editing_interests === true) {
+          this.interests.push(...this.userMeta.interests)
+        }
+        else {
+          this.interests = []
         }
       },
-      beforeMount() {
-        // if (this.$ud_store.state.current_user_view.user.id === this.$ud_store.state.data.user_data.id) {
-        //   console.log('user owns this page')
-        //   this.userOwns = true;
-        // }
-      },
-      mounted() {
-        console.log("%c About.vue", this.$ud_store.state.consoleLog.component)
-        // console.log('interests => ', JSON.parse(this.$ud_store.state.current_user_view.user.interests))
-        // this.setAbout();
-      },
-      methods: {
-        // getUserData() {
+      onInterestClick(e, cat) {
+        e.preventDefault();
+        let index = this.interests.indexOf(cat)
 
-        // },
-        setAbout() {
-          console.warn('userOwns', this.userOwns)
-          console.log('run =>', this.$ud_store.state.current_user_view.user.id )
-          console.log('run =>', this.$ud_store.state.data.user_data.id )
-          console.log('run =>', this.$ud_store.state.current_user_view.user_meta.bio )
-          
-          var viewer = Editor.factory({
-            el: document.querySelector('#viewerSection'),
-            viewer: true,
-            height: '500px',
-            initialValue: '# this.$ud_store.state.current_user_view.user_meta.bio'
-          });
-          var editor = new Editor({
-            el: document.querySelector('#editSection'),
-            initialEditType: 'markdown',
-            previewStyle: 'vertical',
-            height: '600px',
-            // initialValue: this.$ud_store.state.current_user_view.user_meta.bio
-            initialValue: '# this.$ud_store.state.current_user_view.user_meta.bio'
-          });
-          this.loaded = true;
+        if (index === -1) {
+            this.interests.push(cat)
+        }
+        else {
+            this.interests.splice(index, 1);
         }
       },
-      computed: {
-        userMeta() {
-          return this.$ud_store.getters.getUserMeta
-        },
-        countIdeas() {
-          return this.$ud_store.getters.getUserIdeasCount
-        },
-        countFollowers() {
-          if (this.userMeta && this.userMeta.user_meta) {
-            if (this.userMeta.user_meta.hasOwnProperty('followers')) {
-              let follower = JSON.parse(this.userMeta.user_meta.followers)
-              return follower.length
+      saveInterests(e) {
+        e.preventDefault();
+
+        if (this.interests.length === 0) return false;
+        if (!this.showEditingControls) return false;
+
+        axios({
+          method: 'POST',
+          url: `/ai/user/update/${this.userMeta.user.id}`,
+          data: {
+            user_meta_update: {
+              interests: JSON.stringify(this.interests)
             }
           }
+        })
+        .then(({data}) => {
+          console.log('Data -> ', data)
+          if (!data.success) {
+              alert(data.msg);
+          }
+          else {
+              this.$ud_store.commit('SET_USER_DATA', data.user)
+              this.$ud_store.commit('SET_CURRENT_USER_INTERESTS', this.interests)
+              this.toggleEditing(e)
+          }
+        })
+        .catch(e => console.error(e))
+      }
+    },
+    computed: {
+      userMeta() {
+        return this.$ud_store.getters.getUserMeta
+      },
+      countIdeas() {
+        return this.$ud_store.getters.getUserIdeasCount
+      },
+      countFollowers() {
+        if (this.userMeta && this.userMeta.user_meta) {
+          if (this.userMeta.user_meta.hasOwnProperty('followers')) {
+            let follower = JSON.parse(this.userMeta.user_meta.followers)
+            return follower.length
+          }
+        }
 
-          return 0
+        return 0
+      },
+      showEditingControls() {
+        let current_logged_in_user = this.$ud_store.getters.getUserData
+        if (current_logged_in_user) {
+          return parseInt(current_logged_in_user.id) === parseInt(this.$route.params.id)
+        }
+        else {
+          return false
         }
       }
     }
+  }
 </script>
