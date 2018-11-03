@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'username' => env('SEED_USER'),
             'email' => env('SEED_EMAIL'),
             'password' => bcrypt(env('SEED_PASS')),
-            'interests' => '["basketball", "photography", "technology"]',
+            'interests' => '[Technology", "Entertainment"]',
         ]);
 
         DB::table('user_meta_datas')->insert([
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'user_two',
             'email' => 'user@user.com',
             'password' => bcrypt(env('SEED_PASS')),
-            'interests' => '["Industry & Business", "Arts, Entertainment & Culture"]',
+            'interests' => '["Business", "Entertainment"]',
         ]);
 
         

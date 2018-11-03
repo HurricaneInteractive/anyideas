@@ -13,13 +13,21 @@ export default new Vuex.Store({
             user_data: null,
             loggedIn: false
         },
-        idea: {
-            id: '',
-            title: '',
-            status: '',
-            category: '',
-            tags: '',
-            description: '',
+        // idea: {
+        //     id: '',
+        //     title: '',
+        //     status: '',
+        //     category: '',
+        //     tags: '',
+        //     description: '',
+        // },
+        current_page_idea: {
+            user_id: '0',
+            data: {},
+            description: 'default val',
+            timeline: {},
+            updates: {},
+            discussion: {},
         },
         current_search: {},
         current_category_id: '',
@@ -51,24 +59,19 @@ export default new Vuex.Store({
             state.data.loggedIn = false;
         },
 
-        SET_IDEA_ID(state, newValue) {
+        SET_IDEA_DATA(state, newValue) {
             if (this.debug) console.log('SET_IDEA_ID triggered with', newValue)
-            state.idea.id = newValue;
-        },
-
-        SET_IDEA_DARTS(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_DARTS triggered with', newValue)
-            state.idea.darts = newValue.darts;
+            state.current_page_idea.data = newValue;
         },
 
         SET_IDEA_DESCRIPTION(state, newValue) {
             if (this.debug) console.log('SET_IDEA_DESCRIPTION triggered with', newValue)
-            state.idea.description = newValue;
+            state.current_page_idea.description = newValue;
         },
-        CLEAR_IDEA(state) {
-            if (this.debug) console.log('CLEAR_IDEA triggered with', newValue)
-            state.idea.id = '';
-            state.idea.description = '';
+
+        SET_IDEA_USER_ID(state, newValue) {
+            if (this.debug) console.log('SET_IDEA_USER_ID triggered with', newValue)
+            state.current_page_idea.user_id = newValue;
         },
 
         SET_CURRENT_SEARCH(state, newValue) {
@@ -111,6 +114,8 @@ export default new Vuex.Store({
         },
         getUserData: (state) => state.data.user_data,
         getLoggedInState: (state) => state.data.loggedIn,
-
+        getCurrentIdea: (state) => state.current_page_idea,
+        getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
+        getCurrentIdeaDescription: (state) => state.current_page_idea.description
     }
   })
