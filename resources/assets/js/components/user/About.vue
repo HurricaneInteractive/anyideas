@@ -118,6 +118,9 @@
 
 <style lang="scss" scoped>
   @import '~@/_variables.scss';
+  @import '~@/components/_editor.scss';
+  @import '~@/components/_viewer.scss';
+
   .about {
     > .idea_wrapper {
       padding-top: 60px;
