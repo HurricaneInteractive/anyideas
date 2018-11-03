@@ -1,5 +1,6 @@
 <template>
     <div class="user-login-register-view">
+        <div class="underlay" :style="{'background-image': `url(${require('../../images/anyideas-icon-pattern.svg')})`}"></div>
         <div class="container">
             <header>
                 <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
@@ -39,6 +40,7 @@
                     <li v-bind:class="{ active: stepIndex === 4}"></li>
                 </ul>
             </div>
+            <a href="#back" class="cancel" @click="$router.go(-1)">Cancel</a>
         </div>
     </div>
 </template>
