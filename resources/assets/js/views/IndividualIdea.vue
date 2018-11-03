@@ -6,7 +6,7 @@
                 <div class="header-wrapper fixed_width">
                     <div id="title">
                         <h2>{{currentIdeaData.data.title}}</h2>
-                        <h4>Posted by <router-link :to='"/user/" + currentIdeaData.user_data.id' >{{this.$capitalise(currentIdeaData.user_data.name)}}</router-link></h4>
+                        <h4>Posted by <router-link :to='"/user/" + currentIdeaData.user_data.id' >{{currentIdeaData.user_data.name}}</router-link></h4>
                     </div>
 
                     <div id="elevator">
@@ -30,10 +30,6 @@
             <router-view>
                 <!-- Description / Timeline / Discussion / Updates here -->
             </router-view>
-
-            <button @click="handleUpdateIdea">
-                handleUpdateIdea
-            </button>
         </div>
     </div>
 </template>
@@ -176,23 +172,6 @@
                 description_to_update: '',
                 idea_current_tags: [],
                 idea_current_description: '',
-                timeline: {
-                    title: '',
-                    message: ''
-                },
-                discussion: {
-                    title: '',
-                    message: ''
-                },
-                timeline_update: {
-                    title: '',
-                    message: '',
-                },
-                discussion_update: {
-                    id: '',
-                    title: '',
-                    message: '',
-                },
                 update_post: {
                     title: '',
                     message: ''
@@ -202,11 +181,9 @@
                     title: '',
                     message: ''
                 },
-                timeline_data: '',
                 discussion_data: '',
                 updates_post_data: '',
                 discussion_replies_data: '',
-                errors: [],
                 ideas: [],
                 tab_nav: [
                     {
@@ -518,21 +495,21 @@
             },
 
             // timeline functions
-            handleTimelineUpdate(e){
-                let value = this.timeline_update.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/update/' + value,
-                    data: {
-                        title: this.timeline_update.title,
-                        message: this.timeline_update.message,
-                    },
-                }).then( (response) => {
-                    if (response.data === "") {
-                        alert('error creating timeline entry');
-                    }
-                });
-            },
+            // handleTimelineUpdate(e){
+            //     let value = this.timeline_update.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/update/' + value,
+            //         data: {
+            //             title: this.timeline_update.title,
+            //             message: this.timeline_update.message,
+            //         },
+            //     }).then( (response) => {
+            //         if (response.data === "") {
+            //             alert('error creating timeline entry');
+            //         }
+            //     });
+            // },
             // handleDartsAdd(value) {
             //     axios({
             //         method: 'POST',
@@ -550,42 +527,42 @@
             //         this.timeline_data = response.data;
             //     });
             // },
-            getTimelineData(e) {
-                e.preventDefault();
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/get/' + this.$route.params.id,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
+            // getTimelineData(e) {
+            //     e.preventDefault();
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/get/' + this.$route.params.id,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
             // timeline functions
-            hanldeGetTimelineData(e) {
-                e.preventDefault();
-                let idea_id = this.$route.params.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/get/' + idea_id,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
-            handleTimelineSubmit(e){
-                e.preventDefault();
-                let idea_id = this.$route.params.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/create/' + idea_id,
-                    data: {
-                        title: this.timeline.title,
-                        message: this.timeline.message,
-                    },
-                }).then( (response) => {
-                    if (response.data === "") {
-                        alert('error creating timeline entry');
-                    }
-                });
-            },
+            // hanldeGetTimelineData(e) {
+            //     e.preventDefault();
+            //     let idea_id = this.$route.params.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/get/' + idea_id,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
+            // handleTimelineSubmit(e){
+            //     e.preventDefault();
+            //     let idea_id = this.$route.params.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/create/' + idea_id,
+            //         data: {
+            //             title: this.timeline.title,
+            //             message: this.timeline.message,
+            //         },
+            //     }).then( (response) => {
+            //         if (response.data === "") {
+            //             alert('error creating timeline entry');
+            //         }
+            //     });
+            // },
         }
 
     }
