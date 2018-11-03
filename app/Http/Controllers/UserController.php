@@ -45,10 +45,44 @@ class UserController extends Controller
         return response()->json($res);
     }
 
-    public function updateUser($user_meta) {
-        $data = $request->user_meta_update;
+    public function updateUser(Request $request, $id) {
+        if (!Auth::check()) {
+            return response()->json(array(
+                'succes' => false,
+                'msg' => 'You must be logged in to perform this action'
+            ));
+        }
+
+        $data = $request['user_meta_update'];
+        $update_obj = array();
+
+        $user = User::findOrFail($id);
+        $auth_id = Auth::id();
+
+        if ($user->id !== $auth_id) {
+            return response()->json(array(
+                'success' => false,
+                'msg' => 'You can only update your own data'
+            ));
+        }
+
+        foreach($data as $key => $value) {
+            if (!is_null($value)) {
+                if (trim($value) !== '') {
+                    $update_obj[$key] = $value;
+                }
+            }
+        }
+
+        foreach($update_obj as $key => $value) {
+            $user[$key] = $value;
+        }
+
+        $user->save();
+
         return response()->json([
-            'data' => $data
+            'success' => true,
+            'user' =>  $user
         ]);
     }
 
