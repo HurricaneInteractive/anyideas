@@ -37,6 +37,8 @@ Vue.component('v-select', vSelect)
 // anime
 // capitalise
 
+/**
+ * @deprecated 03/11/18
 router.beforeEach((to, from, next) => {
     // if (to.name !== 'ideas' || to.name !== 'about') {
     //     window.scrollTo(0, 0);
@@ -46,7 +48,7 @@ router.beforeEach((to, from, next) => {
 
     console.log('window.checkAuth => ', window.checkAuth);
     console.log(' ud_store.state.data.user_data => ', ud_store.state.data.user_data);
-    console.log(' ud_store.state.data.user_data => ', ud_store.state.data.user_data.id);
+    // console.log(' ud_store.state.data.user_data => ', ud_store.state.data.user_data.id);
 
     // check if user has logged out 
     // if (window.checkAuth === undefined) {
@@ -80,9 +82,25 @@ router.beforeEach((to, from, next) => {
     }
 
 });
+ */
 
-router.beforeResolve((to, from, next) => {
-    // console.log("3. beforeResolve")
+router.beforeEach((to, from, next) => {
+    let user = ud_store.state.data.user_data,
+        window_auth = window.checkAuth
+
+    if (typeof window_auth !== 'undefined' && user === null) {
+        ud_store.commit('SET_USER_DATA', window_auth)
+        ud_store.commit('SET_USER_LOGGED_IN', true)
+    }
+
+    // This only seems to fire on load which is interesting...
+    if (to.name === 'login') {
+        let state_user = ud_store.state.data.user_data
+        if (state_user !== null) {
+            router.push({ name: 'index' })
+        }
+    }
+
     next();
 })
 
@@ -93,7 +111,7 @@ const app = new Vue({
     ud_store,
     data: {
         user_data_app: 'placeholder user_data_app string',
-        store_data: ud_store.state.data.user_data
+        // store_data: ud_store.state.data.user_data
     },
     methods: {
         getUserAuth: function() {
@@ -102,5 +120,10 @@ const app = new Vue({
     },
     mounted() {
         // console.log("anime => ", anime);
+    },
+    computed: {
+        store_data() {
+            return ud_store.getters.getUserData
+        }
     }
 });
