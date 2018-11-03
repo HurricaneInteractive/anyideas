@@ -26,7 +26,7 @@ export default new Vuex.Store({
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
         },
-        current_user_view: {},
+        current_user_view: null,
         current_user_ideas: null,
         icons: icons,
         categories: categories,
@@ -93,6 +93,9 @@ export default new Vuex.Store({
         SET_CURRENT_USER_IDEAS(state, newValue) {
             console.log('SET_CURRENT_USER_DATA triggered with', newValue)
             state.current_user_ideas = newValue;
+        },
+        SET_CURRENT_USER_META(state, payload) {
+            state.current_user_view.user[payload.key] = payload.value
         }
     },
     getters: {
@@ -106,6 +109,8 @@ export default new Vuex.Store({
                 return Object.keys(state.current_user_ideas).length
             }
         },
-        getUserData: (state) => state.data.user_data
+        getUserData: (state) => state.data.user_data,
+        getLoggedInState: (state) => state.data.loggedIn,
+
     }
   })
