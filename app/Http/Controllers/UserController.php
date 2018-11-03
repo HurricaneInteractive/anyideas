@@ -86,6 +86,72 @@ class UserController extends Controller
         ]);
     }
 
+    private function getNulledUserMeta() {
+        return array(
+            'occupation' => null,
+            'website' => null,
+            'bio' => null,
+            'avatar' => null,
+            'following' => null,
+            'followers' => null,
+            'likes' => "",
+            'social_media' => null,
+            'interests' => null
+        );
+    }
+
+    public function updateUserMetadata(Request $request, $id) {
+        if (!Auth::check()) {
+            return response()->json(array(
+                'succes' => false,
+                'msg' => 'You must be logged in to perform this action'
+            ));
+        }
+
+        $data = $request['user_meta_update'];
+        $update_obj = array();
+
+        $user = User::findOrFail($id);
+        $auth_id = Auth::id();
+
+        if ($user->id !== $auth_id) {
+            return response()->json(array(
+                'success' => false,
+                'msg' => 'You can only update your own data'
+            ));
+        }
+
+        $meta = DB::table('user_meta_datas')->where('user_id', '=', $user->id)->first();
+
+        foreach($data as $key => $value) {
+            if (!is_null($value)) {
+                $update_obj[$key] = $value;
+            }
+        }
+        
+        $nulledArray = $this->getNulledUserMeta();
+        $update_obj['user_id'] = $auth_id;
+
+        if (is_null($meta)) {
+            $update_obj = array_merge($nulledArray, $update_obj);
+            $meta = DB::table('user_meta_datas')->insert($update_obj);
+        }
+        else {
+            $update_obj = array_merge($nulledArray, $update_obj);
+            $meta = DB::table('user_meta_datas')
+                ->where('user_id', '=', $user->id)
+                ->update($update_obj);
+        }
+
+        return response()->json([
+            'success' => true,
+            'user' =>  $user,
+            'meta' => $meta,
+            'bio' => $request['user_meta_update'],
+            'update' => $update_obj
+        ]);
+    }
+
     public function validateRegisterField(Request $request) {
         $field = $request['key'];
         $value = $request['value'];

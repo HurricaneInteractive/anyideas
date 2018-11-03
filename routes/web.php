@@ -22,6 +22,7 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/user/get/current', 'IdeasController@getUser');
     Route::post('/user/get/{id}', 'UserController@getUserById');
     Route::post('/user/update/{id}', 'UserController@updateUser');
+    Route::post('/user/update.meta/{id}', 'UserController@updateUserMetadata');
     Route::post('/user/validateRegister', 'UserController@validateRegisterField');
     Route::post('/user/auth', 'UserController@authenticate');
 
