@@ -45,6 +45,8 @@
   }
   h3 {
     font-weight: $w-regular;
+    text-transform: capitalize;
+    color: $grey-dark;
   }
 }
 .interests {
