@@ -5,20 +5,33 @@
                 <header>
                     <div class="fixed_width">
                         <div class="profile-image-wrapper">
-                            <template v-if="user_data.user_meta && user_data.user_meta.avatar">
-                                <div class="profile-image" :style="{'background-image': `url(${user_data.user_meta.avatar})})`}"></div>
-                            </template>
-                            <template v-else>
-                                <div class="profile-image" :style="{'background-image': `url(${require('../../images/profile.jpg')})`}"></div>
-                            </template>
+                            <div class="profile-image" :style="{ 'background-image': `url(${getProfileImage})` }"></div>
+
                             <div class="total-likes">
                                 <p>{{ totalLikes }}</p><span v-html="this.$ud_store.state.icons.dart" />
                             </div>
                         </div>
 
-                        <div class="profile-information" v-if="user_data.user">
+                        <div class="profile-information" v-if="user_data && user_data.user">
                             <span class="username">@{{user_data.user.username}}</span>
-                            <h1>{{user_data.user.name}}</h1>
+                            <div class="name">
+                                <template v-if="!editing_name">
+                                    <h1>{{user_data.user.name}}</h1>
+                                </template>
+                                <template v-else>
+                                    <input type="text" name="name" id="name" v-model="user_meta_update.name">
+                                </template>
+
+                                <div class="actions" v-if="showEditingControls">
+                                    <template v-if="!editing_name">
+                                        <a href="#edit-name" v-html="this.$ud_store.state.icons.edit" @click="toggleEditing" />
+                                    </template>
+                                    <template v-else>
+                                        <a href="#cancel-name" v-html="this.$ud_store.state.icons.x" @click="toggleEditing" />
+                                        <a href="#save-name" v-html="this.$ud_store.state.icons.check" @click="updateUserData" />
+                                    </template>
+                                </div>
+                            </div>
                             <ul v-if="user_data.social_media" class="social-media">
                                 <li v-if="user_data.social_media.facebook">
                                     <a :href="user_data.social_media.facebook" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.facebook" />
@@ -195,10 +208,44 @@
                 font-size: 0.9em;
                 color: rgba($black, 0.5);
             }
-            h1 {
-                margin: 0;
-                line-height: 1.2;
-                font-size: 2.3em;
+            .name {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                h1 {
+                    border-bottom: 2px solid transparent;
+                }
+                h1, input[name="name"] {
+                    margin: 0;
+                    line-height: 1.2;
+                    font-size: 2.3em;
+                }
+                input[name="name"] {
+                    color: $black;
+                    border: none;
+                    border-bottom: 2px solid $black;
+                    background: transparent;
+                    padding: 0;
+                    font-weight: $w-bold;
+                    font-family: $font-family-sans-serif;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+                .actions {
+                    flex-grow: 2;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-left: 16px;
+                    a {
+                        display: block;
+                        color: $black;
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 10px;
+                    }
+                }
             }
             .social-media {
                 margin: 7px 0 0;
@@ -240,15 +287,12 @@
                 user_meta_update: {
                     name: '',
                     avatar: '',
-                    username: '',
-                    email: '',
                     interests: '',
                     social_media: '',
-                    website: '',
                     occupation: '',
                 },
                 user_ideas: null,
-                user_data: '',
+                // user_data: '',
                 tab_nav: [
                     {
                         id: 'ideas',
@@ -263,7 +307,8 @@
                         active: this.$route.name === 'about' ? true : false,
                     }
                 ],
-                copy_successful: false
+                copy_successful: false,
+                editing_name: false
             }
         },
         beforeMount() {
@@ -279,9 +324,10 @@
                     url: '/ai/user/get/' + this.$route.params.id,
                 })
                 .then( (res) => {
-                    this.user_data = res.data
+                    // this.user_data = res.data
                     // push to viewing_user_state store
                     this.$ud_store.commit('SET_CURRENT_USER_DATA', res.data);
+                    this.user_meta_update.name = this.user_data.user.name
                 })
                 .catch(e => console.error(e))
             },
@@ -339,6 +385,42 @@
                     .catch(res => {
                         alert('Could not copy, please try again.')
                     })
+            },
+            toggleEditing(e) {
+                e.preventDefault();
+                if (this.showEditingControls) {
+                    let state = this.editing_name
+                    this.editing_name = !state
+
+                    if (this.editing_name === false) {
+                        this.user_meta_update.name = this.user_data.user.name
+                    }
+                }
+            },
+            updateUserData(e) {
+                e.preventDefault();
+
+                if (!this.showEditingControls) return false
+
+                axios({
+                    method: 'POST',
+                    url: `/ai/user/update/${this.user_data.user.id}`,
+                    data: {
+                        user_meta_update: this.user_meta_update
+                    }
+                })
+                .then(({data}) => {
+                    console.log('Data -> ', data)
+                    if (!data.success) {
+                        alert(data.msg);
+                    }
+                    else {
+                        this.$ud_store.commit('SET_USER_DATA', data.user)
+                        this.$ud_store.commit('SET_CURRENT_USER_META', { key: 'name', value: data.user.name })
+                        this.toggleEditing(e)
+                    }
+                })
+                .catch(e => console.error(e))
             }
         },
         computed: {
@@ -353,6 +435,32 @@
 
                     return total;
                 }
+            },
+            currentUser() {
+                return this.$ud_store.getters.getUserData
+            },
+            showEditingControls() {
+                if (this.currentUser) {
+                    return parseInt(this.currentUser.id) === parseInt(this.$route.params.id)
+                }
+                else {
+                    return false
+                }
+            },
+            isLoggedIn() {
+                return this.$ud_store.getters.getLoggedInState
+            },
+            user_data() {
+                return this.$ud_store.getters.getUserMeta
+            },
+            getProfileImage() {
+                if (this.user_data && this.user_data.user_meta) {
+                    if (this.user_data.user_meta.hasOwnProperty('avatar')) {
+                        return this.user_data.user_meta.avatar
+                    }
+                }
+
+                return require('../../images/profile.jpg');
             }
         },
         watch: {
