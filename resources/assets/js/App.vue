@@ -2,7 +2,7 @@
 <!-- use this.$ud_store in child components -->
 <template>
     <div>
-        <nav class="navbar" v-bind:class="{profile: isUserProfilePage}">
+        <nav class="navbar" v-bind:class="{profile: isUserProfilePage}" v-if="!isLoginOrRegister">
             <div class="container fixed_width">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-left">
@@ -75,7 +75,7 @@
                 <!-- Child components run here -->
             </router-view>
         </main>
-        <footer class="footer-container">
+        <footer class="footer-container" v-if="!isLoginOrRegister">
             <div class="fixed_width">
                 <div class="footer footer-left">
                     <ul>
@@ -138,6 +138,7 @@
             fill: none;
             color: $black;
             stroke: $black;
+            cursor: pointer;
         }
         .container {
             display: flex;
@@ -231,14 +232,15 @@
                         }
                     }
                     .add-idea {
-                        border: 1px solid $black;
+                        // border: 1px solid $black;
+                        box-shadow: 0 3px 6px 0 rgba($black, 0.16);
                     }
                     .add-idea, .post-idea {
                         display: inline-flex;
                         align-content: center;
                         justify-content: center;
                         border-radius: 25px;
-                        padding: 0 16px;
+                        padding: 2px 16px;
                         text-decoration: none;
                         > span {
                             display: grid;
@@ -250,7 +252,7 @@
                             }
                         }
                         p {
-                            margin: 8px;
+                            margin: 10px 8px;
                         }
                     }
                     .user_icon {
@@ -587,6 +589,11 @@ import CategoriesSlider from './components/CategoriesSlider'
             },
             user_data() {
                 return this.$ud_store.getters.getUserData
+            },
+            isLoginOrRegister() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'login' || route.name === 'register'
+                })
             }
         }
     }
