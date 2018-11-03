@@ -456,7 +456,9 @@
             getProfileImage() {
                 if (this.user_data && this.user_data.user_meta) {
                     if (this.user_data.user_meta.hasOwnProperty('avatar')) {
-                        return this.user_data.user_meta.avatar
+                        if (this.user_data.user_meta.avatar !== null) {
+                            return this.user_data.user_meta.avatar
+                        }
                     }
                 }
 
