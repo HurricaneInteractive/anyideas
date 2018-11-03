@@ -95,10 +95,9 @@
                     </ul>
                 </div>
                 <div class="footer footer-right">
-                    <ul>
+                    <ul v-if="user_data === null">
                         <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
                         <li><router-link :to="{ name: 'register' }">Sign Up</router-link></li>
-                        
                     </ul>
                     <ul class="social-media">
                         <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.facebook" /></li>
@@ -408,31 +407,35 @@ import CategoriesSlider from './components/CategoriesSlider'
                 openSearchState: false,
                 user_id : null,
                 name : null,
-                user_data: null,
+                // user_data: null,
                 search_text: '',
-                store_state: this.$ud_store.state,
+                // store_state: this.$ud_store.state,
                 search_results: {}
             }
         },
         beforeMount: function() {
             const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
             console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
-            console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
+            
+            if (this.user_data) {
+                console.log("%c User: " + this.user_data.name + "", p)
+            }
         },
         mounted: function(){
-            if (window.checkAuth === undefined) {
-                this.$ud_store.commit('SET_USER_DATA', "guest" );
-                this.$ud_store.commit('SET_USER_LOGGED_IN', false );
-            } else {
-                this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
-                this.$ud_store.commit('SET_USER_LOGGED_IN', true );
-            }
-            // this.$ud_store.commit('SET_USER_LOGGED_IN', true);
-            if (this.$ud_store.state.data.user_data === "guest") {
+            /** Check moved to app.js `beforeEach` */
+            // if (window.checkAuth === undefined) {
+            //     this.$ud_store.commit('SET_USER_DATA', "guest" );
+            //     this.$ud_store.commit('SET_USER_LOGGED_IN', false );
+            // } else {
+            //     this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
+            //     this.$ud_store.commit('SET_USER_LOGGED_IN', true );
+            // }
+            
+            if (this.user_data === null) {
                 this.user_id = null;
             } else {
-                this.user_id = this.$ud_store.state.data.user_data.id;
-                this.name = this.$ud_store.state.data.user_data.name;
+                this.user_id = this.user_data.id;
+                this.name = this.user_data.name;
             }
         },
         methods: {
@@ -581,6 +584,9 @@ import CategoriesSlider from './components/CategoriesSlider'
                 return this.$route.matched.some(route => {
                     return route.name === 'user' || (typeof route.parent !== 'undefined' && route.parent.name === 'user')
                 })
+            },
+            user_data() {
+                return this.$ud_store.getters.getUserData
             }
         }
     }
