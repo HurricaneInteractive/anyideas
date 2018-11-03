@@ -9,7 +9,7 @@
                 </template>
               </template>
               <template v-else>
-                  <h2>No items</h2>
+                  <noideas />
               </template>
             </div>
         </div>
