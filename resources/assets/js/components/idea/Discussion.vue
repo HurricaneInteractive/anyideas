@@ -1,46 +1,36 @@
 <template>
-  <section class="updates fixed_width">
-    <h2>Discussion Posts Go Below</h2>
-    <section>
-      <div>
-        <h3>Discussions data</h3>
-        <button @click="hanldeGetDiscussionData">get discussion data from (pre filled) idea_id</button><br/><br/>   
-    
-        <form method="POST">
-            <div class="form-group row">
-                <label for="discussion.title" class="col-md-4 col-form-label text-md-right">Title</label>
+  <section class="discussion-container fixed_width">
+      <div class="sub_width">
 
-                <div class="col-md-6">
-                <input id="discussion.title" type="text" class="form-control" v-model="discussion.title" required autofocus>
-                </div>
+        <div class="new_discussion_box">
+            <div class="profile-image-wrapper">
+                <div class="profile-image" :style="{ 'background-image': `url(https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg)` }"></div>
             </div>
-            <div class="form-group row">
-                <label for="discussion.message" class="col-md-4 col-form-label text-md-right">Message</label>
+            <div class="input_discussion_container">
+                <label for="discussion.title">Title</label>
+                <input id="title" placeholder="Title" type="text" class="form-control" v-model="discussion.title" required autofocus/>
+                <label for="discussion.message">Message</label>
+                <textarea id="message" placeholder="Constructive feedback goes here" type="text" class="form-control" v-model="discussion.message" required/>
+            </div>
+            <div class="post_button" @click="handleDiscussionSubmit"><p>Post</p></div>
+        </div>
 
-                <div class="col-md-6">
-                <input id="discussion.message" type="text" class="form-control" v-model="discussion.message" required>
-                </div>
-            </div>
-            <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary" @click="handleDiscussionSubmit">
-                    Post discussion update
-                </button>
-                </div>
-            </div>
-        </form>
-
-        <div id="discussion_data">
+        <div id="discussion_data" class="all_discussion_posts">
             <!-- @{{ discussion_data }} -->
-            <ul v-for="(value, key) in this.discussion_data" :key="key">
-                <li key={{key}}>
-                    <h4>{{value.title}}</h4>
-                    <h6>{{value.id}}</h6>
-                    <p>{{value.message}}</p>
-                    <button @click="handleDiscussionDelete(value.id)">Delete entry</button>
-                    <button @click="handleDiscussionRepliesGet(value.id)">display no of replies</button>
-                </li>
-            </ul>
+            <div class="discussion_item" v-for="(value, key) in this.discussion_data" :key="key">
+                <div class="profile-image-wrapper">
+                    <!-- pull in users profile image  -->
+                    <!-- <h6>{{value.id}}</h6> -->
+                    <div class="profile-image" :style="{ 'background-image': `url(https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg)` }"></div>
+                </div>
+                <div class="discussion_data">
+                    <h2 id="title" >{{value.title}}</h2>
+                    <p id="message">{{value.message}}</p>
+                </div>
+                <div class="post_button" @click="handleDiscussionDelete(value.id)"><p>Delete</p></div>
+                <!-- make replies number dynamic -->
+                <div class="post_button" @click="handleDiscussionDelete(value.id)"><p>(2) replies</p></div>
+            </div>
             <div v-bind:style="{ paddingLeft: '48px'}">
                 <ul v-for="(value, key) in this.discussion_replies_data" :key="key">
                     <li key={{key}}>
@@ -54,7 +44,7 @@
             </div>
         </div>
 
-        <h4>update discussion item</h4>
+        <!-- <h4>update discussion item</h4>
         <form method="POST">
             <div class="form-group row">
                 <label for="discussion_update.id" class="col-md-4 col-form-label text-md-right">Discussion item to update (ID)</label>
@@ -84,15 +74,179 @@
                 </button>
                 </div>
             </div>
-        </form>
+        </form> -->
+        
     </div>
-    </section>
   </section>
 </template>
 
 <style lang="scss">
 @import '~@/_variables.scss';
 
+/* .discussion-container {
+
+} */
+.new_discussion_box {
+    position: relative;
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    margin-bottom: 48px;
+    label {
+        display: none;
+    }
+    input, textarea {
+        border: none;
+        background-color: transparent;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+        transition: .25s;
+        outline: none;
+        &:focus {
+            border: none;
+            outline: none;
+            border-bottom: 1px solid $black;
+            transition: .5s;
+        }
+    }
+    .post_button {
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        justify-self: flex-end;
+        padding: 5px 15px;
+        background: white;
+        border-radius: 200px;
+        line-height: 1;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+        p {
+            margin: 0 auto;
+            padding: 4px 0;
+            flex-grow: 2;
+            font-size: .9rem;
+            font-weight: $w-bold;
+        }
+        span {
+            width: 22px;
+            span svg {
+                display: block;
+            }
+        }
+    }
+    .profile-image-wrapper {
+        position: relative;
+        .profile-image {
+            width: 68px;
+            height: 68px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            border-radius: 50%;
+        }
+    }
+    .input_discussion_container {
+        width: 100%;
+        display: grid;
+        margin-bottom: 48px;
+        padding: 16px 28px;
+        box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+        #title {
+            width: auto;
+            position: relative;
+            color: $black;
+            margin: 0 0 8px;
+            font-size: 1.5rem;
+            font-weight: $w-bold;
+            input {
+                color: $black;
+                font-size: 1.5rem;
+                font-weight: $w-bold;
+            }
+        }
+        #message {
+            color: $grey-dark;
+            font-size: 1rem;
+            min-height: 124px;
+        }
+    }
+    
+    
+}
+.all_discussion_posts {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 36px 0;
+    .discussion_item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 20% 1fr;
+        .post_button {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            justify-self: flex-end;
+            padding: 5px 15px;
+            background: white;
+            border-radius: 200px;
+            line-height: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+            p {
+                margin: 0 auto;
+                padding: 4px 0;
+                flex-grow: 2;
+                font-size: .9rem;
+                font-weight: $w-bold;
+            }
+            span {
+                width: 22px;
+                span svg {
+                    display: block;
+                }
+            }
+        }
+        .profile-image-wrapper {
+            position: relative;
+            .profile-image {
+                width: 68px;
+                height: 68px;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center center;
+                border-radius: 50%;
+            }
+        }
+        .discussion_data {
+            width: 100%;
+            display: grid;
+            margin-bottom: 48px;
+            #title {
+                width: auto;
+                position: relative;
+                color: $black;
+                margin: 0 0 8px;
+                font-size: 1.5rem;
+                font-weight: $w-bold;
+                input {
+                    color: $black;
+                    font-size: 1.5rem;
+                    font-weight: $w-bold;
+                }
+            }
+            #message {
+                color: $grey-dark;
+                font-size: 1rem;
+                min-height: 124px;
+            }
+        }
+    }
+    
+}
 
 </style>
 
@@ -117,12 +271,25 @@
               id: '',
               title: '',
               message: ''
-            },
+            }
           }
+      },
+      computed: {
+        getIdeaUserId() {
+          return this.$ud_store.getters.getCurrentIdeaUserId
+        },
+        currentUserData() {
+          return this.$ud_store.getters.getUserData
+        },
+        currentUserMeta() {
+            return this.$ud_store.getters.getUserMeta
+        }
       },
       mounted() {
         console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
         this.hanldeGetDiscussionData();
+        console.warn('this.$ud_store.getters.getUserMeta => ', this.$ud_store.getters.getUserMeta)
+        console.warn('this.currentUserMeta => ', this.currentUserMeta)
       },
       methods: {
         handleDiscussionDelete(value) {
@@ -143,8 +310,8 @@
                     title: this.discussion_update.title,
                     message: this.discussion_update.message,
                 },
-            }).then( (response) => {
-                if (response.data === "") {
+            }).then( (res) => {
+                if (res.data === "") {
                     alert('error creating timeline entry');
                 }
             });
@@ -158,8 +325,8 @@
                     title: this.discussion.title,
                     message: this.discussion.message
                 }
-            }).then( (response) => {
-                this.discussion_data = response.data;
+            }).then( (res) => {
+                this.discussion_data = res.data;
             });
         },
         hanldeGetDiscussionData() {
@@ -167,8 +334,9 @@
             axios({
                 method: 'POST',
                 url: '/ai/idea/discussion/get/' + idea_id
-            }).then( (response) => {
-                this.discussion_data = response.data;
+            }).then( (res) => {
+                console.log('res => ', res)
+                this.discussion_data = res.data;
             });   
         },
         // discussion replies functions
@@ -176,24 +344,25 @@
             axios({
                 method: 'POST',
                 url: '/ai/idea/discussion/reply/darts/' + reply_id
-            }).then( (response) => {
-                this.discussion_replies_data = response.data;
+            }).then( (res) => {
+                this.discussion_replies_data = res.data;
             });
         },
         handleDiscussionReplyDelete(value) {
             axios({
                 method: 'POST',
                 url: '/ai/idea/discussion/reply/delete/' + value,
-            }).then( (response) => {
-                this.discussion_replies_data = response.data;
+            }).then( (res) => {
+                this.discussion_replies_data = res.data;
             });
         },
         handleDiscussionRepliesGet(value) {
             axios({
                 method: 'POST',
                 url: '/ai/idea/discussion/reply/get/all/' + value
-            }).then( (response) => {
-                this.discussion_replies_data = response.data;
+            }).then( (res) => {
+                this.discussion_replies_data = res.data;
+                console.log('res.data => ', res.data)
             }); 
         },
       }

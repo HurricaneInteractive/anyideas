@@ -57,6 +57,15 @@ class DatabaseSeeder extends Seeder
             'interests' => '["Business", "Entertainment"]',
         ]);
 
+        DB::table('users')->insert([
+            'id' => '1236',
+            'name' => 'bob',
+            'username' => 'bob_the_builder',
+            'email' => 'bob@bob.com',
+            'password' => bcrypt(env('SEED_PASS')),
+            'interests' => '["Business", "Entertainment"]',
+        ]);
+
         
 
         // creates an idea for the dev
@@ -215,6 +224,36 @@ class DatabaseSeeder extends Seeder
             'title' => 'Turn it around',
             'created_at' => '2018-11-03 20:02:18',
             'updated_at' => '2018-11-03 20:02:18'
+        ]);
+
+        DB::table('discussions')->insert([
+            'user_id' => '1235',
+            'idea_id' => '5678',
+            'id' => '2120',
+            'message' => 'sick idea man - have you tried turning it around?',
+            'title' => 'Turn it around',
+            'created_at' => '2018-11-03 20:02:18',
+            'updated_at' => '2018-11-03 20:02:18'
+        ]);
+
+        DB::table('discussions')->insert([
+            'user_id' => '1236',
+            'idea_id' => '5678',
+            'id' => '2120',
+            'message' => 'hi, Im bob?',
+            'title' => 'hi, Im bob?',
+            'created_at' => '2018-11-03 23:55:55',
+            'updated_at' => '2018-11-03 23:55:55'
+        ]);
+
+        DB::table('discussions')->insert([
+            'user_id' => '1235',
+            'idea_id' => '5678',
+            'id' => '2120',
+            'message' => 'interesting name....?',
+            'title' => 'why any.ideas? why not "got some ideas" - he',
+            'created_at' => '2018-11-03 23:55:55',
+            'updated_at' => '2018-11-03 23:55:55'
         ]);
 
         DB::table('discussion_replies')->insert([

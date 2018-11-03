@@ -19,7 +19,9 @@ class DiscussionController extends Controller
     // get all discussions from an idea_id
     public function getAll($idea_id)
     {
-        $discussions = Discussion::all()->where('idea_id', $idea_id);
+        // $discussions = Discussion::all()->where('idea_id', $idea_id);
+        $discussions = DB::table('discussions')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
+        // $timeline_entries = DB::table('timelines')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
         return $discussions;
     }
 
