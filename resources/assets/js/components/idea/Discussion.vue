@@ -4,7 +4,7 @@
 
         <div v-if="currentUser" class="new_discussion_box">
             <div class="profile-image-wrapper">
-                <div class="profile-image" :style="{ 'background-image': `url(${$ud_store.getter.getUserMeta.avatar})` }"></div>
+                <!-- <div class="profile-image" :style="{ 'background-image': `url(${$ud_store.getter.getUserMeta.avatar})` }"></div> -->
             </div>
             <div class="input_discussion_container">
                 <label for="discussion.title">Title</label>
@@ -17,35 +17,7 @@
             </div>
         </div>
 
-        
-
-
         <div v-if="showIdeaData && discussion_data && users_that_posted" id="discussion_data" class="all_discussion_posts">
-            
-            <!-- <h1>get this ID: {{currently_viewed_reply_id}}</h1>
-            <div v-if="showReply">
-                <h1>title: {{getReplies.title}}</h1>
-                <h1>message: {{getReplies.message}}</h1>
-                <h1>darts: {{getReplies.darts}}</h1>
-                <hr/>
-                <h2>{{getReplies.darts}}</h2>
-
-            </div>
-            <button @click="showReplyToggle">show reply data</button> -->
-
-            <!-- <div  v-if="getDiscussion">
-                <h1>{{getDiscussion.all_user}}</h1>
-                <h1>{{getDiscussion.all_user[2120]}}</h1>
-                <h1>{{getDiscussion.all_user[2120][0]}}</h1>
-                <h1>{{getDiscussion.all_user[2120][0].user_id}}</h1>
-                <h1>{{getDiscussion.all_user[2120][0].id}}</h1>
-                <h1>{{getDiscussion.all_user[2120][0].avatar}}</h1>
-
-            </div> -->
-            
-            <!-- <h1>{{$ud_state.getter.getUserData.name}}</h1> -->
-
-
             <!-- @{{ discussion_data }} -->
             <div class="discussion_item" v-for="(value, key) in this.getDiscussion.discussions" :key="key">
                 <router-link :to="'/user/' + getDiscussion.all_user[value.id][0].user_id" class="profile-image-wrapper">
@@ -55,22 +27,11 @@
                 <div class="discussion_data">
                     <h2 id="title" >{{value.title}}</h2>
                     <p id="message">{{value.message}}</p>
-                    <!-- <h6 id="title" >{{value.user_id}}</h6> -->
-                    <!-- <h6 id="title" >getDiscussion.all_user{{getDiscussion.all_user}}</h6> -->
-                    <!-- <h6 id="title" >{{getDiscussion.all_user[value.id]}}</h6>
-                    <h6 id="title" >{{getDiscussion.all_user[value.id][0]}}</h6>
-                    <h6 id="title" >{{getDiscussion.all_user[value.id][0].avatar}}</h6>
-                    <h6 id="title" >{{getDiscussion.all_user[value.id][0].user_id}}</h6> -->
-                    <!-- <h6 id="title" >getDiscussion.all_user[value]{{getDiscussion.all_user[2120]}}</h6> -->
-                    <!-- <h6 id="title" >{{getDiscussion.all_user[value.user_id][0]}}</h6>
-                    <h6 id="title" >{{getDiscussion.all_user[value.user_id][0].avatar}}</h6> -->
-                    <!-- <h6 id="title" >{{users_that_posted[value.user_id]}}</h6> -->
                 </div>
                 <div class="post_button" @click="handleDiscussionDelete(value.id)">
                     <p>Delete</p>
                 </div>
                 
-                <!-- make replies number dynamic -->
                 <!-- <div class="post_button" @click="openReplies(value.id)">
                     <p>({{value.replies}}) replies</p>
                 </div> -->
@@ -93,41 +54,7 @@
                     <p>hide replies</p>
                 </section> -->
             </div>
-            
         </div>
-
-        <!-- <h4>update discussion item</h4>
-        <form method="POST">
-            <div class="form-group row">
-                <label for="discussion_update.id" class="col-md-4 col-form-label text-md-right">Discussion item to update (ID)</label>
-
-                <div class="col-md-6">
-                <input id="discussion_update.id" type="text" class="form-control" v-model="discussion_update.id" required autofocus>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="discussion_update.title" class="col-md-4 col-form-label text-md-right">Title</label>
-
-                <div class="col-md-6">
-                <input id="discussion_update.title" type="text" class="form-control" v-model="discussion_update.title" required autofocus>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="discussion_update.message" class="col-md-4 col-form-label text-md-right">Message</label>
-
-                <div class="col-md-6">
-                <input id="discussion_update.message" type="text" class="form-control" v-model="discussion_update.message" required>
-                </div>
-            </div>
-            <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary" @click="handleDiscussionUpdate">
-                    Update discussion_update item
-                </button>
-                </div>
-            </div>
-        </form> -->
-        
     </div>
   </section>
 </template>
@@ -385,6 +312,7 @@
                     url: '/ai/idea/discussion/delete/' + value,
                 }).then( (response) => {
                     this.discussion_data = response.data;
+                    this.hanldeGetDiscussionData();
                 });
             },
             handleDiscussionUpdate(e){
@@ -414,6 +342,7 @@
                     }
                 }).then( (res) => {
                     this.discussion_data = res.data;
+                    this.hanldeGetDiscussionData();
                 });
             },
             
