@@ -22,6 +22,9 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/user/get/current', 'IdeasController@getUser');
     Route::post('/user/get/{id}', 'UserController@getUserById');
     Route::post('/user/update/{id}', 'UserController@updateUser');
+    Route::post('/user/update.meta/{id}', 'UserController@updateUserMetadata');
+    Route::post('/user/validateRegister', 'UserController@validateRegisterField');
+    Route::post('/user/auth', 'UserController@authenticate');
 
     // search routes
     Route::post('/search', 'SearchController@searchQuery');
@@ -31,6 +34,8 @@ Route::group(['prefix' => 'ai/'], function() {
 
     //idea routes
     Route::post('/idea/get/all', 'IdeasController@getAll');
+    Route::post('/idea/populateFeed', 'IdeasController@populateHomeFeed');
+    Route::post('/idea/populateAuthFeed', 'IdeasController@getAuthUserInterestedInIdeas');
 
     Route::post('/idea/create', 'IdeasController@createIdea');
     Route::post('/idea/delete/{id}', 'IdeasController@deleteIdea');

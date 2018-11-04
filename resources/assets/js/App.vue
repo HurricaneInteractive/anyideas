@@ -1,109 +1,117 @@
 <!-- App.vue acts as a wrapper for the whole application -->
 <!-- use this.$ud_store in child components -->
 <template>
-        <div>
-            <nav class="navbar">
-                <div class="container">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-wrapper navbar-left">
-                        <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
+    <div>
+        <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isNewIdeaPage}" v-if="!isLoginOrRegister">
+            <div class="container fixed_width">
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-wrapper navbar-left">
+                    <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
+                    </li>
+                    <!-- display full logo on larger screens -->
+                    <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
+                    </li> -->
+                </ul>
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-wrapper navbar-right">
+                    <li class="search">
+                        <li class="search_text_container">
+                            <div :class="'search_expand ' + this.openSearchState">
+                                <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
+                                <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text" />
+                            </div>
                         </li>
-                        <!-- display full logo on larger screens -->
-                        <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
-                        </li> -->
+                        <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                        </li>
+                        <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
+                        </li>
+                    </li>
+                    <li>
+                        <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
+                        </span>
+                        <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
+                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
+                            </span> -->
+                            <div class="user_items" v-on:click="openUser()">
+                                <router-link v-on:click="menuState(false)" :to="{name: 'login' }">Log In</router-link>
+                                <router-link v-on:click="menuState(false)" :to="{name: 'register' }">Sign Up</router-link>
+                            </div>
+                        </div>
+                        <div v-else :class="'user ' + this.openUserState">
+                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
+                            </span> -->
+                            <div class="user_items" v-on:click="openUser()">
+                                <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
+                                <a href="#logout" @click="handleSignOut">Sign Out</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <router-link v-if="this.$ud_store.state.data.loggedIn === false" :to="{ name: 'register' }" class="add-idea">
+                            <p> Sign Up</p>
+                        </router-link>
+
+                        <router-link v-else-if="this.$ud_store.state.data.loggedIn !== false" :to="{ name: 'add-new-idea' }" class="add-idea">
+                            <span v-html="this.$ud_store.state.icons.plus"></span>
+                            <p> IDEA</p>
+                        </router-link>
+
+                        <div v-else-if="this.$route.name === 'add-new-idea'" class="post-idea">
+                            <!-- needs to be functional on the add-new-idea page -->
+                            <p> POST IDEA</p>
+                        </div>
+
+                        <router-link v-else :to="{ name: 'register' }" class="add-idea">
+                            <p> Sign Up</p>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
+        <main>
+            <router-view>
+                <!-- Child components run here -->
+            </router-view>
+        </main>
+        <footer class="footer-container" v-if="!isLoginOrRegister">
+            <div class="fixed_width">
+                <div class="footer footer-left">
+                    <ul>
+                        <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
+                        <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
+                        <li><router-link v-if="this.$ud_store.state.data.loggedIn !== false" :to="`/user/${$ud_store.state.data.user_data.id}`">Account</router-link></li>
+                        <li><router-link v-if="this.$ud_store.state.data.loggedIn !== false" :to="`/user/${$ud_store.state.data.user_data.id}`">Settings</router-link></li>
                     </ul>
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-wrapper navbar-right">
-                        <li class="search">
-                            <li class="search_text_container">
-                                <div :class="'search_expand ' + this.openSearchState">
-                                    <span @click="handleSearch" v-html="this.$ud_store.state.icons.search" class="navbar-icon"/>
-                                    <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text">
-                                </div>
-                            </li>
-                            <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
-                            </li>
-                            <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
-                            </li>
-                        </li>
-                        <li>
-                            <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
-                            </span>
-                            <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
-                                <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                                </span>
-                                <div class="user_items" v-on:click="openUser()">
-                                    <router-link :to="{name: 'login' }">Log In</router-link>
-                                    <router-link :to="{name: 'register' }">Sign Up</router-link>
-                                </div>
-                            </div>
-                            <div v-else :class="'user ' + this.openUserState">
-                                <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                                </span>
-                                <div class="user_items" v-on:click="openUser()">
-                                    <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
-                                    <p @click="handleSignOut">Sign Out</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li v-if="this.$route.name === 'add-new-idea'">
-                            <div v-on:click="openUser()" class="post-idea">
-                                <p> POST IDEA</p>
-                            </div>
-                        </li>
-                        <li v-else>
-                            <router-link :to="{ name: 'add-new-idea' }" class="add-idea">
-                                <span v-html="this.$ud_store.state.icons.plus"></span>
-                                <p> Idea</p>
-                            </router-link>
-                        </li>
+                    <ul>
+                        <li><router-link :to="{ name: 'login' }">About</router-link></li>
+                        <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
+                    </ul>
+                    
+                    <ul>
+                        <li><a href="https://sunset-studios.netlify.com" target="_blank" rel="noopener noreferrer">Built by <span>Sunset Studios</span></a></li>
                     </ul>
                 </div>
-            </nav>
-            <CategoriesSlider v-if="this.$route.name === 'index' || this.$route.name === 'category'"/>
-            <main>
-                <router-view>
-                    <!-- Child components run here -->
-                </router-view>
-            </main>
-            <footer class="footer-container">
-                <div class="fixed_width">
-                    <div class="footer footer-left">
-                        <ul>
-                            <li><router-link :to="{ name: 'index' }">News Feed</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Discover</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Success Stories</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Account</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Settings</router-link></li>
-                        </ul>
-                        <ul>
-                            <li><router-link :to="{ name: 'login' }">About</router-link></li>
-                            <li><router-link :to="{ name: 'login' }">Legalities</router-link></li>
-                        </ul>
-                        
-                        <ul>
-                            <li><a href="#">Built by <span>Sunset Studios</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="footer footer-right">
-                        <ul>
-                            <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
-                            <li><router-link :to="{ name: 'index' }">Sign Up</router-link></li>
-                            
-                        </ul>
-                        <ul>
-                            <li><a href="https://facebook.com">FB icon</a></li>
-                            <li><a href="https://facebook.com">Twitter icon</a></li>
-                            <li><a href="https://facebook.com">Instagram icon</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-logo">
-                        <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
-                    </div>
+                <div class="footer footer-right">
+                    <ul v-if="user_data === null">
+                        <li><router-link :to="{ name: 'login' }">Log In</router-link></li>
+                        <li><router-link :to="{ name: 'register' }">Sign Up</router-link></li>
+                    </ul>
+                    <ul class="social-media">
+                        <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.facebook" /></li>
+                        <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.instagram" /></li>
+                        <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" v-html="this.$ud_store.state.icons.social.youtube" /></li>
+                    </ul>
                 </div>
-            </footer>
-        </div>
-    </template>
+                <div class="footer-logo">
+                    <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
+                </div>
+            </div>
+        </footer>
+    </div>
+</template>
 
 <!-- App.vue is imported into app.blade.php -->
 
@@ -123,14 +131,19 @@
     }
 
     .navbar {
+        &.profile,
+        &.addidea {
+            background: $white;
+        }
         .navbar-icon {
             fill: none;
             color: $black;
             stroke: $black;
+            cursor: pointer;
         }
         .container {
             display: flex;
-            margin: 35px;
+            padding: 35px 0;
             min-height: 64px;
             .navbar-wrapper {
                 list-style-type: none;
@@ -220,14 +233,15 @@
                         }
                     }
                     .add-idea {
-                        border: 1px solid $black;
+                        // border: 1px solid $black;
+                        box-shadow: 0 3px 6px 0 rgba($black, 0.16);
                     }
                     .add-idea, .post-idea {
                         display: inline-flex;
                         align-content: center;
                         justify-content: center;
                         border-radius: 25px;
-                        padding: 0 16px;
+                        padding: 2px 16px;
                         text-decoration: none;
                         > span {
                             display: grid;
@@ -239,7 +253,7 @@
                             }
                         }
                         p {
-                            margin: 8px;
+                            margin: 10px 8px;
                         }
                     }
                     .user_icon {
@@ -256,12 +270,14 @@
                     }
                     .user {
                         position: absolute;
-                        top: 15px;
-                        width: 128px;
-                        height: 128px;
+                        // top: 15px;
+                        top: 100%;
+                        // width: 128px;
+                        // height: 128px;
                         z-index: -100;
-                        left: -200%;
+                        left: calc(50% - 100px);
                         opacity: 0;
+                        // transform: translateX(-50%);
                         .arrow {
                             position: relative;
                             bottom: -12%;
@@ -291,18 +307,31 @@
                         }
                         .user_items {
                             z-index: 100;
-                            height: 100%;
+                            // height: 100%;
+                            min-width: 200px;
                             width: 100%;
                             position: relative;
                             background-color: $white;
                             opacity: 1;
-                            display: grid;
-                            align-content: center;
-                            justify-content: center;
+                            // display: grid;
+                            // align-content: center;
+                            // justify-content: center;
                             border-radius: 10px;
                             box-shadow: 0px 0px 15px 0px rgba(137, 137, 137, 0.25);
+                            padding: 30px;
                             p {
-                                margin: 0 auto;
+                                cursor: pointer;
+                                text-decoration: underline;
+                            }
+                            a, p {
+                                display: block;
+                                text-align: center;
+                                margin: 0;
+                                &:not(:first-child) {
+                                    padding-top: 15px;
+                                    margin-top: 15px;
+                                    border-top: 1px solid rgba($black, 0.05);
+                                }
                             }
                         }
                     }
@@ -344,6 +373,14 @@
                         }
                     }
                 }
+                .social-media {
+                    a, svg {
+                        display: block;
+                        width: 21px;
+                        height: 21px;
+                        margin-left: auto;
+                    }
+                }
             }
             .footer-logo {
                 grid-area: 2 / 1 / 2 / 3;
@@ -373,36 +410,41 @@ import CategoriesSlider from './components/CategoriesSlider'
                 openSearchState: false,
                 user_id : null,
                 name : null,
-                user_data: null,
+                // user_data: null,
                 search_text: '',
-                store_state: this.$ud_store.state,
+                // store_state: this.$ud_store.state,
                 search_results: {}
             }
         },
         beforeMount: function() {
             const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
             console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
-            console.log("%c User: " + this.$ud_store.state.data.user_data.name + "", p)
+            
+            if (this.user_data) {
+                console.log("%c User: " + this.user_data.name + "", p)
+            }
         },
         mounted: function(){
-            console.log('window.offsetWidth => ', window)
-            if (window.checkAuth === undefined) {
-                this.$ud_store.commit('SET_USER_DATA', "guest" );
-                this.$ud_store.commit('SET_USER_LOGGED_IN', false );
-            } else {
-                this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
-                this.$ud_store.commit('SET_USER_LOGGED_IN', true );
-            }
-            // this.$ud_store.commit('SET_USER_LOGGED_IN', true);
-            if (this.$ud_store.state.data.user_data === "guest") {
+            /** Check moved to app.js `beforeEach` */
+            // if (window.checkAuth === undefined) {
+            //     this.$ud_store.commit('SET_USER_DATA', "guest" );
+            //     this.$ud_store.commit('SET_USER_LOGGED_IN', false );
+            // } else {
+            //     this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
+            //     this.$ud_store.commit('SET_USER_LOGGED_IN', true );
+            // }
+            
+            if (this.user_data === null) {
                 this.user_id = null;
             } else {
-                this.user_id = this.$ud_store.state.data.user_data.id;
-                this.name = this.$ud_store.state.data.user_data.name;
+                this.user_id = this.user_data.id;
+                this.name = this.user_data.name;
             }
         },
         methods: {
-            handleSignOut() {
+            handleSignOut(e) {
+                e.preventDefault();
+                this.menuState(false);
                 axios({
                     method: 'POST',
                     url: '/logout',
@@ -417,7 +459,8 @@ import CategoriesSlider from './components/CategoriesSlider'
                     if (res.status === 200) {
                         this.$ud_store.commit('SET_USER_DATA', 'guest');
                         this.$ud_store.commit('SET_USER_LOGGED_IN', false);
-                        this.$router.push({name: 'home'})
+                        // this.$router.push({name: 'home'})
+                        window.location = '/'
                     }
                 })
                 .catch(error => {
@@ -425,6 +468,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 });
             },
             handleSearch(e) {
+                this.toggleSearchState(false);
                 e.preventDefault();
                 console.log('handleSearch(search_text)')
                 if (this.search_text !== '' || this.search_text !== null) {
@@ -537,6 +581,26 @@ import CategoriesSlider from './components/CategoriesSlider'
                     console.error(error);
                 });
             },
+        },
+        computed: {
+            isUserProfilePage() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'user' || (typeof route.parent !== 'undefined' && route.parent.name === 'user')
+                })
+            },
+            isNewIdeaPage() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'add-new-idea'
+                })
+            },
+            user_data() {
+                return this.$ud_store.getters.getUserData
+            },
+            isLoginOrRegister() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'login' || route.name === 'register'
+                })
+            }
         }
     }
 </script>

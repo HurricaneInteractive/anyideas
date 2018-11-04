@@ -1,89 +1,136 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Login</div>
-                    <h2>log in page</h2>
-                    <h3>{{$ud_store.state.data.user_data.name}}</h3>
-
-                    <div class="card-body">
-                        <form method="POST" action="/login">
-
-                            <div class="form-group row">
-                                <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" v-model="email" required autofocus>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" v-model="password" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" @click="handleSubmit">
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-
-                        </form>
+    <div class="user-login-register-view">
+        <div class="underlay" :style="{'background-image': `url(${require('../../images/anyideas-icon-pattern.svg')})`}"></div>
+        <div class="container">
+            <header>
+                <router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_big"></router-link>
+            </header>
+            <div class="steps-container">
+                <div class="step">
+                    <blockquote>
+                        <p>“Great minds discuss ideas; average minds discuss events; small minds discuss people.”</p>
+                        <cite>ELEANOR ROOSEVELT</cite>
+                    </blockquote>
+                    <div class="form-block">
+                        <div class="input-field">
+                            <input
+                                type="email"
+                                v-model="email"
+                                name="email"
+                                id="email"
+                                autocomplete="off"
+                                autofocus
+                                :class="emailHasContent"
+                            />
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input
+                                type="password"
+                                v-model="password"
+                                name="password"
+                                id="password"
+                                autocomplete="off"
+                                autofocus
+                                :class="passwordHasContent"
+                            />
+                            <label for="password">Password</label>
+                        </div>
                     </div>
                 </div>
+                <p v-if="error !== null" class="error">{{ error.msg }}</p>
+
+                <a href="#" class="btn btn-register" v-on:click="handleSubmit">
+                    Login <span class="arrow-right" v-html="this.$ud_store.state.icons.arrow_right" />
+                </a>
             </div>
+            <a href="#back" class="cancel" @click="$router.go(-1)">Cancel</a>
         </div>
     </div>
 </template>
 
+<style lang="scss">
+    @import '~@/_login-register.scss';
+</style>
+
 <script>
+    import {
+        validEmail,
+        validPassword
+    } from '../components/register/helpers/validators'
+
     export default {
         data(){
             return {
                 email : "",
-                password : ""
+                password : "",
+                error: null
             }
-        },
-        mounted: function(){
-            // working -> -> -> -> ->
-            console.log('(Login.vue) this.$ud_store => ', this.$ud_store.state.data.user_data);
         },
         methods : {
             handleSubmit(e){
                 e.preventDefault()
-                console.log(this.email);
-                console.log(this.password);
-                if (this.password.length > 0) {
-                    axios({
-                        method: 'POST',
-                        data: {
-                            email: this.email,
-                            password: this.password
-                        },
-                        url: '/login'
-                    })
-                    .then(response => {
-                        if (response.status === 200) {
-                            console.warn('it seems /login worked')
-                            let new_data = {
-                                user_data: response.data.user,
-                                loggedIn: true
-                            }
-                            this.$ud_store.commit('SET_USER_DATA', new_data);
-                            this.$ud_store.commit('SET_USER_LOGGED_IN', true);
-                            console.log('we set user data + loggin status')
-                            window.location = '/';
+                let validatedEmail = validEmail(this.email);
+                let validatedPassword = validPassword(this.password, this.password);
+
+                if (validatedEmail.valid === false) {
+                    this.error = validatedEmail;
+                    return false;
+                }
+
+                if (validatedPassword.valid === false) {
+                    this.error = validatedPassword;
+                    return false;
+                }
+
+                axios({
+                    method: 'POST',
+                    data: {
+                        email: this.email,
+                        password: this.password
+                    },
+                    url: '/ai/user/auth',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                })
+                .then(({data}) => {
+                    if (data.success) {
+                        let user_data = {
+                            user_data: data.user,
+                            loggedIn: true
                         }
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
+
+                        this.$ud_store.commit('SET_USER_DATA', user_data.user_data)
+                        this.$ud_store.commit('SET_USER_LOGGED_IN', user_data.loggedIn)
+
+                        window.location = '/'
+                    }
+                    else {
+                        this.error = {
+                            vaild: false,
+                            msg: data.message
+                        }
+                        return false
+                    }
+                })
+                .catch((error) => {
+                    this.error = {
+                        vaild: false,
+                        msg: error.response.data.message
+                    }
+                });
+            }
+        },
+        computed: {
+            emailHasContent: function() {
+                return {
+                    'has-content': this.email
+                }
+            },
+            passwordHasContent: function() {
+                return {
+                    'has-content': this.password
                 }
             }
         }

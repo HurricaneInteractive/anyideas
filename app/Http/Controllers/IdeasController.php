@@ -23,7 +23,7 @@ class IdeasController extends Controller
         };
         return ['user' => $user, 'id' => $id];
     }
-    public function getUserById($id) { 
+    public function getUserById($id) {
         $user = User::all()->where('id', $id)->first();
         $meta = DB::table('user_meta_datas')->where('user_id', $id)->first();
         $interests = json_decode($user->interests);
@@ -53,11 +53,16 @@ class IdeasController extends Controller
         $ideas_with_category = Ideas::all()->where('category', $category);
         return $ideas_with_category;
     }
+
     public function getByUser($id)
     {
         $ideas = Ideas::all()->where('user_id', $id);
-        return $ideas;
+        
+        return array(
+            'ideas' => $ideas
+        );
     }
+
     public function getByTags(Request $request)
     {
         $decoded_tags = preg_split("/[,]/",$request->tags);
@@ -83,17 +88,15 @@ class IdeasController extends Controller
     {
         $user_id = Auth::id();
 
-        $category_array = json_encode($request->category);
-        $tags_array = json_encode($request->tags);
 
         $idea = new Ideas([
             'user_id' => $user_id,
             'success' => false,
             'title' => $request->title,
-            'category' => $category_array,
-            'tags' => $tags_array,
             'pitch' => $request->pitch,
+            'category' => $request->category,
             'status' => $request->status,
+            'tags' => $request->tags,
             'description' => $request->description
         ]);
 
@@ -103,11 +106,16 @@ class IdeasController extends Controller
     public function updateIdea(Request $request, $id)
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
-        $status = Ideas::find($id)->first()->update($filtered_idea_data);
+        $found_id = Ideas::find($id)->first()->update($filtered_idea_data);
+
+        $updated_idea = Ideas::find($id)->first();
 
         $new_idea_data = $this->getById($id);
         return response()->json([
-            'status' => $status,
+            'updated_idea' => $updated_idea,
+            'f-data' => $filtered_idea_data,
+            'id' => $id,
+            // 'status' => $status,
             'message' => $new_idea_data ? 'Idea updated' : 'Error updating Idea'
         ]);
     }
@@ -130,5 +138,85 @@ class IdeasController extends Controller
             'status' => $status,
             'message' => $status ? 'Idea Deleted!' : 'Error Deleting Idea'
         ]);
+    }
+
+    public function getAuthUserInterestedInIdeas(Request $request) {
+        $ideas = array();
+        $not_in = [];
+        $limit = 10;
+        $offset = 0;
+        $total_count = Ideas::all()->count();
+
+        if (isset($request['limit'])) {
+            $limit = $request['limit'];
+        }
+
+        if (isset($request['offset'])) {
+            $offset = $request['offset'];
+        }
+
+        if (isset($request['not_in'])) {
+            $not_in = $request['not_in'];
+        }
+        
+        if (Auth::check()) {
+            $interests = json_decode(Auth::user()->interests);
+            if (count($interests) > 0) {
+                $ideas = Ideas::whereIn('category', $interests)
+                    ->whereNotIn('id', $not_in)
+                    ->orderBy('created_at', 'desc')
+                    ->skip($offset)
+                    ->take($limit)
+                    ->get();
+            }
+        }
+
+        if (count($ideas) > 0) {
+            foreach($ideas as $idea) {
+                array_push($not_in, $idea->id);
+            }
+        }
+
+        return response()->json(array(
+            'ideas' => $ideas,
+            'limit' => $limit,
+            'offset' => count($ideas),
+            'not_in' => $not_in,
+            'total_count' => $total_count
+        ));
+    }
+
+    public function populateHomeFeed(Request $request) {
+        $ideas = array();
+        $limit = 10;
+        $offset = 0;
+        $total_count = Ideas::all()->count();
+        $not_in = array();
+
+        if (isset($request['limit'])) {
+            $limit = $request['limit'];
+        }
+
+        if (isset($request['not_in'])) {
+            $not_in = $request['not_in'];
+        }
+
+        if (isset($request['offset'])) {
+            $offset = $request['offset'];
+        }
+
+        $ideas = Ideas::whereNotIn('id', $not_in)
+            ->orderBy('created_at', 'desc')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+
+        return response()->json(array(
+            'ideas' => $ideas,
+            'total_count' => $total_count,
+            'limit' => $limit,
+            'not_in' => $not_in,
+            'offset' => count($ideas)
+        ));
     }
 }

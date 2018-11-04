@@ -1,15 +1,14 @@
 <template>
-  <section class="description">
-    <h2>Description Goes Below</h2>
-    <p v-html="this.$ud_store.state.idea.description"></p>
-    <div id="viewerSection"/>
-
-    <hr/>
-
-    <h4>if this is the users idea</h4>
-    <div class="editSection" id="editSection"/>
+  <section class="description fixed_width">
+    <div id="editSection" class="editSection"/>
   </section>
 </template>
+
+<style lang="scss">
+@import '~@/_variables.scss';
+
+
+</style>
 
 <script>
     require('codemirror/lib/codemirror.css') // codemirror
@@ -26,30 +25,94 @@
           loaded: false
         }
       },
+      computed: {
+        currentIdeaData() {
+          return this.$ud_store.getters.getCurrentIdea
+        },
+        getIdeaUserId() {
+          return this.$ud_store.getters.getCurrentIdeaUserId
+        },
+        currentUserData() {
+          return this.$ud_store.getters.getUserData
+        },
+        currentIdeaDescription() {
+          return this.$ud_store.getters.getCurrentIdeaDescription
+        }
+      },
+      watch: {
+        $route: function(to, from) {
+          if (to.params.id !== from.params.id) {
+              this.updateDescription();
+              // handle get more data here;
+          }
+        }
+      },
+      beforeMount() {
+        console.log("%c Description.vue beforeMount(start)", this.$ud_store.state.consoleLog.component)
+        console.log('this.$parent.isUsersIdea', this.$parent.isUsersIdea)
+        console.log('this.currentIdeaDescription', this.currentIdeaDescription)
+        if (this.$parent.isUsersIdea) {
+          // init editor function(
+          this.initialiseEditor()
+        } else {
+          this.initialiseViewer()
+          // init view  function()  
+        }
+        // this.initialiseDesc();
+        
+        console.log("%c Description.vue beforeMount(end)", this.$ud_store.state.consoleLog.component)
+      },
       mounted() {
-        console.log("%c Description.vue", this.$ud_store.state.consoleLog.component)
-        this.setDescription();
+        console.log("%c Description.vue mounted(start)", this.$ud_store.state.consoleLog.component)
+        console.log('this.$ud_store.getters.getUserData => ', )
+        console.log("%c Description.vue (this.$parent.isUsersIdea)", this.$parent.isUsersIdea)
+        // console.log('editor => ', editor)
+        // this.updateDescription();
+        
+        console.log("%c Description.vue mounted(end)", this.$ud_store.state.consoleLog.component)
       },
       methods: {
-        setDescription() {
-          
-          console.warn('run setDescription Func')
-          console.log('run =>', this.$ud_store.state.idea.description )
-          var viewer = Editor.factory({
-            el: document.querySelector('#viewerSection'),
+        onBlur(val) {
+          console.log('onBlur')
+          let newContent = val.getMarkdown();
+          this.$parent.description_to_update = newContent;
+          console.warn('this.$parent.description_to_update => ', this.$parent.description_to_update)
+        },
+        initialiseViewer() {
+          console.log("%c initialiseViewer", this.$ud_store.state.consoleLog.component)
+          var editor = Editor.factory({
+            el: document.querySelector('#editSection'),
             viewer: true,
-            height: '500px',
-            initialValue: this.$ud_store.state.idea.description
+            initialValue: this.currentIdeaDescription,
           });
+        },
+        initialiseEditor() {
+          console.log("%c initialiseEditor", this.$ud_store.state.consoleLog.component)
           var editor = new Editor({
             el: document.querySelector('#editSection'),
             initialEditType: 'wysiwyg',
             previewStyle: 'vertical',
-            height: '300px',
-            initialValue: this.$ud_store.state.idea.description
+            height: '740px',
+            initialValue: this.currentIdeaDescription,
+            events: {
+              blur: () => this.onBlur(editor)
+            }
           });
-          this.loaded = true;
-        }
+        },
+        updateDescription() {
+          console.warn('run setDescription Func', this.$ud_store.getters.getCurrentIdea)
+          editor = new Editor({
+            el: document.querySelector('#editSection'),
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            height: '740px',
+            initialValue: 'this.currentIdeaDescription',
+            // initialValue: this.$ud_store.getters..description,
+            events: {
+              blur: () => this.onBlur(editor)
+            }
+          });
+        },
       }
     }
 </script>

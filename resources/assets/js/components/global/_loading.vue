@@ -1,6 +1,5 @@
 <template>
     <span class="loading">
-        <p>loading goes here</p>
         <lottie :options="defaultOptions" :height="120" :width="120" v-on:animCreated="handleAnimation"/>
     </span>
 </template>
@@ -16,6 +15,7 @@
     width: 120px;
     height: 120px;
     line-height: 1rem;
+    margin: 0 auto;
     > div {
         display: flex;
         width: 120px !important;

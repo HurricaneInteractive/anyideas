@@ -1,14 +1,16 @@
 <template>
-    <div class="container">
+    <div class="container fixed_width">
         <div class="row">
             <CategoryTitleCard :props="currentRoute" class="category-header"/>
-            <div class="ideas-wrapper fixed_width">
-              <div v-if="category_data.length !== 0" v-for="(value, key) in category_data" :key="key">
-                  <IdeaCard :key="key" :props='value'/>
-              </div>
-              <div v-else>
-                <h2>No items</h2>
-              </div>
+            <div class="idea_wrapper page-wrapper">
+              <template v-if="category_data.length !== 0">
+                <template v-for="(value, key) in category_data">
+                    <IdeaCard :key="key" :props='value' />
+                </template>
+              </template>
+              <template v-else>
+                  <noideas />
+              </template>
             </div>
         </div>
     </div>

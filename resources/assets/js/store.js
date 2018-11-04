@@ -10,22 +10,35 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         data: {
-            user_data: 'guest',
+            user_data: null,
             loggedIn: false
         },
-        idea: {
-            id: '',
-            title: '',
-            status: '',
-            category: '',
-            tags: '',
-            description: '',
+        // idea: {
+        //     id: '',
+        //     title: '',
+        //     status: '',
+        //     category: '',
+        //     tags: '',
+        //     description: '',
+        // },
+        current_page_idea: {
+            user_id: '0',
+            user_data: {},
+            data: {},
+            description: 'default val',
+            timeline: [],
+            updates: {},
+            discussion: {
+                replies: []
+            }
         },
         current_search: {},
         current_category_id: '',
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
         },
+        current_user_view: null,
+        current_user_ideas: null,
         icons: icons,
         categories: categories,
         status: status,
@@ -33,40 +46,41 @@ export default new Vuex.Store({
     },
     mutations: {
         SET_USER_DATA(state, newValue) {
-            // state.data.user_data = newValue;
-            if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.user_data = newValue;
         },
         SET_USER_LOGGED_IN(state, newValue) {
-            if (this.debug) console.log('setUserData triggered with', newValue)
             state.data.loggedIn = newValue;
         },
         CLEAR_USER_DATA(state) {
-            if (this.debug) console.log('STORE MUTATIONS: clearUserData triggered -> ') 
             state.data.user_data = '';
             state.data.loggedIn = false;
         },
 
-        SET_IDEA_ID(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_ID triggered with', newValue)
-            state.idea.id = newValue;
+        // idea 
+        SET_IDEA_DATA(state, newValue) {
+            state.current_page_idea.data = newValue;
         },
-
-        SET_IDEA_DARTS(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_DARTS triggered with', newValue)
-            state.idea.darts = newValue.darts;
-        },
-
         SET_IDEA_DESCRIPTION(state, newValue) {
-            if (this.debug) console.log('SET_IDEA_DESCRIPTION triggered with', newValue)
-            state.idea.description = newValue;
+            state.current_page_idea.description = newValue;
         },
-        CLEAR_IDEA(state) {
-            if (this.debug) console.log('CLEAR_IDEA triggered with', newValue)
-            state.idea.id = '';
-            state.idea.description = '';
+        SET_IDEA_USER_ID(state, newValue) {
+            state.current_page_idea.user_id = newValue;
+        },
+        SET_IDEA_USER_INFO(state, newValue) {
+            state.current_page_idea.user_data = newValue;
+        },
+        SET_IDEA_TIMELINE(state, newValue) {
+            state.current_page_idea.timeline = newValue;
+        },
+        SET_IDEA_REPLIES(state, pushToStore) {
+            // console.log('SET_IDEA_REPLIES() state => ', state)
+            // console.log('SET_IDEA_REPLIES() pushToStore => ', pushToStore)
+            // console.log('SET_IDEA_REPLIES() pushToStore.data => ', pushToStore.data)
+            // console.log('SET_IDEA_REPLIES() pushToStore.id => ', pushToStore.id)
+            state.current_page_idea.discussion.replies[pushToStore.id] = pushToStore.data;
         },
 
+        // search
         SET_CURRENT_SEARCH(state, newValue) {
             if (this.debug) console.log('SET_CURRENT_SEARCH triggered with', newValue)
             console.error('newValue => ', newValue)
@@ -77,9 +91,50 @@ export default new Vuex.Store({
             state.current_search = '';
         },
 
+        //category
         SET_CATEGORY_ID(state, newValue) {
             if (this.debug) console.log('SET_CATEGORY_ID triggered with', newValue)
             state.current_category_id = newValue;
+        },
+
+        // current user **not currently logged in user**
+        SET_CURRENT_USER_DATA(state, newValue) {
+            if (this.debug) console.log('SET_CURRENT_USER_DATA triggered with', newValue)
+            state.current_user_view = newValue;
+        },
+        SET_CURRENT_USER_IDEAS(state, newValue) {
+            console.log('SET_CURRENT_USER_DATA triggered with', newValue)
+            state.current_user_ideas = newValue;
+        },
+        SET_CURRENT_USER_META(state, payload) {
+            state.current_user_view.user[payload.key] = payload.value
+        },
+        SET_CURRENT_USER_INTERESTS(state, interests) {
+            state.current_user_view.interests = interests
+        },
+        SET_CURRENT_USER_BIO(state, bio) {
+            state.current_user_view.user_meta.bio = bio
         }
+    },
+    getters: {
+        getUserIdeas: (state) => state.current_user_ideas,
+        getUserMeta: (state) => state.current_user_view,
+        getUserIdeasCount: (state) => {
+            if (state.current_user_ideas === null) {
+                return 0
+            }
+            else {
+                return Object.keys(state.current_user_ideas).length
+            }
+        },
+        getUserData: (state) => state.data.user_data,
+        getLoggedInState: (state) => state.data.loggedIn,
+        getCurrentIdea: (state) => state.current_page_idea,
+        getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
+        getCurrentIdeaDescription: (state) => state.current_page_idea.description,
+        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline,
+        getCurrentIdeaDiscussionReplies: state => value => { console.log(value) 
+            return state.current_page_idea.discussion.replies[value]},
+
     }
   })

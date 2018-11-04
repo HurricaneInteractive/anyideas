@@ -29,6 +29,7 @@
         background-color: $white;
     }
     a {
+        display: block;
         text-decoration: none;
         .card {
             margin: 0 0 16px 0;

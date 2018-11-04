@@ -10,16 +10,4 @@ const svgBackground = {
   "technology": "endlessClouds",
   "science": "overlappingCircles"
 }
-// const svgBackground = [
-//   "hideout",
-//   "yyy",
-//   "corkScrew",
-//   "anchorsAway",
-//   "wiggle",
-//   "diagonalStripes",
-//   "fallingTriangles",
-//   "ticTacToe",
-//   "endlessClouds",
-//   "overlappingCircles"
-// ]
 export default svgBackground

@@ -19,7 +19,10 @@ class DiscussionController extends Controller
     // get all discussions from an idea_id
     public function getAll($idea_id)
     {
-        $discussions = Discussion::all()->where('idea_id', $idea_id);
+        // $discussions = Discussion::all()->where('idea_id', $idea_id);
+        $discussions = DB::table('discussions')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
+
+        // return $discussions;
         return $discussions;
     }
 
@@ -35,7 +38,8 @@ class DiscussionController extends Controller
             'user_id' => Auth::id(),
             'idea_id' => $id,
             'title' => $request->title,
-            'message' => $request->message
+            'message' => $request->message,
+            'replies' => 0,
         ]);
 
         $new_discussion->save();

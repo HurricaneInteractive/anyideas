@@ -24,7 +24,7 @@
 .card-wrapper {
     height: 198px;
     transition: .5s;
-    border-bottom: 10px solid white;
+    // border-bottom: 10px solid white;
     &:hover {
         transition: .5s;
         animation: lv 1250s linear infinite;

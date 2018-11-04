@@ -6,19 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timeline extends Model
 {
-    //
+
     protected $fillable = [
         'user_id',
         'idea_id',
         'id',
         'title',
         'message',
+        'link',
         'darts'
     ];
-
-    // public function timeline() {
-    //     return $this->hasOne(Timeline::class);
-    // }
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');

@@ -2,48 +2,62 @@
     <div class="container">
         <div class="row">
 
-            <header>
-                <h1>{{idea_data.title}}</h1>
-                <h4>Category: {{idea_data.category}}</h4>
-                <div>Tags: {{idea_data.tags}}</div>
-                <i>{{idea_data.status}}</i>
-                <hr/>
-                <p>Pitch: {{idea_data.pitch}}</p>
-                <hr/>
+            <header class="header-container">
+                <div class="header-wrapper fixed_width">
+                    <div id="title">
+                        <h2>{{currentIdeaData.data.title}}</h2>
+                        <h4>Posted by <router-link :to='"/user/" + currentIdeaData.user_data.id' >{{currentIdeaData.user_data.name}}</router-link></h4>
+                    </div>
+
+                    <div id="elevator">
+                        <p>{{currentIdeaData.data.pitch}}</p>
+                    </div>
+
+                    <section class="meta_data">
+                        <ul>
+                            <li class="category"><router-link :to="`/category/${currentIdeaData.data.category}`">{{currentIdeaData.data.category}}</router-link></li>
+                            <li :class="'status bg_' + currentIdeaData.data.status">{{currentIdeaData.data.status}}</li>
+                            <li class="tags" v-for="(value, key) in idea_current_tags" :key="key">
+                                {{value}}
+                            </li>
+                        </ul>
+                    </section>
+                </div>
             </header>
 
-            <section class="meta_data">
-                <ul>
-                    <li class="category"><router-link to="index">{{idea_data.category}}</router-link></li>
-                    <li :class="'status bg_' + idea_data.status"><router-link to="index">{{idea_data.status}}</router-link></li>
-                    <li class="tags">tag</li>
-                    <li class="tags">items</li>
-                    <li class="tags">go</li>
-                    <li class="tags">here</li>
-                </ul>
-            </section>
+            <div class="page-wrapper">
+                <TabNav v-bind:props="tab_nav"/>
 
-            <TabNav v-bind:props="tab_nav"/>
-
-            <router-view>
-                <!-- Description / Timeline / Discussion / Updates here -->
-            </router-view>
+                <router-view>
+                    <!-- Description / Timeline / Discussion / Updates here -->
+                </router-view>
+            </div>
+            
         </div>
     </div>
 </template>
 
 <style lang="scss">
-    @import '~@/App.scss';
+@import '~@/App.scss';
 
 .meta_data {
+    display: flex;
     > ul {
         list-style-type: none;
         display: inline-flex;
+        padding: 0;
+        margin: 0;
         .category {
             background-color: $black;
+            margin-left: 0;
+        }
+        .status, .category {
+            font-weight: $w-bold;
+            text-transform: uppercase;
         }
         .tags {
-            background-color: $grey-med;
+            border: 1px solid $black;
+            color: $black;
         }
         > li {
             padding: 8px 16px;
@@ -57,6 +71,54 @@
             }
         }
     } 
+}
+
+.header-container {
+    width: 100%;
+    background-color: $white;
+    padding: 48px;
+    .header-wrapper {
+        /* width: 100%; */
+        margin: 0 auto;
+        #title {
+            h2 {
+                text-align: left;
+                margin: 8px 0;
+                font-size: 64px;
+                font-weight: $w-bold;
+                color: $black;
+            }
+            h4, a {
+                text-align: left;
+                margin: 8px 0;
+                font-size: 16px;
+                font-weight: $w-regular;
+                color: $grey-dark;
+                text-decoration: none;
+                a {
+                    color: $grey-dark;
+                    transition: .5s;
+                    &:hover {
+                        color: $black;
+                        transition: .5s;
+                    }
+                }
+            }
+        }
+        #elevator {
+            display: flex;
+            align-content: flex-start;
+            justify-content: flex-start;
+            margin: 16px 0 24px;
+            p {
+                text-align: left;
+                margin: 0;
+                color: $black-light;
+                max-width: 648px;
+                font-family: $font-family-sans-serif;
+            }
+        }
+    }
 }
 
 .idea_navigation {
@@ -108,25 +170,11 @@
         data() {
             return {
                 idea_data: '',
-                idea_id: '5678',
+                isUsersIdea: false,
                 subNavActive: 'Description',
-                timeline: {
-                    title: '',
-                    message: ''
-                },
-                discussion: {
-                    title: '',
-                    message: ''
-                },
-                timeline_update: {
-                    title: '',
-                    message: '',
-                },
-                discussion_update: {
-                    id: '',
-                    title: '',
-                    message: '',
-                },
+                description_to_update: '',
+                idea_current_tags: [],
+                idea_current_description: '',
                 update_post: {
                     title: '',
                     message: ''
@@ -136,11 +184,9 @@
                     title: '',
                     message: ''
                 },
-                timeline_data: '',
                 discussion_data: '',
                 updates_post_data: '',
                 discussion_replies_data: '',
-                errors: [],
                 ideas: [],
                 tab_nav: [
                     {
@@ -170,14 +216,42 @@
                 ],
             }
         },
+        computed: {
+            currentUser() {
+                if (this.$ud_store.getters.getUserData === null) {
+                    return null
+                } else {
+                    return this.$ud_store.getters.getUserData.id
+                }
+            },
+            currentIdeaData() {
+                return this.$ud_store.getters.getCurrentIdea
+            },
+            currentIdeaDescription() {
+                return this.$ud_store.getters.getCurrentIdeaDescription
+            }
+        },
         beforeMount() {
-            console.log("%c IndividualIdea.vue", this.$ud_store.state.consoleLog.component)
-            this.$ud_store.commit('SET_IDEA_ID', this.$route.params.id );
+            console.log("%c IndividualIdea.vue beforeMount(start)", this.$ud_store.state.consoleLog.component)
+            console.warn('this.$ud_store.getters.getCurrentIdea => ', this.$ud_store.getters.getCurrentIdea)
             this.handeGetInitialData();
             this.setAsActive();
+            console.log("%c IndividualIdea.vue beforeMount(end)", this.$ud_store.state.consoleLog.component)
+        },
+        mounted() {
+             console.log("%c IndividualIdea.vue mounted(start)")
+             console.log("%c IndividualIdea.vue mounted(end)")
         },
         watch: {
-            $route: ["setAsActive"]
+            $route: function(to, from) {
+                if (to.params.id !== from.params.id) {
+                    this.handleGetInitialData();
+                    // handle get more data here;
+                }
+
+                // this.copy_successful = false
+                this.setAsActive();
+            }
         },
         methods: {
             // re-sets the current active tab_nav item
@@ -210,20 +284,83 @@
                 ];
             },
             handeGetInitialData() {
-                console.log('TCL: handeGetInitialData -> handeGetInitialData');
-                axios.post('/ai/idea/get/' + this.$route.params.id)
-                .then(response => {
-                    this.idea_data = response.data;
-                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', response.data.description );
-                    console.warn('JUST SET STORE DESC');
-                    console.log('response -> handeGetInitialData');
+                console.log("%c IndividualIdea.vue handeGetInitialData(start)", this.$ud_store.state.consoleLog.component)
+                console.log('TCL: handeGetInitialData -> idea_id', this.$route.params.id);
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/get/' + this.$route.params.id,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then(res => {
+                    console.log('handeGetInitialData res => ', res)
+                    console.log('handeGetInitialData res.data => ', res.data)
+
+                    // SET_IDEA_DATA
+
+                    this.idea_data = res.data;
+                    this.idea_current_tags = JSON.parse(res.data.tags)
+                    this.idea_current_description = res.data.description;
+                    // this.$ud_store.commit('SET_IDEA_DATA', res.data );
+                    this.$ud_store.commit('SET_IDEA_DATA', res.data );
+                    this.$ud_store.commit('SET_IDEA_USER_ID', res.data.user_id );
+                    this.$ud_store.commit('SET_IDEA_DESCRIPTION', res.data.description );
+
+                    let res_user = res.data.user_id;
+                    console.log('TCL: handeGetInitialData -> res_user', res_user);
+                    let current_user = null;
+                    if (this.currentUser === null) {
+                        current_user = this.currentUser;
+                    }
+                    console.log('TCL: handeGetInitialData -> current_user', current_user);
+
+                    if (res_user === current_user) {
+                        this.isUsersIdea = true;
+                        console.log('TCL: handeGetInitialData -> this.isUsersIdea', this.isUsersIdea);
+                    }
+                    axios({
+                        method: 'POST',
+                        url: '/ai/user/get/' + res.data.user_id,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                        }
+                    }).then(res => {
+                        console.log('user of current idea');
+                        
+                        this.$ud_store.commit('SET_IDEA_USER_INFO', res.data.user );
+                    })
                 });
+                console.log("%c IndividualIdea.vue handeGetInitialData(end)", this.$ud_store.state.consoleLog.component)
+
             },
             handleDeleteIdea(e) {
                 e.preventDefault();
                 axios.post('/ai/idea/delete/' + this.$route.params.id)
                     .then(response => {
                         console.log('TCL: handleDeleteIdea -> response', response);
+                });
+            },
+
+            handleUpdateIdea() {
+                console.log('handleUpdateIdea')
+                let updatedDescriptionVal = this.description_to_update;
+                console.log('updatedDescriptionVal => ', updatedDescriptionVal)
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/update/' + this.$route.params.id,
+                    data: {
+                        description: updatedDescriptionVal,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
+                }).then(res => {
+                    console.log('handleUpdateIdea res => ', res)
+                    console.log('handleUpdateIdea res.data => ', res.data)
+
+                    this.$ud_store.commit('SET_IDEA_DATA', res.data );
+                    
+                    // this.handeGetInitialData();
                 });
             },
 
@@ -360,74 +497,74 @@
             },
 
             // timeline functions
-            handleTimelineUpdate(e){
-                let value = this.timeline_update.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/update/' + value,
-                    data: {
-                        title: this.timeline_update.title,
-                        message: this.timeline_update.message,
-                    },
-                }).then( (response) => {
-                    if (response.data === "") {
-                        alert('error creating timeline entry');
-                    }
-                });
-            },
-            handleDartsAdd(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/darts/add/' + value,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                    }
-                });
-            },
-            handleTimelineDelete(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/delete/' + value,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
-            getTimelineData(e) {
-                e.preventDefault();
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/get/' + this.$route.params.id,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
+            // handleTimelineUpdate(e){
+            //     let value = this.timeline_update.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/update/' + value,
+            //         data: {
+            //             title: this.timeline_update.title,
+            //             message: this.timeline_update.message,
+            //         },
+            //     }).then( (response) => {
+            //         if (response.data === "") {
+            //             alert('error creating timeline entry');
+            //         }
+            //     });
+            // },
+            // handleDartsAdd(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/darts/add/' + value,
+            //         headers: {
+            //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+            //         }
+            //     });
+            // },
+            // handleTimelineDelete(value) {
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/delete/' + value,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
+            // getTimelineData(e) {
+            //     e.preventDefault();
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/get/' + this.$route.params.id,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
             // timeline functions
-            hanldeGetTimelineData(e) {
-                e.preventDefault();
-                let idea_id = this.$route.params.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/get/' + idea_id,
-                }).then( (response) => {
-                    this.timeline_data = response.data;
-                });
-            },
-            handleTimelineSubmit(e){
-                e.preventDefault();
-                let idea_id = this.$route.params.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/timeline/create/' + idea_id,
-                    data: {
-                        title: this.timeline.title,
-                        message: this.timeline.message,
-                    },
-                }).then( (response) => {
-                    if (response.data === "") {
-                        alert('error creating timeline entry');
-                    }
-                });
-            },
+            // hanldeGetTimelineData(e) {
+            //     e.preventDefault();
+            //     let idea_id = this.$route.params.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/get/' + idea_id,
+            //     }).then( (response) => {
+            //         this.timeline_data = response.data;
+            //     });
+            // },
+            // handleTimelineSubmit(e){
+            //     e.preventDefault();
+            //     let idea_id = this.$route.params.id;
+            //     axios({
+            //         method: 'POST',
+            //         url: '/ai/idea/timeline/create/' + idea_id,
+            //         data: {
+            //             title: this.timeline.title,
+            //             message: this.timeline.message,
+            //         },
+            //     }).then( (response) => {
+            //         if (response.data === "") {
+            //             alert('error creating timeline entry');
+            //         }
+            //     });
+            // },
         }
 
     }

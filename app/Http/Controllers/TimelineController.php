@@ -1,14 +1,5 @@
 <?php
 
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-
-// class Users extends Controller
-// {
-    
-// }
-
 namespace App\Http\Controllers;
 
 use App\Ideas;
@@ -26,7 +17,8 @@ class TimelineController extends Controller
     // gets all timeline posts from single idea_id
     public function getAll($idea_id)
     {
-        $timeline_entries = Timeline::all()->where('idea_id', $idea_id);
+        // $timeline_entries = Timeline::all()->where('idea_id', $idea_id)->orderBy('id')->get();
+        $timeline_entries = DB::table('timelines')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
 
         return $timeline_entries;
     }
@@ -45,7 +37,8 @@ class TimelineController extends Controller
             'user_id' => Auth::id(),
             'idea_id' => $idea_id,
             'title' => $request->title,
-            'message' => $request->message
+            'message' => $request->message,
+            'link' => $request->link
         ]);
 
         $timeline->save();
