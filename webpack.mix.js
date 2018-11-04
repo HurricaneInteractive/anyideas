@@ -11,6 +11,16 @@ let mix = require('laravel-mix');
  |
  */
 
+mix.options({
+    uglify: {
+        uglifyOptions: {
+            compress: {
+                drop_console: true
+            }
+        }
+    }
+});
+
 mix.js('resources/assets/js/App.js', 'public/js')
   .webpackConfig({
     module: {

@@ -14,12 +14,11 @@
         @if(auth()->check())
         <script>
             window.checkAuth = {!! auth()->user()  !!}
-            console.log('user logged in')
         </script>
         @endif
 
         <div id="app">
-            <app /> <!-- vue here m8 -->
+            <app />
         </div>
         
         @include ('footer')
