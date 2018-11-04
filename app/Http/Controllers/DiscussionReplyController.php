@@ -18,13 +18,16 @@ class DiscussionReplyController extends Controller
     // get all discussion replies from an idea_id
     public function getAllByDiscId($discussions_id)
     {
-        $replies = DiscussionReply::all()->where('discussions_id', $discussions_id);
+        // $replies = DiscussionReply::all()->where('discussions_id', $discussions_id);
+        $replies = DB::table('discussion_replies')->orderBy('created_at', 'desc')->where('discussions_id', $discussions_id)->get();
+        
         return $replies;
     }
     // get single discussion reply from an id
     public function getById($id)
     {
         $discussion_reply = DiscussionReply::all()->where('id', $id)->first();
+        
         return $discussion_reply;
     }
     public function createDiscussionReply(Request $request)
