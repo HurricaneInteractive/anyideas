@@ -219,6 +219,7 @@ class DatabaseSeeder extends Seeder
         DB::table('discussions')->insert([
             'user_id' => '1234',
             'idea_id' => '5678',
+            'replies' => '2',
             'id' => '2120',
             'message' => 'sick idea man - have you tried turning it around?',
             'title' => 'Turn it around',
@@ -229,7 +230,7 @@ class DatabaseSeeder extends Seeder
         DB::table('discussions')->insert([
             'user_id' => '1235',
             'idea_id' => '5678',
-            'id' => '2120',
+            'id' => '2121',
             'message' => 'sick idea man - have you tried turning it around?',
             'title' => 'Turn it around',
             'created_at' => '2018-11-03 20:02:18',
@@ -239,7 +240,7 @@ class DatabaseSeeder extends Seeder
         DB::table('discussions')->insert([
             'user_id' => '1236',
             'idea_id' => '5678',
-            'id' => '2120',
+            'id' => '2122',
             'message' => 'hi, Im bob?',
             'title' => 'hi, Im bob?',
             'created_at' => '2018-11-03 23:55:55',
@@ -249,7 +250,7 @@ class DatabaseSeeder extends Seeder
         DB::table('discussions')->insert([
             'user_id' => '1235',
             'idea_id' => '5678',
-            'id' => '2120',
+            'id' => '2123',
             'message' => 'interesting name....?',
             'title' => 'why any.ideas? why not "got some ideas" - he',
             'created_at' => '2018-11-03 23:55:55',

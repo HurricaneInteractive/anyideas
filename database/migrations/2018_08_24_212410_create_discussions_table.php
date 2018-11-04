@@ -22,6 +22,7 @@ class CreateDiscussionsTable extends Migration
             $table->increments('id');
             $table->longText('message');
             $table->string('title');
+            $table->mediumInteger('replies')->default('0');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ class Discussion extends Model
         'id',
         'title',
         'message',
+        'replies',
         'darts'
     ];
 
@@ -22,7 +23,7 @@ class Discussion extends Model
     public function idea() {
         return $this->belongsTo(Idea::class, 'idea_id');
     }
-    public function discussionReplies() {
+    public function discussions_reply() {
         return $this->hasMany(DiscussionReply::class);
     }
 }

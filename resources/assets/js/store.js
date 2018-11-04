@@ -28,7 +28,7 @@ export default new Vuex.Store({
             description: 'default val',
             timeline: [],
             updates: {},
-            discussion: {},
+            discussion: {}
         },
         current_search: {},
         current_category_id: '',

@@ -21,7 +21,8 @@ class DiscussionController extends Controller
     {
         // $discussions = Discussion::all()->where('idea_id', $idea_id);
         $discussions = DB::table('discussions')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
-        // $timeline_entries = DB::table('timelines')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
+
+        // return $discussions;
         return $discussions;
     }
 
@@ -37,7 +38,8 @@ class DiscussionController extends Controller
             'user_id' => Auth::id(),
             'idea_id' => $id,
             'title' => $request->title,
-            'message' => $request->message
+            'message' => $request->message,
+            'replies' => 0,
         ]);
 
         $new_discussion->save();
