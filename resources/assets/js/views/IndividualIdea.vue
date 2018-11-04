@@ -148,7 +148,6 @@
 </style>
 
 <script>
-    import marked from 'marked'
     import TabNav from '../components/TabNav'
 
     require('codemirror/lib/codemirror.css') // codemirror

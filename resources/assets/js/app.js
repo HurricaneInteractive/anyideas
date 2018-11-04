@@ -3,7 +3,7 @@ window.axios = require('axios');
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from './routes.js';
-import VueCookie from 'vue-cookie';
+// import VueCookie from 'vue-cookie';
 import ud_store from './store';
 import VueClipboard from 'vue-clipboard2'
 // import './components/global/_globals'
@@ -20,7 +20,7 @@ import capitalise from './plugins/capitalise';
 require('typeface-pt-sans')
 
 Vue.use( Vuex )
-Vue.use( VueCookie )
+// Vue.use( VueCookie )
 Vue.use( storePlugin )
 Vue.use( LoadingComp, { componentName: "loading" } )
 Vue.use( NoIdeasComp, { componentName: "noideas" } )
