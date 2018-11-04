@@ -30,10 +30,6 @@ class SearchController extends Controller
             return $q;
         })->get();
 
-        if ($ideasQuery === []) {
-            $ideasQuery = ['cheese', 'potato'];
-        }
-
         return response()->json([
             'keyword' => $keyword,
             'ideasQuery' => $ideasQuery,
