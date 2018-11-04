@@ -40,7 +40,7 @@
                         <div class="fixed_width project-description-wrapper">
                             <h1>Project Description</h1>
                             <p>A rundown of the idea and what you might be having trouble with.</p>
-                            <div class="editSection" id="editSection" />
+                            <markdown-editor v-model="idea.description" ref="markdownEditor" :configs="configs"></markdown-editor>
 
                             <div class="form-group post-idea-container">
                                 <div class="error" v-if="error">
@@ -57,13 +57,9 @@
     </div>
 </template>
 
-<style lang="scss">
-  @import '~@/components/_editor.scss';
-  @import '~@/components/_viewer.scss';
-</style>
-
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
+    @import '~simplemde/dist/simplemde.min.css';
     input, textarea {
         display: block;
         width: 100%;
@@ -153,6 +149,7 @@
         }
         > p {
             color: $grey-dark;
+            margin-bottom: 25px;
         }
         .editSection {
             margin-top: 30px;
@@ -320,19 +317,13 @@
 </style>
     
 <script>
-    import {
-        EditorSettings
-    } from '../data/tui-settings'
-
-    require('codemirror/lib/codemirror.css') // codemirror
-    require('tui-editor/dist/tui-editor.css'); // editor ui
-    require('tui-editor/dist/tui-editor-contents.css'); // editor content
-    require('highlight.js/styles/github.css'); // code block highlight
-
-    var Editor = require('tui-editor');
+    import markdownEditor from 'vue-simplemde/src/markdown-editor'
 
     export default {
         name: 'AddNewIdea',
+        components: {
+            markdownEditor
+        },
         data() {
             return {
                 loaded: false,
@@ -347,7 +338,10 @@
                 options_category: [],
                 options_status: [],
                 ideaData: [],
-                error: null
+                error: null,
+                configs: {
+                    hideIcons: ['image', 'link', 'preview']
+                }
             }
         },
         beforeMount() {
@@ -356,12 +350,6 @@
 
             this.options_category = categories.map(cat => ({ category: this.$capitalise(cat) }) )
             this.options_status = status.map(stat => ({ status: stat }))
-        },
-        mounted() {
-            this.setDescription(this.idea.description);
-        },
-        update() {
-            this.setDescription(this.idea.description);
         },
         methods: {
             prepareForSubmission() {
@@ -403,27 +391,6 @@
                         description: this.idea.description
                     }
                 }
-            },
-            onBlur(val) {
-                console.log('onBlur')
-                let newContent = val.getMarkdown();
-                this.idea.description = newContent;
-            },
-            setDescription() {
-                let settings = EditorSettings({
-                    el: document.querySelector('#editSection'),
-                    initialValue: this.idea.description,
-                    events: {
-                        blur: () => this.onBlur(editor),
-                    }
-                })
-                
-                var editor = new Editor(settings);
-                
-                this.loaded = true;
-            },
-            handleGetIdeaData() {
-                console.log('IDEA SUBMITTED')
             },
             handleSubmit() {
                 this.error = null

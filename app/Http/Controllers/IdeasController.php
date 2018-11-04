@@ -106,7 +106,7 @@ class IdeasController extends Controller
     public function updateIdea(Request $request, $id)
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
-        $found_id = Ideas::find($id)->first()->update($filtered_idea_data);
+        $found_id = Ideas::where('id', $id)->update($filtered_idea_data);
 
         $updated_idea = Ideas::find($id)->first();
 

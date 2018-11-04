@@ -25,7 +25,7 @@ export default new Vuex.Store({
             user_id: '0',
             user_data: {},
             data: {},
-            description: 'default val',
+            description: '',
             timeline: [],
             discussion: {
                 replies: []

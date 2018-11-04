@@ -1,118 +1,111 @@
 <template>
   <section class="description fixed_width">
-    <div id="editSection" class="editSection"/>
+    <template v-if="$parent.isUsersIdea">
+      <markdown-editor v-model="description" :configs="configs"></markdown-editor>
+      <div class="actions">
+        <button class="post-idea" @click="triggerDescriptionUpdate">Update</button>
+      </div>
+    </template>
+    <template v-else>
+      <div class="editor-contents" v-html="ideaDescription" />
+    </template>
   </section>
 </template>
 
 <style lang="scss">
-@import '~@/_variables.scss';
+  @import '~@/_variables.scss';
+  @import '~@/components/_viewer.scss';
+</style>
 
+<style lang="scss" scoped>
+  @import '~@/_variables.scss';
+  @import '~simplemde/dist/simplemde.min.css';
+  .description {
+    margin-top: 60px;
+  }
 
+  .actions {
+    margin-top: 30px;
+    text-align: right;
+  }
+
+  .post-idea {
+    font-size: 20px;
+    background-color: $primary;
+    color: $pure;
+    border-radius: 200px;
+    padding: 10px 30px;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+    font-family: $font-family-sans-serif;
+    &:focus {
+      outline: none;
+    }
+  }
 </style>
 
 <script>
-    require('codemirror/lib/codemirror.css') // codemirror
-    require('tui-editor/dist/tui-editor.css'); // editor ui
-    require('tui-editor/dist/tui-editor-contents.css'); // editor content
-    require('highlight.js/styles/github.css'); // code block highlight
+  import markdownEditor from 'vue-simplemde/src/markdown-editor'
+  import marked from 'marked'
 
-    var Editor = require('tui-editor');
-    export default {
-      name: 'Description',
-      props: ['data'],
-      data() {
-        return {
-          loaded: false
+  export default {
+    name: 'Description',
+    components: {
+      markdownEditor
+    },
+    data() {
+      return {
+        loaded: false,
+        description: null,
+        configs: {
+          hideIcons: ['image', 'link', 'preview']
         }
+      }
+    },
+    mounted() {
+      if (this.currentIdeaDescription) {
+        this.description = this.currentIdeaDescription
+      }
+    },
+    methods: {
+      triggerDescriptionUpdate(e) {
+        e.preventDefault();
+        this.$parent.handleUpdateIdea(this.description);
+      }
+    },
+    computed: {
+      currentIdeaData() {
+        return this.$ud_store.getters.getCurrentIdea
       },
-      computed: {
-        currentIdeaData() {
-          return this.$ud_store.getters.getCurrentIdea
-        },
-        getIdeaUserId() {
-          return this.$ud_store.getters.getCurrentIdeaUserId
-        },
-        currentUserData() {
-          return this.$ud_store.getters.getUserData
-        },
-        currentIdeaDescription() {
-          return this.$ud_store.getters.getCurrentIdeaDescription
-        }
+      getIdeaUserId() {
+        return this.$ud_store.getters.getCurrentIdeaUserId
       },
-      watch: {
-        $route: function(to, from) {
-          if (to.params.id !== from.params.id) {
-              this.updateDescription();
-              // handle get more data here;
+      currentUserData() {
+        return this.$ud_store.getters.getUserData
+      },
+      currentIdeaDescription() {
+        return this.$ud_store.getters.getCurrentIdeaDescription
+      },
+      ideaDescription() {
+        if (this.currentIdeaDescription && this.currentIdeaDescription !== null) {
+          if (typeof this.currentIdeaDescription === 'string') {
+            return marked(this.currentIdeaDescription, { sanitize: true })
           }
         }
-      },
-      beforeMount() {
-        console.log("%c Description.vue beforeMount(start)", this.$ud_store.state.consoleLog.component)
-        console.log('this.$parent.isUsersIdea', this.$parent.isUsersIdea)
-        console.log('this.currentIdeaDescription', this.currentIdeaDescription)
-        if (this.$parent.isUsersIdea) {
-          // init editor function(
-          this.initialiseEditor()
-        } else {
-          this.initialiseViewer()
-          // init view  function()  
+      }
+    },
+    watch: {
+      $route: function(to, from) {
+        if (to.params.id !== from.params.id) {
+          this.updateDescription();
         }
-        // this.initialiseDesc();
-        
-        console.log("%c Description.vue beforeMount(end)", this.$ud_store.state.consoleLog.component)
       },
-      mounted() {
-        console.log("%c Description.vue mounted(start)", this.$ud_store.state.consoleLog.component)
-        console.log('this.$ud_store.getters.getUserData => ', )
-        console.log("%c Description.vue (this.$parent.isUsersIdea)", this.$parent.isUsersIdea)
-        // console.log('editor => ', editor)
-        // this.updateDescription();
-        
-        console.log("%c Description.vue mounted(end)", this.$ud_store.state.consoleLog.component)
-      },
-      methods: {
-        onBlur(val) {
-          console.log('onBlur')
-          let newContent = val.getMarkdown();
-          this.$parent.description_to_update = newContent;
-          console.warn('this.$parent.description_to_update => ', this.$parent.description_to_update)
-        },
-        initialiseViewer() {
-          console.log("%c initialiseViewer", this.$ud_store.state.consoleLog.component)
-          var editor = Editor.factory({
-            el: document.querySelector('#editSection'),
-            viewer: true,
-            initialValue: this.currentIdeaDescription,
-          });
-        },
-        initialiseEditor() {
-          console.log("%c initialiseEditor", this.$ud_store.state.consoleLog.component)
-          var editor = new Editor({
-            el: document.querySelector('#editSection'),
-            initialEditType: 'wysiwyg',
-            previewStyle: 'vertical',
-            height: '740px',
-            initialValue: this.currentIdeaDescription,
-            events: {
-              blur: () => this.onBlur(editor)
-            }
-          });
-        },
-        updateDescription() {
-          console.warn('run setDescription Func', this.$ud_store.getters.getCurrentIdea)
-          editor = new Editor({
-            el: document.querySelector('#editSection'),
-            initialEditType: 'wysiwyg',
-            previewStyle: 'vertical',
-            height: '740px',
-            initialValue: 'this.currentIdeaDescription',
-            // initialValue: this.$ud_store.getters..description,
-            events: {
-              blur: () => this.onBlur(editor)
-            }
-          });
-        },
+      currentIdeaDescription: function(val) {
+        if (this.description === null) {
+          this.description = val
+        }
       }
     }
+  }
 </script>

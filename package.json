@@ -18,9 +18,8 @@
         "axios": "^0.18",
         "hero-patterns": "^2.0.1",
         "laravel-mix": "^2.0",
-        "lodash.debounce": "^4.0.8",
+        "marked": "^0.5.1",
         "node-sass": "^4.9.3",
-        "tui-editor": "^1.2.6",
         "typeface-pt-sans": "0.0.54",
         "vue": "^2.5.7",
         "vue-clipboard2": "^0.2.1",
@@ -30,6 +29,7 @@
         "vue-perfect-scrollbar": "^0.1.0",
         "vue-router": "^3.0.1",
         "vue-select": "^2.5.1",
+        "vue-simplemde": "^0.4.9",
         "vuedraggable": "^2.16.0",
         "vuex": "^3.0.1"
     },
