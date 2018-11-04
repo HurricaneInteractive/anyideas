@@ -17,8 +17,14 @@
             </div>
         </div>
 
+        
 
-        <div id="discussion_data" class="all_discussion_posts">
+
+        <div v-if="discussion_data && currently_viewed_reply_id" id="discussion_data" class="all_discussion_posts">
+            <h1>get this ID: {{currently_viewed_reply_id}}</h1>
+            <h1>getter getReplies: {{getReplies}}</h1>
+            <!-- <h1>getter getReplies(): {{getReplies()}}</h1> -->
+            <!-- <h1>getter getReplies(currently_viewed_reply_id): {{getReplies(currently_viewed_reply_id)}}</h1> -->
             <!-- @{{ discussion_data }} -->
             <div class="discussion_item" v-for="(value, key) in this.discussion_data" :key="key">
                 <div class="profile-image-wrapper">
@@ -38,10 +44,13 @@
                     <p>({{value.replies}}) replies</p>
                 </div>
 
-                <!-- <section v-if="typeof getReplies[value.id].show === undefined" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}"> -->
-                    <p>ideas will go here</p>
-                    <!-- <ul v-if="getReplies[value.id].replies !== null">
-                        <li v-for="(reply_val, key) in this.getReplies[value.id].replies" :key="key">
+                <section v-if="getReplies !== undefined && currently_viewed_reply_id === value.id" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
+                    <ul>
+                    <!-- <ul v-if="0 === 0"> -->
+                        <li v-for="(reply_val, key) in this.getReplies" :key="key">
+                            <p>{{reply_val}}</p>
+                            <p>{{key}}</p>
+                            <p>{{this.getReplies}}</p>
                             <h4>{{reply_val.title}}</h4>
                             <h6>{{reply_val.id}}</h6>
                             <p>{{reply_val.message}}</p>
@@ -49,9 +58,8 @@
                             <button @click="handleDiscussionReplyVote(reply_val.id)">{{reply_val.darts}} | Darts</button>
                         </li>
                     </ul>
-                    <p v-else>no replies</p> -->
-                <!-- </section> -->
-                <section>
+                </section>
+                <section v-else>
                     <p>hide replies</p>
                 </section>
             </div>
@@ -269,120 +277,136 @@
     export default {
       name: 'Updates',
       data() {
-          return {
-            discussion_data: '',
-            showReplies: {},
-            discussion_replies_data: {},
-            updates_post_data: '',
-            discussion: {
-              title: '',
-              message: ''
-            },
-            discussion_update: {
-              id: '',
-              title: '',
-              message: '',
-            },
-            update_post_update: {
-              id: '',
-              title: '',
-              message: ''
-            }
-          }
-      },
-      computed: {
-        getIdeaUserId() {
-          return this.$ud_store.getters.getCurrentIdeaUserId
-        },
-        currentUserData() {
-          return this.$ud_store.getters.getUserData
-        },
-        currentUserMeta() {
-            return this.$ud_store.getters.getUserMeta
-        }
-      },
-      mounted() {
-        console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
-        this.hanldeGetDiscussionData();
-        console.warn('this.$ud_store.getters.getUserMeta => ', this.$ud_store.getters.getUserMeta)
-        console.warn('this.currentUserMeta => ', this.currentUserMeta)
-      },
-      methods: {
-        openReplies(value) {
-            this.showReplies[value] = true;
-        },
-        handleDiscussionDelete(value) {
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/delete/' + value,
-            }).then( (response) => {
-                this.discussion_data = response.data;
-            });
-        },
-        handleDiscussionUpdate(e){
-            e.preventDefault();
-            let discussions_id = this.discussion_update.id;
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/update/' + discussions_id,
-                data: {
-                    title: this.discussion_update.title,
-                    message: this.discussion_update.message,
+            return {
+                discussion_data: '',
+                showReplies: {},
+                discussion_replies_data: {},
+                reply_data: {},
+                updates_post_data: '',
+                currently_viewed_reply_id: 2120,
+                discussion: {
+                    title: '',
+                    message: ''
                 },
-            }).then( (res) => {
-                if (res.data === "") {
-                    alert('error creating timeline entry');
-                }
-            });
+                // discussion_update: {
+                //     id: '',
+                //     title: '',
+                //     message: '',
+                // },
+                // update_post_update: {
+                //     id: '',
+                //     title: '',
+                //     message: ''
+                // }
+            }
         },
-        handleDiscussionSubmit(e) {
-            e.preventDefault();
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/create/' + this.$route.params.id,
-                data: {
-                    title: this.discussion.title,
-                    message: this.discussion.message
-                }
-            }).then( (res) => {
-                this.discussion_data = res.data;
-            });
+        computed: {
+            currentUserMeta() {
+                return this.$ud_store.getters.getUserMeta
+            },
+            getReplies() {
+                return this.$ud_store.getters.getCurrentIdeaDiscussionReplies(this.currently_viewed_reply_id)
+            }
         },
-        hanldeGetDiscussionData() {
-            let idea_id = this.$route.params.id;
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/get/' + idea_id
-            }).then( (res) => {
-                console.log('hanldeGetDiscussionData(res) => ', res)
-                this.discussion_data = res.data;
-            });   
+        mounted() {
+            console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
+            console.log("this.$ud_store.state.current_page_idea.discussion", this.$ud_store.state.current_page_idea.discussion)
+            this.hanldeGetDiscussionData();
+            console.warn('this.currentUserMeta => ', this.currentUserMeta)
         },
-        // discussion replies functions
-        handleDiscussionReplyVote(reply_id) {
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/reply/darts/' + reply_id
-            }).then( (res) => {
-                this.discussion_replies_data = res.data;
-            });
-        },
-        handleDiscussionReplyDelete(value) {
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/reply/delete/' + value,
-            }).then( (res) => {
-                this.discussion_replies_data = res.data;
-            });
-        },
-        handleDiscussionRepliesGet(value) {
-            axios({
-                method: 'POST',
-                url: '/ai/idea/discussion/reply/get/all/' + value
-            }).then( (res) => {
-                console.log('res.data => ', res.data)
-            }); 
-        },
-      }
+        methods: {
+            openReplies(value) {
+                // e.preventDefault();
+                this.currently_viewed_reply_id = value;
+                console.log('openReplies() value => ', value)
+                this.handleDiscussionRepliesGet(value);
+                // console.log('this.getCurrentIdeaDiscussionReplies => ', this.getReplies[value])
+            },
+            handleDiscussionDelete(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/delete/' + value,
+                }).then( (response) => {
+                    this.discussion_data = response.data;
+                });
+            },
+            handleDiscussionUpdate(e){
+                e.preventDefault();
+                let discussions_id = this.discussion_update.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/update/' + discussions_id,
+                    data: {
+                        title: this.discussion_update.title,
+                        message: this.discussion_update.message,
+                    },
+                }).then( (res) => {
+                    if (res.data === "") {
+                        alert('error creating timeline entry');
+                    }
+                });
+            },
+            handleDiscussionSubmit(e) {
+                e.preventDefault();
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/create/' + this.$route.params.id,
+                    data: {
+                        title: this.discussion.title,
+                        message: this.discussion.message
+                    }
+                }).then( (res) => {
+                    this.discussion_data = res.data;
+                });
+            },
+            hanldeGetDiscussionData() {
+                let idea_id = this.$route.params.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/get/' + idea_id
+                }).then( (res) => {
+
+                    for (let i = 0; i < res.data.length; i++) {
+                        let disc_id = res.data[i].id;
+                        console.log('disc_id => ', disc_id )
+                        this.handleDiscussionRepliesGet(disc_id);
+                        // this.showReplies[disc_id] = false;
+                    }
+                    this.discussion_data = res.data;
+                });   
+            },
+            // discussion replies functions
+            handleDiscussionReplyVote(reply_id) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/darts/' + reply_id
+                }).then( (res) => {
+                    this.discussion_replies_data = res.data;
+                });
+            },
+            handleDiscussionReplyDelete(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/delete/' + value,
+                }).then( (res) => {
+                    this.discussion_replies_data = res.data;
+                });
+            },
+            handleDiscussionRepliesGet(value) {
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/reply/get/all/' + value
+                }).then( (res) => {
+                    this.reply_data[value] = res.data;
+                    // console.log('this.reply_data => ', this.reply_data[value])
+                    // this.getCurrentIdeaDiscussionReplies[value]
+                    let pushToStore = {
+                        data: res.data,
+                        id: value
+                    }
+                    this.$ud_store.commit('SET_IDEA_REPLIES', pushToStore ); 
+                }); 
+            },
+        }
     }
 </script>

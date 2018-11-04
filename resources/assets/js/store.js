@@ -28,7 +28,9 @@ export default new Vuex.Store({
             description: 'default val',
             timeline: [],
             updates: {},
-            discussion: {}
+            discussion: {
+                replies: []
+            }
         },
         current_search: {},
         current_category_id: '',
@@ -69,6 +71,13 @@ export default new Vuex.Store({
         },
         SET_IDEA_TIMELINE(state, newValue) {
             state.current_page_idea.timeline = newValue;
+        },
+        SET_IDEA_REPLIES(state, pushToStore) {
+            // console.log('SET_IDEA_REPLIES() state => ', state)
+            // console.log('SET_IDEA_REPLIES() pushToStore => ', pushToStore)
+            // console.log('SET_IDEA_REPLIES() pushToStore.data => ', pushToStore.data)
+            // console.log('SET_IDEA_REPLIES() pushToStore.id => ', pushToStore.id)
+            state.current_page_idea.discussion.replies[pushToStore.id] = pushToStore.data;
         },
 
         // search
@@ -123,6 +132,9 @@ export default new Vuex.Store({
         getCurrentIdea: (state) => state.current_page_idea,
         getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
         getCurrentIdeaDescription: (state) => state.current_page_idea.description,
-        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline
+        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline,
+        getCurrentIdeaDiscussionReplies: state => value => { console.log(value) 
+            return state.current_page_idea.discussion.replies[value]},
+
     }
   })
