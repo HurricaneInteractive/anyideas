@@ -64,6 +64,11 @@
 </template>
 
 <style lang="scss">
+  @import '~@/components/_editor.scss';
+  @import '~@/components/_viewer.scss';
+</style>
+
+<style lang="scss">
 @import '~@/_variables.scss';
 
 .user_stats {
@@ -118,8 +123,6 @@
 
 <style lang="scss" scoped>
   @import '~@/_variables.scss';
-  @import '~@/components/_editor.scss';
-  @import '~@/components/_viewer.scss';
 
   .about {
     > .idea_wrapper {
@@ -204,6 +207,10 @@
 
 <script>
   import categories from '../../data/categories'
+  import {
+    EditorSettings,
+    ViewerSettings
+  } from '../../data/tui-settings'
   
   require('codemirror/lib/codemirror.css') // codemirror
   require('tui-editor/dist/tui-editor.css'); // editor ui
@@ -327,13 +334,10 @@
         if (!el) return false
 
         const $this = this;
-        
-        this.editor = new Editor({
+
+        let settings = EditorSettings({
           el: el,
           initialEditType: 'markdown',
-          previewStyle: 'vertical',
-          height: '500px',
-          usageStatistics: false,
           initialValue: this.bio,
           events: {
             change() {
@@ -341,6 +345,8 @@
             }
           }
         })
+        
+        this.editor = new Editor(settings)
 
         this.editorInitialsed = false
       },
@@ -352,17 +358,16 @@
         if (!el) return false
 
         const $this = this;
-
-        this.editor = new Viewer({
+        let settings = ViewerSettings({
           el: el,
-          height: 'auto',
           initialValue: $this.userMeta.user_meta.bio
         })
+
+        this.editor = new Viewer(settings)
 
         this.viewInitialsed = true
       },
       editorOnChange() {
-        console.log(this.editor.getValue());
         this.bio = this.editor.getValue()
       },
       saveUserBio(e) {
