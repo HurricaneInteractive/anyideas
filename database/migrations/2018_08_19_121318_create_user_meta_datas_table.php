@@ -24,7 +24,7 @@ class CreateUserMetaDatasTable extends Migration
             $table->string('avatar')->nullable($value = true);
             $table->mediumText('following')->nullable($value = true); // IDEAS YOU FOLLOW
             $table->mediumText('followers')->nullable($value = true); // PEOPLE FOLLOWING YOUR IDEAS / SUPPORTERS
-            $table->mediumText('likes')->nullanle($value = true); // object of [discussion, discussion replies, updates, timelines, ideas] likes
+            $table->mediumText('likes')->nullable($value = true); // object of [discussion, discussion replies, updates, timelines, ideas] likes
             $table->mediumText('social_media')->nullable($value = true);
             $table->mediumText('interests')->nullable($value = true);
             $table->timestamps();
