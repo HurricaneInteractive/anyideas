@@ -2,7 +2,7 @@
 <!-- use this.$ud_store in child components -->
 <template>
     <div>
-        <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isNewIdeaPage}" v-if="!isLoginOrRegister">
+        <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isIdeaPage}" v-if="!isLoginOrRegister">
             <div class="container fixed_width">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-left">
@@ -235,6 +235,7 @@
                     .add-idea {
                         // border: 1px solid $black;
                         box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+                        background: $pure;
                     }
                     .add-idea, .post-idea {
                         display: inline-flex;
@@ -588,9 +589,9 @@ import CategoriesSlider from './components/CategoriesSlider'
                     return route.name === 'user' || (typeof route.parent !== 'undefined' && route.parent.name === 'user')
                 })
             },
-            isNewIdeaPage() {
+            isIdeaPage() {
                 return this.$route.matched.some(route => {
-                    return route.name === 'add-new-idea'
+                    return route.name === 'add-new-idea' || route.name === 'idea'
                 })
             },
             user_data() {
