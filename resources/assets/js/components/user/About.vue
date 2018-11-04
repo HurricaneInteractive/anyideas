@@ -51,7 +51,15 @@
             </template>
           </template>
         </h3>
-        <div class="editor" ref="userBio" />
+
+        <template v-if="editing_bio">
+          <markdown-editor v-model="bio" ref="markdownEditor" :configs="configs"></markdown-editor>
+        </template>
+        
+        <template v-if="!editing_bio && userHasBio">
+          <div class="editor-contents" v-html="userBio" />
+        </template>
+
         <div v-if="!showEditingControls && !userHasBio" class="no-bio">
           <span v-html="this.$ud_store.state.icons.no_bio" />
           <h2>Definitely still writing.</h2>
@@ -64,12 +72,8 @@
 </template>
 
 <style lang="scss">
-  @import '~@/components/_editor.scss';
-  @import '~@/components/_viewer.scss';
-</style>
-
-<style lang="scss">
 @import '~@/_variables.scss';
+@import '~@/components/_viewer.scss';
 
 .user_stats {
   width: 250px;
@@ -127,6 +131,7 @@
 
 <style lang="scss" scoped>
   @import '~@/_variables.scss';
+  @import '~simplemde/dist/simplemde.min.css';
 
   .about {
     > .idea_wrapper {
@@ -211,25 +216,14 @@
 
 <script>
   import categories from '../../data/categories'
-  import {
-    EditorSettings,
-    ViewerSettings
-  } from '../../data/tui-settings'
-  
-  require('codemirror/lib/codemirror.css') // codemirror
-  require('tui-editor/dist/tui-editor.css'); // editor ui
-  require('tui-editor/dist/tui-editor-contents.css'); // editor content
-  require('highlight.js/styles/github.css'); // code block highlight
-
-  // deps for viewer.
-  require('tui-editor/dist/tui-editor-contents.css'); // editor content
-  require('highlight.js/styles/github.css'); // code block highlight
-
-  var Viewer = require('tui-editor/dist/tui-editor-Viewer');
-  var Editor = require('tui-editor');
+  import markdownEditor from 'vue-simplemde/src/markdown-editor'
+  import marked from 'marked'
 
   export default {
     name: 'About',
+    components: {
+      markdownEditor
+    },
     props: ['data'],
     data() {
       return {
@@ -238,21 +232,16 @@
         editing_interests: false,
         interests: [],
         categories: categories,
-        editor: null,
-        viewInitialsed: false,
-        editorInitialsed: false,
         editing_bio: false,
-        bio: ''
+        bio: '',
+        configs: {
+          hideIcons: ['image', 'link', 'preview']
+        }
       }
     },
     beforeMount() {
     },
     mounted() {
-      if (this.userMeta && this.userMeta.user_meta) {
-        if (this.userMeta.user_meta.bio) {
-          this.inititaliseViewer();
-        }
-      }
     },
     methods: {
       toggleEditing(e) {
@@ -271,18 +260,12 @@
       toggleBioEditing(e) {
         e.preventDefault();
         this.editing_bio = !this.editing_bio
-        this.viewInitialsed = false
-        this.editorInitialsed = false
 
         if (this.editing_bio === true) {
           this.bio = this.userMeta.user_meta ? this.userMeta.user_meta.bio : ''
-          this.inititaliseEditor();
         }
         else {
           this.bio = ''
-          if (this.userMeta.user_meta) {
-            this.inititaliseViewer();
-          }
         }
       },
       onInterestClick(e, cat) {
@@ -324,56 +307,6 @@
         })
         .catch(e => console.error(e))
       },
-      getEditorElem() {
-        let el = this.$refs.userBio
-        el.innerHTML = ''
-        el.removeAttribute('style')
-
-        return el
-      },
-      inititaliseEditor() {
-        if (this.editorInitialsed) return false
-
-        let el = this.getEditorElem()
-        if (!el) return false
-
-        const $this = this;
-
-        let settings = EditorSettings({
-          el: el,
-          initialEditType: 'markdown',
-          initialValue: this.bio,
-          events: {
-            change() {
-              $this.editorOnChange()
-            }
-          }
-        })
-        
-        this.editor = new Editor(settings)
-
-        this.editorInitialsed = false
-      },
-      inititaliseViewer() {
-        if (this.viewInitialsed) return false
-
-        let el = this.getEditorElem()
-
-        if (!el) return false
-
-        const $this = this;
-        let settings = ViewerSettings({
-          el: el,
-          initialValue: $this.userMeta.user_meta.bio
-        })
-
-        this.editor = new Viewer(settings)
-
-        this.viewInitialsed = true
-      },
-      editorOnChange() {
-        this.bio = this.editor.getValue()
-      },
       saveUserBio(e) {
         e.preventDefault();
 
@@ -384,7 +317,7 @@
           url: `/ai/user/update.meta/${this.userMeta.user.id}`,
           data: {
             user_meta_update: {
-              bio: this.editor.getValue()
+              bio: this.bio
             }
           }
         })
@@ -442,14 +375,10 @@
         }
 
         return false;
-      }
-    },
-    watch: {
-      userMeta: function(val) {
-        if (this.viewInitialsed) return false
-
-        if (val.user_meta && val.user_meta.bio) {
-          this.inititaliseViewer();
+      },
+      userBio() {
+        if (this.userHasBio) {
+          return marked(this.userMeta.user_meta.bio, { sanitize: true })
         }
       }
     }
