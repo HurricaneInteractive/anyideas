@@ -16,7 +16,9 @@
         </template>
 
         <template v-else>
-          <IdeaCard v-for="(value, key) in userIdeas" :key="key" :props='value'/>
+          <div class="all-ideas">
+            <IdeaCard v-for="(value, key) in userIdeas" :key="key" :props='value'/>
+          </div>
         </template>
 
     </div>
@@ -25,7 +27,8 @@
 
 <style lang="scss" scoped>
   @import '~@/_variables.scss';
-  .no-ideas-found {
+  .no-ideas-found,
+  .all-ideas {
     margin-top: 60px;
   }
   .no-ideas {
@@ -66,8 +69,6 @@
     }
   }
 </style>
-
-
 
 <script>
   import IdeaCard from '../IdeaCard.vue'
