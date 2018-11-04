@@ -13,6 +13,7 @@ class Discussion extends Model
         'id',
         'title',
         'message',
+        'replies',
         'darts'
     ];
 

@@ -18,14 +18,6 @@
         </div>
 
 
-                    <!-- <h1>{{getReplies[2120].replies.length}}</h1> -->
-                    <!-- <h1>{{getReplies[2121].replies}}</h1> -->
-                    <h1>{{getReplies[2120]}}</h1>
-                    <hr/>
-                    <h1>{{getReplies[2121]}}</h1>
-                    <hr/>
-                    <h1>{{getReplies}}</h1>
-
         <div id="discussion_data" class="all_discussion_posts">
             <!-- @{{ discussion_data }} -->
             <div class="discussion_item" v-for="(value, key) in this.discussion_data" :key="key">
@@ -38,18 +30,12 @@
                     <h2 id="title" >{{value.title}}</h2>
                     <p id="message">{{value.message}}</p>
                 </div>
-                <div class="post_button" @click="handleDiscussionDelete(value.id)">
+                <!-- <div class="post_button" @click="handleDiscussionDelete(value.id)">
                     <p>Delete</p>
-                </div>
+                </div> -->
                 <!-- make replies number dynamic -->
                 <div class="post_button" @click="openReplies(value.id)">
-                    <!-- <p>{{
-                        getReplies[value.id] === undefined
-                            ? getReplies[value.id].replies === null
-                                ? 0
-                                : getReplies[value.id].replies.length
-                        : 0
-                    }} replies</p> -->
+                    <p>({{value.replies}}) replies</p>
                 </div>
 
                 <!-- <section v-if="typeof getReplies[value.id].show === undefined" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}"> -->
@@ -313,9 +299,6 @@
         },
         currentUserMeta() {
             return this.$ud_store.getters.getUserMeta
-        },
-        getReplies() {
-            return this.$ud_store.getters.getCurrentIdeaDiscussionReplies
         }
       },
       mounted() {
@@ -373,10 +356,6 @@
             }).then( (res) => {
                 console.log('hanldeGetDiscussionData(res) => ', res)
                 this.discussion_data = res.data;
-                for (let i = 0; i < res.data.length; i++) {
-                    this.handleDiscussionRepliesGet(res.data[i].id);
-                }
-                
             });   
         },
         // discussion replies functions
@@ -402,22 +381,6 @@
                 url: '/ai/idea/discussion/reply/get/all/' + value
             }).then( (res) => {
                 console.log('res.data => ', res.data)
-                let newItem = {
-                    "replies": null,
-                    "show": false
-                }
-                if (res.data.length !== 0) {
-                    newItem = {
-                        "replies": res.data,
-                        "show": false
-                    }
-                }
-                console.log('newItem => ', newItem)
-
-                this.discussion_replies_data[value] = newItem;
-                // push to store + getter
-                this.$ud_store.commit('SET_IDEA_DISCUSSION_REPLIES', this.discussion_replies_data);                
-                console.log('this.discussion_replies_data => ', this.discussion_replies_data)
             }); 
         },
       }

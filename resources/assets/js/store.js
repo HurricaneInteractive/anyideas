@@ -28,7 +28,7 @@ export default new Vuex.Store({
             description: 'default val',
             timeline: [],
             updates: {},
-            discussion: {},
+            discussion: {}
         },
         current_search: {},
         current_category_id: '',
@@ -69,9 +69,6 @@ export default new Vuex.Store({
         },
         SET_IDEA_TIMELINE(state, newValue) {
             state.current_page_idea.timeline = newValue;
-        },
-        SET_IDEA_DISCUSSION_REPLIES(state, newValue) {
-            state.current_page_idea.discussion = newValue;
         },
 
         // search
@@ -126,7 +123,6 @@ export default new Vuex.Store({
         getCurrentIdea: (state) => state.current_page_idea,
         getCurrentIdeaUserId: (state) => state.current_page_idea.user_id,
         getCurrentIdeaDescription: (state) => state.current_page_idea.description,
-        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline,
-        getCurrentIdeaDiscussionReplies: (state) => state.current_page_idea.discussion,
+        getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline
     }
   })

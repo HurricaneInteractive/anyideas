@@ -38,7 +38,8 @@ class DiscussionController extends Controller
             'user_id' => Auth::id(),
             'idea_id' => $id,
             'title' => $request->title,
-            'message' => $request->message
+            'message' => $request->message,
+            'replies' => 0,
         ]);
 
         $new_discussion->save();
