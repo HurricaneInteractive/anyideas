@@ -2,7 +2,7 @@
 <!-- use this.$ud_store in child components -->
 <template>
     <div>
-        <nav class="navbar" v-bind:class="{profile: isUserProfilePage}" v-if="!isLoginOrRegister">
+        <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isNewIdeaPage}" v-if="!isLoginOrRegister">
             <div class="container fixed_width">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-left">
@@ -131,7 +131,8 @@
     }
 
     .navbar {
-        &.profile {
+        &.profile,
+        &.addidea {
             background: $white;
         }
         .navbar-icon {
@@ -585,6 +586,11 @@ import CategoriesSlider from './components/CategoriesSlider'
             isUserProfilePage() {
                 return this.$route.matched.some(route => {
                     return route.name === 'user' || (typeof route.parent !== 'undefined' && route.parent.name === 'user')
+                })
+            },
+            isNewIdeaPage() {
+                return this.$route.matched.some(route => {
+                    return route.name === 'add-new-idea'
                 })
             },
             user_data() {
