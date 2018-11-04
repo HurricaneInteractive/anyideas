@@ -1,7 +1,7 @@
 <template>
     <div class="search_container">
         <div v-if="loaded" class="fixed_width">
-            <div v-if="this.users !== []" class="users_results sub_width">
+            <div v-if="this.users !== []" class="users_results">
               <h2>Users</h2>
               <div class="user_item" v-for="(value, key) in users" :key="key">
                 <router-link :to="'/user/' + value.user.id">
@@ -32,21 +32,21 @@
               </div>
             </div>
 
-            <div v-else class="users_results sub_width">
+            <div v-else class="users_results">
               <h2>Users</h2>
               <div class="no_results">
                 <p>no users found</p>
               </div>
             </div>
 
-            <div v-if="this.ideas !== []" class="ideas_results sub_width">
+            <div v-if="this.ideas !== []" class="ideas_results">
               <h2>Ideas</h2>
               <div v-for="(value, key) in this.ideas" :key="key">
                 <IdeaCard key={{key}} :props='value'/>
               </div>
             </div>
 
-            <div v-else class="ideas_results sub_width">
+            <div v-else class="ideas_results">
               <h2>Ideas</h2>
               <div class="no_results">
                 <p>no ideas found</p>
@@ -157,15 +157,25 @@ import IdeaCard from '../components/IdeaCard'
       // this.ideas = this.$ud_store.state.current_search.ideas.slice(1,3);
       // this.users = this.$ud_store.state.current_search.users;
     },
+    watch: {
+      currentSearchData() {
+        console.log('currentSearchData watcher', this.currentSearchData)
+        if (this.currentSearchData === '') {
+          console.log('shit')
+        }
+        this.getSearchResults();
+      },
+      $route() {
+        this.getSearchResults();
+      }
+    },
     methods: {
       getSearchResults() {
           axios({
               method: 'POST',
               url: '/ai/search',
               data: {
-                  // search: this.currentSearchData
-                  search: 'notorious'
-                  // search: 'any.ideas'
+                  search: this.currentSearchData
               },
               headers: {
                   'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
@@ -195,6 +205,7 @@ import IdeaCard from '../components/IdeaCard'
               this.users = user_array;
 
               this.$ud_store.commit('SET_CURRENT_SEARCH_QUERY', '');
+              console.log('this.currentSearchData => ', this.currentSearchData)
               this.loaded = true;
           })
           .catch(error => {

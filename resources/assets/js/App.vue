@@ -473,63 +473,13 @@ import CategoriesSlider from './components/CategoriesSlider'
 
                 //SET_CURRENT_SEARCH_QUERY
                 this.$ud_store.commit('SET_CURRENT_SEARCH_QUERY', this.search_text);
-                this.$router.push({name: 'search'})
-
-                // moves to search component 
-                // if (this.search_text !== '' || this.search_text !== null) {
-                //     console.log('search_text === defined')
-                //     axios({
-                //         method: 'POST',
-                //         url: '/ai/search',
-                //         data: {
-                //             search: this.search_text
-                //         },
-                //         headers: {
-                //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                //         }
-                //     })
-                //     .then(res => {
-
-                        
-                //         let user_array = [];
-
-                //         for (let i = 0; i < res.data.usersQuery.length; i++ ) {
-                //             axios({
-                //                 method: 'POST',
-                //                 url: '/ai/user/get/' + res.data.usersQuery[i].id,
-                //                 headers: {
-                //                     'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-                //                 }
-                //             }).then(u_res => {
-                //                 let addToAll = {
-                //                     user: res.data.usersQuery[i],
-                //                     meta: u_res.data
-                //                 }
-                //                 user_array.push(addToAll)
-                //             })
-                //         }
-                //         console.log('(all) user_array => ', user_array)
-
-                //         let pushToStore = {
-                //             'ideas': res.data.ideasQuery,
-                //             'users': user_array,
-                //         }
-
-                //         if (res.status === 200) {
-                                    
-                //             this.$ud_store.commit('SET_CURRENT_SEARCH', pushToStore);
-                //             this.$router.push({name: 'search'})
-                //         }
-
-                //         this.search_text = ''                       
-                //     })
-                //     .catch(error => {
-                //         console.error(error);
-                //     });
-                // } else {
-                //     console.log('mate');
-                //     return alert('make sure you fill in all the fields');
-                // }
+                
+                if (this.$route.name === 'search') {
+                    console.log('already on search page')
+                } else {
+                    console.log('go to search page on search page')
+                    this.$router.push({name: 'search'})
+                }
             },
             toggleSearchState(toggle) {
                 this.openSearchState = toggle
