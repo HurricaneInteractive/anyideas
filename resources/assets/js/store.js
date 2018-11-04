@@ -27,12 +27,15 @@ export default new Vuex.Store({
             data: {},
             description: 'default val',
             timeline: [],
-            updates: {},
             discussion: {
                 replies: []
-            }
+            },
+            updates: {}
         },
-        current_search: {},
+        current_search: {
+            ideas: [],
+            users: [],
+        },
         current_category_id: '',
         consoleLog: {
             component: ["background: rgb(11, 11, 13)", "color: rgb(66,185,131)", "border: 1px solid rgb(66,185,131)", "padding: 4px 24px 4px 16px", "line-height: 24px"].join(";"),
@@ -73,38 +76,33 @@ export default new Vuex.Store({
             state.current_page_idea.timeline = newValue;
         },
         SET_IDEA_DISCUSSION(state, pushToStore) {
-            // console.log('SET_IDEA_REPLIES() state => ', state)
-            // console.log('SET_IDEA_REPLIES() pushToStore => ', pushToStore)
-            // console.log('SET_IDEA_REPLIES() pushToStore.data => ', pushToStore.data)
-            // console.log('SET_IDEA_REPLIES() pushToStore.id => ', pushToStore.id)
-            // state.current_page_idea.discussion.replies[pushToStore.id] = pushToStore.data;
             state.current_page_idea.discussion = pushToStore;
+        },
+        SET_IDEA_UPDATES(state, val) {
+            state.current_page_idea.updates = val;
         },
 
         // search
+        SET_CURRENT_SEARCH_QUERY(state, val) {
+            state.current_search = val
+        },
         SET_CURRENT_SEARCH(state, newValue) {
-            if (this.debug) console.log('SET_CURRENT_SEARCH triggered with', newValue)
-            console.error('newValue => ', newValue)
-            state.current_search = newValue;
+            state.current_search = {ideas: newValue.ideas, users: newValue.users,};;
         },
         CLEAR_CURRENT_SEARCH(state) {
-            if (this.debug) console.log('CLEAR_CURRENT_SEARCH triggered with', newValue)
-            state.current_search = '';
+            state.current_search = {ideas: [], users: [],};
         },
 
         //category
         SET_CATEGORY_ID(state, newValue) {
-            if (this.debug) console.log('SET_CATEGORY_ID triggered with', newValue)
             state.current_category_id = newValue;
         },
 
         // current user **not currently logged in user**
         SET_CURRENT_USER_DATA(state, newValue) {
-            if (this.debug) console.log('SET_CURRENT_USER_DATA triggered with', newValue)
             state.current_user_view = newValue;
         },
         SET_CURRENT_USER_IDEAS(state, newValue) {
-            console.log('SET_CURRENT_USER_DATA triggered with', newValue)
             state.current_user_ideas = newValue;
         },
         SET_CURRENT_USER_META(state, payload) {
@@ -135,8 +133,10 @@ export default new Vuex.Store({
         getCurrentIdeaDescription: (state) => state.current_page_idea.description,
         getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline,
         getCurrentIdeaDiscussion: (state) => state.current_page_idea.discussion,
-        // getCurrentIdeaDiscussion: state => value => { console.log(value) 
-        //     return state.current_page_idea.discussion[value]},
-
+        getCurrentIdeaUpdates: (state) => state.current_page_idea.updates,
+        // getCurrentSearch: (state) => state.current_search,
+        getCurrentSearch: (state) => state.current_search,
+        getCurrentSearchUsers: (state) => state.current_search.users,
+        getCurrentSearchIdeas: (state) => state.current_search.ideas
     }
   })
