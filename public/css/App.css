@@ -1,1 +1,188 @@
-.fixed_width{max-width:1080px;width:100%;margin:0 auto}.sub_width{width:60%;margin:48px auto}.idea_wrapper{max-width:750px;width:100%;margin:0 auto}.page-wrapper{padding-top:96px;padding-bottom:96px}.Ideation,.ideation{color:#f45f5f}.Ideation *,.ideation *{fill:#f45f5f;stroke:#f45f5f}.Planning,.planning{color:#f5db2f}.Planning *,.planning *{fill:#f5db2f;stroke:#f5db2f}.Creating,.creating{color:#7ccb1f}.Creating *,.creating *{fill:#7ccb1f;stroke:#7ccb1f}.Evaluating,.evaluating{color:#1fcbbe}.Evaluating *,.evaluating *{fill:#1fcbbe;stroke:#1fcbbe}.Refining,.refining{color:#3babdd}.Refining *,.refining *{fill:#3babdd;stroke:#3babdd}.Completed,.completed{color:#c682d6}.Completed *,.completed *{fill:#c682d6;stroke:#c682d6}.On-hold,.on-hold{color:#fc64d9}.On-hold *,.on-hold *{fill:#fc64d9;stroke:#fc64d9}.Abandoned,.abandoned{color:#989898}.Abandoned *,.abandoned *{fill:#989898;stroke:#989898}.bg_ideation{background-color:#f45f5f}.bg_planning{background-color:#f5db2f}.bg_creating{background-color:#7ccb1f}.bg_evaluating{background-color:#1fcbbe}.bg_refining{background-color:#3babdd}.bg_completed{background-color:#c682d6}.bg_on-hold{background-color:#fc64d9}.bg_abandoned{background-color:#989898}body,html{width:100%;background-color:#fff;padding:0;margin:0;-webkit-box-sizing:border-box;box-sizing:border-box;font-family:PT Sans,sans-serif}.bold{font-weight:700}*{-webkit-box-sizing:border-box;box-sizing:border-box}h1,h2,h3,h4,h5,h6{color:#000}h6{font-size:.75rem}p{font-weight:400;color:#2c2c2c}.feather{display:block;width:100%;height:auto}
+/* Variables */
+
+.fixed_width {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.sub_width {
+  width: 60%;
+  margin: 48px auto;
+}
+
+.idea_wrapper {
+  max-width: 750px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.page-wrapper {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+.Ideation,
+.ideation {
+  color: #F45F5F;
+}
+
+.Ideation *,
+.ideation * {
+  fill: #F45F5F;
+  stroke: #F45F5F;
+}
+
+.Planning,
+.planning {
+  color: #F5DB2F;
+}
+
+.Planning *,
+.planning * {
+  fill: #F5DB2F;
+  stroke: #F5DB2F;
+}
+
+.Creating,
+.creating {
+  color: #7CCB1F;
+}
+
+.Creating *,
+.creating * {
+  fill: #7CCB1F;
+  stroke: #7CCB1F;
+}
+
+.Evaluating,
+.evaluating {
+  color: #1FCBBE;
+}
+
+.Evaluating *,
+.evaluating * {
+  fill: #1FCBBE;
+  stroke: #1FCBBE;
+}
+
+.Refining,
+.refining {
+  color: #3BABDD;
+}
+
+.Refining *,
+.refining * {
+  fill: #3BABDD;
+  stroke: #3BABDD;
+}
+
+.Completed,
+.completed {
+  color: #C682D6;
+}
+
+.Completed *,
+.completed * {
+  fill: #C682D6;
+  stroke: #C682D6;
+}
+
+.On-hold,
+.on-hold {
+  color: #FC64D9;
+}
+
+.On-hold *,
+.on-hold * {
+  fill: #FC64D9;
+  stroke: #FC64D9;
+}
+
+.Abandoned,
+.abandoned {
+  color: #989898;
+}
+
+.Abandoned *,
+.abandoned * {
+  fill: #989898;
+  stroke: #989898;
+}
+
+.bg_ideation {
+  background-color: #F45F5F;
+}
+
+.bg_planning {
+  background-color: #F5DB2F;
+}
+
+.bg_creating {
+  background-color: #7CCB1F;
+}
+
+.bg_evaluating {
+  background-color: #1FCBBE;
+}
+
+.bg_refining {
+  background-color: #3BABDD;
+}
+
+.bg_completed {
+  background-color: #C682D6;
+}
+
+.bg_on-hold {
+  background-color: #FC64D9;
+}
+
+.bg_abandoned {
+  background-color: #989898;
+}
+
+html,
+body {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: "PT Sans", sans-serif;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #000000;
+}
+
+h6 {
+  font-size: 0.75rem;
+}
+
+p {
+  font-weight: 400;
+  color: #2C2C2C;
+}
+
+.feather {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
