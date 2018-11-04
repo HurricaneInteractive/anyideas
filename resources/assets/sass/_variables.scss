@@ -59,6 +59,10 @@ $abandoned: #989898;
   width: 750px;
   margin: 0 auto;
 }
+.page-wrapper {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
 
 @mixin fontSize($size) {
   font-size: $size; //Fallback in px
@@ -128,8 +132,3 @@ $abandoned: #989898;
 .bg_abandoned {
   @include bg_category($abandoned)
 };
-
-.page-wrapper {
-  padding-top: 95px;
-  padding-bottom: 95px;
-}
