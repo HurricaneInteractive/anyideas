@@ -336,6 +336,10 @@
                         
                         console.warn(this.getCurrentIdeaUserId)
                         console.warn(this.currentUser)
+                        if (this.getCurrentIdeaUserId === this.currentUser) {
+                            this.isUsersIdea = true;
+                        }
+                        console.log('TCL: handleGetInitialData -> this.isUsersIdea', this.isUsersIdea);
                     })
                 });
                 console.log("%c IndividualIdea.vue handleGetInitialData(end)", this.$ud_store.state.consoleLog.component)
