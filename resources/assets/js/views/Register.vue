@@ -209,7 +209,10 @@
                         password: this.password,
                         password_confirmation: this.password_confirmation
                     },
-                    url: '/register'
+                    url: '/register',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
                 })
                 .then(response => {
                     console.log("register response")

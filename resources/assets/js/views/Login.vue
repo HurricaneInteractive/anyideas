@@ -89,7 +89,10 @@
                         email: this.email,
                         password: this.password
                     },
-                    url: '/ai/user/auth'
+                    url: '/ai/user/auth',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+                    }
                 })
                 .then(({data}) => {
                     if (data.success) {
