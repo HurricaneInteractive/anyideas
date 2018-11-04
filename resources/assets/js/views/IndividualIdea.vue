@@ -114,7 +114,7 @@
                 text-align: left;
                 margin: 0;
                 color: $black-light;
-                width: 648px;
+                max-width: 648px;
                 font-family: $font-family-sans-serif;
             }
         }

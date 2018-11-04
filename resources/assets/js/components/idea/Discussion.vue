@@ -12,8 +12,19 @@
                 <label for="discussion.message">Message</label>
                 <textarea id="message" placeholder="Constructive feedback goes here" type="text" class="form-control" v-model="discussion.message" required/>
             </div>
-            <div class="post_button" @click="handleDiscussionSubmit"><p>Post</p></div>
+            <div class="post_button" @click="handleDiscussionSubmit">
+                <p>Post</p>
+            </div>
         </div>
+
+
+                    <!-- <h1>{{getReplies[2120].replies.length}}</h1> -->
+                    <!-- <h1>{{getReplies[2121].replies}}</h1> -->
+                    <h1>{{getReplies[2120]}}</h1>
+                    <hr/>
+                    <h1>{{getReplies[2121]}}</h1>
+                    <hr/>
+                    <h1>{{getReplies}}</h1>
 
         <div id="discussion_data" class="all_discussion_posts">
             <!-- @{{ discussion_data }} -->
@@ -27,21 +38,38 @@
                     <h2 id="title" >{{value.title}}</h2>
                     <p id="message">{{value.message}}</p>
                 </div>
-                <div class="post_button" @click="handleDiscussionDelete(value.id)"><p>Delete</p></div>
+                <div class="post_button" @click="handleDiscussionDelete(value.id)">
+                    <p>Delete</p>
+                </div>
                 <!-- make replies number dynamic -->
-                <div class="post_button" @click="handleDiscussionDelete(value.id)"><p>(2) replies</p></div>
+                <div class="post_button" @click="openReplies(value.id)">
+                    <!-- <p>{{
+                        getReplies[value.id] === undefined
+                            ? getReplies[value.id].replies === null
+                                ? 0
+                                : getReplies[value.id].replies.length
+                        : 0
+                    }} replies</p> -->
+                </div>
+
+                <!-- <section v-if="typeof getReplies[value.id].show === undefined" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}"> -->
+                    <p>ideas will go here</p>
+                    <!-- <ul v-if="getReplies[value.id].replies !== null">
+                        <li v-for="(reply_val, key) in this.getReplies[value.id].replies" :key="key">
+                            <h4>{{reply_val.title}}</h4>
+                            <h6>{{reply_val.id}}</h6>
+                            <p>{{reply_val.message}}</p>
+                            <button @click="handleDiscussionReplyDelete(reply_val.id)">Delete entry</button>
+                            <button @click="handleDiscussionReplyVote(reply_val.id)">{{reply_val.darts}} | Darts</button>
+                        </li>
+                    </ul>
+                    <p v-else>no replies</p> -->
+                <!-- </section> -->
+                <section>
+                    <p>hide replies</p>
+                </section>
             </div>
-            <div v-bind:style="{ paddingLeft: '48px'}">
-                <ul v-for="(value, key) in this.discussion_replies_data" :key="key">
-                    <li key={{key}}>
-                        <h4>{{value.title}}</h4>
-                        <h6>{{value.id}}</h6>
-                        <p>{{value.message}}</p>
-                        <button @click="handleDiscussionReplyDelete(value.id)">Delete entry</button>
-                        <button @click="handleDiscussionReplyVote(value.id)">{{value.darts}} | Darts</button>
-                    </li>
-                </ul>
-            </div>
+            
         </div>
 
         <!-- <h4>update discussion item</h4>
@@ -183,6 +211,7 @@
         position: relative;
         display: grid;
         grid-template-columns: 20% 1fr;
+        margin: 24px 0;
         .post_button {
             position: absolute;
             right: 0px;
@@ -224,7 +253,7 @@
         .discussion_data {
             width: 100%;
             display: grid;
-            margin-bottom: 48px;
+            margin: 0 0 64px;
             #title {
                 width: auto;
                 position: relative;
@@ -241,7 +270,7 @@
             #message {
                 color: $grey-dark;
                 font-size: 1rem;
-                min-height: 124px;
+                /* min-height: 124px; */
             }
         }
     }
@@ -256,7 +285,8 @@
       data() {
           return {
             discussion_data: '',
-            discussion_replies_data: '',
+            showReplies: {},
+            discussion_replies_data: {},
             updates_post_data: '',
             discussion: {
               title: '',
@@ -283,6 +313,9 @@
         },
         currentUserMeta() {
             return this.$ud_store.getters.getUserMeta
+        },
+        getReplies() {
+            return this.$ud_store.getters.getCurrentIdeaDiscussionReplies
         }
       },
       mounted() {
@@ -292,6 +325,9 @@
         console.warn('this.currentUserMeta => ', this.currentUserMeta)
       },
       methods: {
+        openReplies(value) {
+            this.showReplies[value] = true;
+        },
         handleDiscussionDelete(value) {
             axios({
                 method: 'POST',
@@ -335,8 +371,12 @@
                 method: 'POST',
                 url: '/ai/idea/discussion/get/' + idea_id
             }).then( (res) => {
-                console.log('res => ', res)
+                console.log('hanldeGetDiscussionData(res) => ', res)
                 this.discussion_data = res.data;
+                for (let i = 0; i < res.data.length; i++) {
+                    this.handleDiscussionRepliesGet(res.data[i].id);
+                }
+                
             });   
         },
         // discussion replies functions
@@ -361,8 +401,23 @@
                 method: 'POST',
                 url: '/ai/idea/discussion/reply/get/all/' + value
             }).then( (res) => {
-                this.discussion_replies_data = res.data;
                 console.log('res.data => ', res.data)
+                let newItem = {
+                    "replies": null,
+                    "show": false
+                }
+                if (res.data.length !== 0) {
+                    newItem = {
+                        "replies": res.data,
+                        "show": false
+                    }
+                }
+                console.log('newItem => ', newItem)
+
+                this.discussion_replies_data[value] = newItem;
+                // push to store + getter
+                this.$ud_store.commit('SET_IDEA_DISCUSSION_REPLIES', this.discussion_replies_data);                
+                console.log('this.discussion_replies_data => ', this.discussion_replies_data)
             }); 
         },
       }
