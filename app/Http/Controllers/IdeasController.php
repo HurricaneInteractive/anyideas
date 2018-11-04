@@ -164,6 +164,7 @@ class IdeasController extends Controller
             if (count($interests) > 0) {
                 $ideas = Ideas::whereIn('category', $interests)
                     ->whereNotIn('id', $not_in)
+                    ->orderBy('created_at', 'desc')
                     ->skip($offset)
                     ->take($limit)
                     ->get();
@@ -205,6 +206,7 @@ class IdeasController extends Controller
         }
 
         $ideas = Ideas::whereNotIn('id', $not_in)
+            ->orderBy('created_at', 'desc')
             ->skip($offset)
             ->take($limit)
             ->get();
