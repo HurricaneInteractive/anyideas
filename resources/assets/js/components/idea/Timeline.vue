@@ -33,33 +33,41 @@
                     </div>
                 </div>
 
-                <div class="timeline_item" v-for="(value, key) in this.currentTimelineData" :key="key">
-                    <div class="side_line">
-                        <div class="icon">
-                            <!-- <span v-html="this.$ud_store.state.icons.x" /> -->
-                            </div>
-                    </div>
-                    <div class="timeline_box">
-                        <h5 class="timeline_date">{{(new Date(value.created_at).getDate()) + '/' + (new Date(value.created_at).getMonth() + 1) + '/' + (new Date(value.created_at).getFullYear())}}</h5>
-                        
-                        <h2 class="timeline_title">
-                            <a v-if="value.link !== null" class="timeline_link" :href="value.link" target="_blank">{{value.title}}</a>
-                            <span v-else >{{value.title}}</span>
-                        </h2>
-                        <p class="timeline_message">{{value.message}}</p>
-                        <div class="timeline_item_footer">
-                            <span></span>
-                            <!-- <span class="timeline_button" @click="handleTimelineSubmit" v-html="icons.dart"></span> -->
-                            <div v-if="$parent.isUsersIdea" class="delete total-likes"  @click="handleTimelineDelete(value.id)">
-                                <p>Delete</p><span v-html="icons.trash" />
-                            </div>
-                            <div v-else class="total-likes" @click="handleTimelineDartsAdd(value.id)">
-                                <p>{{ value.darts }}</p><span v-html="icons.dart" />
-                            </div>
+                <template v-if="this.currentTimelineData.length > 0">
+                    <div class="timeline_item" v-for="(value, key) in this.currentTimelineData" :key="key">
+                        <div class="side_line">
+                            <div class="icon">
+                                <!-- <span v-html="this.$ud_store.state.icons.x" /> -->
+                                </div>
+                        </div>
+                        <div class="timeline_box">
+                            <h5 class="timeline_date">{{(new Date(value.created_at).getDate()) + '/' + (new Date(value.created_at).getMonth() + 1) + '/' + (new Date(value.created_at).getFullYear())}}</h5>
                             
+                            <h2 class="timeline_title">
+                                <a v-if="value.link !== null" class="timeline_link" :href="value.link" target="_blank">{{value.title}}</a>
+                                <span v-else >{{value.title}}</span>
+                            </h2>
+                            <p class="timeline_message">{{value.message}}</p>
+                            <div class="timeline_item_footer">
+                                <span></span>
+                                <!-- <span class="timeline_button" @click="handleTimelineSubmit" v-html="icons.dart"></span> -->
+                                <div v-if="$parent.isUsersIdea" class="delete total-likes"  @click="handleTimelineDelete(value.id)">
+                                    <p>Delete</p><span v-html="icons.trash" />
+                                </div>
+                                <div v-else class="total-likes" @click="handleTimelineDartsAdd(value.id)">
+                                    <p>{{ value.darts }}</p><span v-html="icons.dart" />
+                                </div>
+                                
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
+                <template v-else>
+                    <div class="no-timeline-found">
+                        <span v-html="this.$ud_store.state.icons.tumbleweed" />
+                        <h2>There hasn't been any major events yet.</h2>
+                    </div>
+                </template>
             </div>
         
         </div>
@@ -67,11 +75,29 @@
 </template>
 
 <style lang="scss">
+  @import '~@/_variables.scss';
+  .no-timeline-found {
+    text-align: center;
+    span {
+      max-width: 300px;
+      display: block;
+      margin: 0 auto;
+      svg * {
+        fill: $grey-med !important;
+      }
+    }
+    h2 {
+      margin: 30px 0 0;
+    }
+  }
+</style>
+
+<style lang="scss">
 @import '~@/_variables.scss';
 
 .timeline_item_container {
     width: 80%;
-    margin: 48px auto;
+    margin: 60px auto;
     .timeline_add_new {
         .timeline_box {
             display: grid;

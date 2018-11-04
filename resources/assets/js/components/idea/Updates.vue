@@ -31,6 +31,7 @@
             </ul>
         </div> -->
 
+        <template v-if="this.currentTimelineData.length > 0">
         <div class="timeline_item" v-for="(value, key) in this.getUpdatesData" :key="key">
             <div class="timeline_box">
                 <h5 class="timeline_date">{{(new Date(value.created_at).getDate()) + '/' + (new Date(value.created_at).getMonth() + 1) + '/' + (new Date(value.created_at).getFullYear())}}</h5>
@@ -53,9 +54,34 @@
                 </div>
             </div>
         </div>
+        </template>
+        <template v-else>
+            <div class="no-updates-found">
+                <span v-html="this.$ud_store.state.icons.tumbleweed" />
+                <h2>There hasn't been any updates events yet.</h2>
+            </div>
+        </template>
     </div>
   </section>
 </template>
+
+<style lang="scss">
+  @import '~@/_variables.scss';
+  .no-updates-found {
+    text-align: center;
+    span {
+      max-width: 300px;
+      display: block;
+      margin: 0 auto;
+      svg * {
+        fill: $grey-med !important;
+      }
+    }
+    h2 {
+      margin: 30px 0 0;
+    }
+  }
+</style>
 
 <style lang="scss">
 @import '~@/_variables.scss';
