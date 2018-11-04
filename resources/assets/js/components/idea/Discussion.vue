@@ -2,9 +2,9 @@
   <section class="discussion-container fixed_width">
       <div class="sub_width">
 
-        <div class="new_discussion_box">
+        <div v-if="currentUser" class="new_discussion_box">
             <div class="profile-image-wrapper">
-                <div class="profile-image" :style="{ 'background-image': `url(https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg)` }"></div>
+                <div class="profile-image" :style="{ 'background-image': `url(${$ud_store.getter.getUserMeta.avatar})` }"></div>
             </div>
             <div class="input_discussion_container">
                 <label for="discussion.title">Title</label>
@@ -20,33 +20,63 @@
         
 
 
-        <div v-if="discussion_data && currently_viewed_reply_id" id="discussion_data" class="all_discussion_posts">
-            <h1>get this ID: {{currently_viewed_reply_id}}</h1>
-            <h1>getter getReplies: {{getReplies}}</h1>
-            <!-- <h1>getter getReplies(): {{getReplies()}}</h1> -->
-            <!-- <h1>getter getReplies(currently_viewed_reply_id): {{getReplies(currently_viewed_reply_id)}}</h1> -->
+        <div v-if="showIdeaData && discussion_data && users_that_posted" id="discussion_data" class="all_discussion_posts">
+            
+            <!-- <h1>get this ID: {{currently_viewed_reply_id}}</h1>
+            <div v-if="showReply">
+                <h1>title: {{getReplies.title}}</h1>
+                <h1>message: {{getReplies.message}}</h1>
+                <h1>darts: {{getReplies.darts}}</h1>
+                <hr/>
+                <h2>{{getReplies.darts}}</h2>
+
+            </div>
+            <button @click="showReplyToggle">show reply data</button> -->
+
+            <!-- <div  v-if="getDiscussion">
+                <h1>{{getDiscussion.all_user}}</h1>
+                <h1>{{getDiscussion.all_user[2120]}}</h1>
+                <h1>{{getDiscussion.all_user[2120][0]}}</h1>
+                <h1>{{getDiscussion.all_user[2120][0].user_id}}</h1>
+                <h1>{{getDiscussion.all_user[2120][0].id}}</h1>
+                <h1>{{getDiscussion.all_user[2120][0].avatar}}</h1>
+
+            </div> -->
+            
+            <!-- <h1>{{$ud_state.getter.getUserData.name}}</h1> -->
+
+
             <!-- @{{ discussion_data }} -->
-            <div class="discussion_item" v-for="(value, key) in this.discussion_data" :key="key">
-                <div class="profile-image-wrapper">
-                    <!-- pull in users profile image  -->
-                    <!-- <h6>{{value.id}}</h6> -->
-                    <div class="profile-image" :style="{ 'background-image': `url(https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTQ3NTI2NTg2OTE1MTA0MjM4/kenrick_lamar_photo_by_jason_merritt_getty_images_entertainment_getty_476933160.jpg)` }"></div>
-                </div>
+            <div class="discussion_item" v-for="(value, key) in this.getDiscussion.discussions" :key="key">
+                <router-link :to="'/user/' + getDiscussion.all_user[value.id][0].user_id" class="profile-image-wrapper">
+                    <div class="profile-image" :style="{ 'background-image': `url(${getDiscussion.all_user[value.id][0].avatar})` }"></div>
+                    <!-- <div class="profile-image" :style="{ 'background-image': `url()` }"></div> -->
+                </router-link>
                 <div class="discussion_data">
                     <h2 id="title" >{{value.title}}</h2>
                     <p id="message">{{value.message}}</p>
+                    <!-- <h6 id="title" >{{value.user_id}}</h6> -->
+                    <!-- <h6 id="title" >getDiscussion.all_user{{getDiscussion.all_user}}</h6> -->
+                    <!-- <h6 id="title" >{{getDiscussion.all_user[value.id]}}</h6>
+                    <h6 id="title" >{{getDiscussion.all_user[value.id][0]}}</h6>
+                    <h6 id="title" >{{getDiscussion.all_user[value.id][0].avatar}}</h6>
+                    <h6 id="title" >{{getDiscussion.all_user[value.id][0].user_id}}</h6> -->
+                    <!-- <h6 id="title" >getDiscussion.all_user[value]{{getDiscussion.all_user[2120]}}</h6> -->
+                    <!-- <h6 id="title" >{{getDiscussion.all_user[value.user_id][0]}}</h6>
+                    <h6 id="title" >{{getDiscussion.all_user[value.user_id][0].avatar}}</h6> -->
+                    <!-- <h6 id="title" >{{users_that_posted[value.user_id]}}</h6> -->
                 </div>
-                <!-- <div class="post_button" @click="handleDiscussionDelete(value.id)">
+                <div class="post_button" @click="handleDiscussionDelete(value.id)">
                     <p>Delete</p>
-                </div> -->
-                <!-- make replies number dynamic -->
-                <div class="post_button" @click="openReplies(value.id)">
-                    <p>({{value.replies}}) replies</p>
                 </div>
+                
+                <!-- make replies number dynamic -->
+                <!-- <div class="post_button" @click="openReplies(value.id)">
+                    <p>({{value.replies}}) replies</p>
+                </div> -->
 
-                <section v-if="getReplies !== undefined && currently_viewed_reply_id === value.id" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
+                <!-- <section v-if="getReplies !== undefined && currently_viewed_reply_id === value.id" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
                     <ul>
-                    <!-- <ul v-if="0 === 0"> -->
                         <li v-for="(reply_val, key) in this.getReplies" :key="key">
                             <p>{{reply_val}}</p>
                             <p>{{key}}</p>
@@ -61,7 +91,7 @@
                 </section>
                 <section v-else>
                     <p>hide replies</p>
-                </section>
+                </section> -->
             </div>
             
         </div>
@@ -278,7 +308,10 @@
       name: 'Updates',
       data() {
             return {
+                showReply: false,
+                showIdeaData: false,
                 discussion_data: '',
+                users_that_posted: {},
                 showReplies: {},
                 discussion_replies_data: {},
                 reply_data: {},
@@ -301,26 +334,50 @@
             }
         },
         computed: {
-            currentUserMeta() {
-                return this.$ud_store.getters.getUserMeta
+            getDiscussion() {
+                return this.$ud_store.getters.getCurrentIdeaDiscussion
             },
-            getReplies() {
-                return this.$ud_store.getters.getCurrentIdeaDiscussionReplies(this.currently_viewed_reply_id)
+            currentUser() {
+                if (this.$ud_store.getters.getUserData === null) {
+                    return null
+                } else {
+                    return this.$ud_store.getters.getUserData.id
+                }
+            },
+            
+        },
+        update() {
+            this.getUserReplyData();
+        },
+        watch: {
+            getUserReplyData() {
+                return this.users_that_posted
             }
         },
         mounted() {
             console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
-            console.log("this.$ud_store.state.current_page_idea.discussion", this.$ud_store.state.current_page_idea.discussion)
             this.hanldeGetDiscussionData();
-            console.warn('this.currentUserMeta => ', this.currentUserMeta)
+            console.warn('this.currentUser => ', this.currentUser)
         },
         methods: {
-            openReplies(value) {
-                // e.preventDefault();
-                this.currently_viewed_reply_id = value;
-                console.log('openReplies() value => ', value)
-                this.handleDiscussionRepliesGet(value);
-                // console.log('this.getCurrentIdeaDiscussionReplies => ', this.getReplies[value])
+            showReplyToggle(e) {
+                e.preventDefault();
+                this.showReply = true;
+            },
+            hanldeGetDiscussionData() {
+                let idea_id = this.$route.params.id;
+                axios({
+                    method: 'POST',
+                    url: '/ai/idea/discussion/get/' + idea_id
+                }).then( (res) => {
+
+                    console.warn('res.data => ', res.data)
+                    this.discussion_data = res.data;
+                    this.$ud_store.commit('SET_IDEA_DISCUSSION', res.data);
+
+                    console.warn('this.$ud_store.state.current_page_idea.discussion => ', this.$ud_store.state.current_page_idea.discussion)
+                    this.showIdeaData = true;
+                });   
             },
             handleDiscussionDelete(value) {
                 axios({
@@ -359,54 +416,7 @@
                     this.discussion_data = res.data;
                 });
             },
-            hanldeGetDiscussionData() {
-                let idea_id = this.$route.params.id;
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/discussion/get/' + idea_id
-                }).then( (res) => {
-
-                    for (let i = 0; i < res.data.length; i++) {
-                        let disc_id = res.data[i].id;
-                        console.log('disc_id => ', disc_id )
-                        this.handleDiscussionRepliesGet(disc_id);
-                        // this.showReplies[disc_id] = false;
-                    }
-                    this.discussion_data = res.data;
-                });   
-            },
-            // discussion replies functions
-            handleDiscussionReplyVote(reply_id) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/discussion/reply/darts/' + reply_id
-                }).then( (res) => {
-                    this.discussion_replies_data = res.data;
-                });
-            },
-            handleDiscussionReplyDelete(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/discussion/reply/delete/' + value,
-                }).then( (res) => {
-                    this.discussion_replies_data = res.data;
-                });
-            },
-            handleDiscussionRepliesGet(value) {
-                axios({
-                    method: 'POST',
-                    url: '/ai/idea/discussion/reply/get/all/' + value
-                }).then( (res) => {
-                    this.reply_data[value] = res.data;
-                    // console.log('this.reply_data => ', this.reply_data[value])
-                    // this.getCurrentIdeaDiscussionReplies[value]
-                    let pushToStore = {
-                        data: res.data,
-                        id: value
-                    }
-                    this.$ud_store.commit('SET_IDEA_REPLIES', pushToStore ); 
-                }); 
-            },
+            
         }
     }
 </script>

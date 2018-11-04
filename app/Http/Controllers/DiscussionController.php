@@ -21,9 +21,22 @@ class DiscussionController extends Controller
     {
         // $discussions = Discussion::all()->where('idea_id', $idea_id);
         $discussions = DB::table('discussions')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
+        $all_user = [];
+
+        foreach ($discussions as $discussion) {
+            
+            $user = DB::table('user_meta_datas')->where('user_id', $discussion->user_id)->get();
+            $all_user[$discussion->id] = $user;
+        }
+        
+        // $users = DB::table('user_meta_datas')->get();
 
         // return $discussions;
-        return $discussions;
+        // return $discussions;
+        return response()->json([
+            'discussions' => $discussions,
+            'all_user' => $all_user
+        ]);
     }
 
     public function getById($discussions_id)
