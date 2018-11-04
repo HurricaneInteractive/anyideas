@@ -73,7 +73,7 @@
 
 .user_stats {
   width: 250px;
-  margin: 0 auto 24px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr .2fr 1fr;
   align-items: center;
@@ -82,10 +82,14 @@
     text-align: center;
     margin: 0 auto;
   }
+  h2 {
+    margin-top: 0;
+  }
   h3 {
     font-weight: $w-regular;
     text-transform: capitalize;
     color: $grey-dark;
+    margin: 0;
   }
 }
 .interests {
@@ -131,6 +135,7 @@
   }
   .interests-wrapper,
   .bio-wrapper {
+    margin-top: 60px;
     h3 {
       margin: 0 0 25px;
       display: inline-flex;
@@ -186,7 +191,6 @@
     }
   }
   .bio-wrapper {
-    margin-top: 60px;
     h3 {
       justify-content: center;
       display: flex;
