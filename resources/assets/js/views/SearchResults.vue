@@ -54,6 +54,9 @@
             </div>
             
         </div>
+        <div>
+          <h2>Enter your search above</h2>
+        </div>
     </div>
 </template>
 
@@ -151,7 +154,9 @@ import IdeaCard from '../components/IdeaCard'
         },
     },
     beforeMount() {
-      this.getSearchResults();
+      if (this.currentSearchData !== '') {
+        this.getSearchResults();
+      }
     },
     mounted() {
       // this.ideas = this.$ud_store.state.current_search.ideas.slice(1,3);
@@ -161,16 +166,25 @@ import IdeaCard from '../components/IdeaCard'
       currentSearchData() {
         console.log('currentSearchData watcher', this.currentSearchData)
         if (this.currentSearchData === '') {
-          console.log('shit')
+          this.getSearchResults('luke');
         }
-        this.getSearchResults();
+        
       },
-      $route() {
-        this.getSearchResults();
-      }
+      // $route() {
+      //   this.getSearchResults();
+      // }
     },
     methods: {
-      getSearchResults() {
+      getSearchResults(val) {
+        let searchThis = this.currentSearchData;
+        console.log('val', val)
+        console.log('searchThis', searchThis)
+        if (val === 'luke') {
+          searchThis = 'luke'
+        }
+        console.log('searchThis', searchThis)
+        this.loaded = false;
+        console.log('this.currentSearchData => ', this.currentSearchData)
           axios({
               method: 'POST',
               url: '/ai/search',
