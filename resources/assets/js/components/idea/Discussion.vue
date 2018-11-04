@@ -44,10 +44,13 @@
                     <p>({{value.replies}}) replies</p>
                 </div>
 
-                <section v-if="getReplies !== undefined" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
-                    <ul v-if="getReplies.length = 0">
+                <section v-if="getReplies !== undefined && currently_viewed_reply_id === value.id" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
+                    <ul>
                     <!-- <ul v-if="0 === 0"> -->
                         <li v-for="(reply_val, key) in this.getReplies" :key="key">
+                            <p>{{reply_val}}</p>
+                            <p>{{key}}</p>
+                            <p>{{this.getReplies}}</p>
                             <h4>{{reply_val.title}}</h4>
                             <h6>{{reply_val.id}}</h6>
                             <p>{{reply_val.message}}</p>
@@ -55,7 +58,6 @@
                             <button @click="handleDiscussionReplyVote(reply_val.id)">{{reply_val.darts}} | Darts</button>
                         </li>
                     </ul>
-                    <p v-else>no replies</p>
                 </section>
                 <section v-else>
                     <p>hide replies</p>
@@ -308,6 +310,7 @@
         },
         mounted() {
             console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
+            console.log("this.$ud_store.state.current_page_idea.discussion", this.$ud_store.state.current_page_idea.discussion)
             this.hanldeGetDiscussionData();
             console.warn('this.currentUserMeta => ', this.currentUserMeta)
         },
