@@ -1,6 +1,5 @@
-window.axios = require('axios');
-window.axios.defaults.httpAgent = new http.Agent({ keepAlive: true })
-window.axios.defaults.httpsAgent = new http.Agent({ keepAlive: true })
+window.axios = require('axios')
+window.axios.defaults.baseURL = 'https://anyideas.herokuapp.com'
 
 import Vue from 'vue';
 import Vuex from 'vuex';
