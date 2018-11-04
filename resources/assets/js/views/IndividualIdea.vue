@@ -193,19 +193,19 @@
                         label: 'Timeline',
                         route: '',
                         active: this.$route.name === 'timeline' ? true : false,
-                    },
-                    {
-                        id: 'discussion',
-                        label: 'Discussion',
-                        route: '',
-                        active: this.$route.name === 'discussion' ? true : false,
-                    },
-                    {
-                        id: 'updates',
-                        label: 'Updates',
-                        route: '',
-                        active: this.$route.name === 'updates' ? true : false,
                     }
+                    // {
+                    //     id: 'discussion',
+                    //     label: 'Discussion',
+                    //     route: '',
+                    //     active: this.$route.name === 'discussion' ? true : false,
+                    // },
+                    // {
+                    //     id: 'updates',
+                    //     label: 'Updates',
+                    //     route: '',
+                    //     active: this.$route.name === 'updates' ? true : false,
+                    // }
                 ],
             }
         },
@@ -270,19 +270,19 @@
                         label: 'Timeline',
                         route: '',
                         active: this.$route.name === 'timeline' ? true : false,
-                    },
-                    {
-                        id: 'discussion',
-                        label: 'Discussion',
-                        route: '',
-                        active: this.$route.name === 'discussion' ? true : false,
-                    },
-                    {
-                        id: 'updates',
-                        label: 'Updates',
-                        route: '',
-                        active: this.$route.name === 'updates' ? true : false,
                     }
+                    // {
+                    //     id: 'discussion',
+                    //     label: 'Discussion',
+                    //     route: '',
+                    //     active: this.$route.name === 'discussion' ? true : false,
+                    // },
+                    // {
+                    //     id: 'updates',
+                    //     label: 'Updates',
+                    //     route: '',
+                    //     active: this.$route.name === 'updates' ? true : false,
+                    // }
                 ];
             },
             handleGetInitialData() {

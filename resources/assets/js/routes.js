@@ -40,17 +40,17 @@ const routes = [
         name: 'timeline',
         path: 'timeline',
         component: Vue.component( 'Timeline', require( './components/idea/Timeline.vue' ) )
-      },
-      {
-        name: 'discussion',
-        path: 'discussion',
-        component: Vue.component( 'Discussion', require( './components/idea/Discussion.vue' ) )
-      },
-      {
-        name: 'updates',
-        path: 'updates',
-        component: Vue.component( 'Updates', require( './components/idea/Updates.vue' ) )
       }
+      // {
+      //   name: 'discussion',
+      //   path: 'discussion',
+      //   component: Vue.component( 'Discussion', require( './components/idea/Discussion.vue' ) )
+      // },
+      // {
+      //   name: 'updates',
+      //   path: 'updates',
+      //   component: Vue.component( 'Updates', require( './components/idea/Updates.vue' ) )
+      // }
     ]
   },
   {
