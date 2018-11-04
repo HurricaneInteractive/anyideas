@@ -76,7 +76,7 @@
 .header-container {
     width: 100%;
     background-color: $white;
-    padding: 48px;
+    padding: 25px 0 100px;
     .header-wrapper {
         /* width: 100%; */
         margin: 0 auto;
@@ -150,17 +150,11 @@
 <script>
     import TabNav from '../components/TabNav'
 
-    require('codemirror/lib/codemirror.css') // codemirror
-    require('tui-editor/dist/tui-editor.css'); // editor ui
-    require('tui-editor/dist/tui-editor-contents.css'); // editor content
-    require('highlight.js/styles/github.css'); // code block highlight
-
-    var Editor = require('tui-editor');
-
     import Description from '../components/idea/Description'
     import Timeline from '../components/idea/Timeline'
     import Updates from '../components/idea/Updates'
     import Discussion from '../components/idea/Discussion'
+    
     export default {
         props: ['props'],
         components: {
@@ -351,10 +345,10 @@
                         console.log('TCL: handleDeleteIdea -> response', response);
                 });
             },
-
-            handleUpdateIdea() {
+            handleUpdateIdea(desc = null) {
                 console.log('handleUpdateIdea')
-                let updatedDescriptionVal = this.description_to_update;
+                let updatedDescriptionVal = desc ? desc : this.description_to_update;
+
                 console.log('updatedDescriptionVal => ', updatedDescriptionVal)
                 axios({
                     method: 'POST',
@@ -369,8 +363,9 @@
                     console.log('handleUpdateIdea res => ', res)
                     console.log('handleUpdateIdea res.data => ', res.data)
 
-                    this.$ud_store.commit('SET_IDEA_DATA', res.data );
-                });
+                    this.$ud_store.commit('SET_IDEA_DATA', res.data.updated_idea );
+                })
+                .catch(e => console.error(e));
             },
 
             // discussion replies functions
@@ -469,6 +464,5 @@
             //     });
             // },
         }
-
     }
 </script>
