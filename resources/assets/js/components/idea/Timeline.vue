@@ -40,7 +40,7 @@
                             </div>
                     </div>
                     <div class="timeline_box">
-                        <h5 class="timeline_date">{{(new Date(value.created_at).getDate() + 1) + '/' + (new Date(value.created_at).getMonth() + 1) + '/' + (new Date(value.created_at).getFullYear())}}</h5>
+                        <h5 class="timeline_date">{{(new Date(value.created_at).getDate()) + '/' + (new Date(value.created_at).getMonth() + 1) + '/' + (new Date(value.created_at).getFullYear())}}</h5>
                         
                         <h2 class="timeline_title">
                             <a v-if="value.link !== null" class="timeline_link" :href="value.link" target="_blank">{{value.title}}</a>
