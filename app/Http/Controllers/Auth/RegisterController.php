@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,20 +67,27 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
         $user_data = array(
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'interests' => $data['interests'],
-            'password' => Hash::make($data['password']),
+            'name' => $request['name'],
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'interests' => $request['interests'],
+            'password' => Hash::make($request['password']),
         );
 
-        if (isset($data['bio'])) {
-            $user_data['bio'] = $data['bio'];
+        if (isset($request['bio'])) {
+            $user_data['bio'] = $request['bio'];
         }
         
-        return User::create($user_data);
+        $user = User::create($user_data);
+
+        Auth::attempt(array(
+            'email' => $request['email'],
+            'password' => $request['password']
+        ));
+
+        return $user;
     }
 }

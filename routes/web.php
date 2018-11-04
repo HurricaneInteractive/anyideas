@@ -25,6 +25,7 @@ Route::group(['prefix' => 'ai/'], function() {
     Route::post('/user/update.meta/{id}', 'UserController@updateUserMetadata');
     Route::post('/user/validateRegister', 'UserController@validateRegisterField');
     Route::post('/user/auth', 'UserController@authenticate');
+    Route::post('/user/register', 'Auth\RegisterController@create');
 
     // search routes
     Route::post('/search', 'SearchController@searchQuery');
