@@ -218,7 +218,11 @@
         },
         computed: {
             currentUser() {
-                return this.$ud_store.getters.getUserData.id
+                if (this.$ud_store.getters.getUserData === null) {
+                    return null
+                } else {
+                    return this.$ud_store.getters.getUserData.id
+                }
             },
             currentIdeaData() {
                 return this.$ud_store.getters.getCurrentIdea
@@ -236,7 +240,6 @@
         },
         mounted() {
              console.log("%c IndividualIdea.vue mounted(start)")
-             this.testGettingGetter();
              console.log("%c IndividualIdea.vue mounted(end)")
         },
         watch: {
@@ -252,13 +255,6 @@
         },
         methods: {
             // re-sets the current active tab_nav item
-            testGettingGetter() {
-                console.log('this.currentIdeaDescription => ', this.currentIdeaDescription)
-                console.log('this.currentIdeaData => ', this.currentIdeaData)
-                console.log('this.currentIdeaData => ', this.currentIdeaData.data)
-                console.log('this.currentIdeaData => ', this.currentIdeaData.data.description)
-                console.log('this.currentIdeaData => ', this.currentIdeaData.description)
-            },
             setAsActive() {
                 this.tab_nav = [
                     {
@@ -312,7 +308,10 @@
 
                     let res_user = res.data.user_id;
                     console.log('TCL: handeGetInitialData -> res_user', res_user);
-                    let current_user = this.currentUser;
+                    let current_user = null;
+                    if (this.currentUser === null) {
+                        current_user = this.currentUser;
+                    }
                     console.log('TCL: handeGetInitialData -> current_user', current_user);
 
                     if (res_user === current_user) {
