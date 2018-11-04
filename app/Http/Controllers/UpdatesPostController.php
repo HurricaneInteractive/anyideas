@@ -19,7 +19,8 @@ class UpdatesPostController extends Controller
     public function getAllByIdeaId($idea_id)
     {
         // $test = UpdatesPost::all()-;
-        $updates_posts = UpdatesPost::all()->where('idea_id', $idea_id);
+        // $updates_posts = UpdatesPost::all()->where('idea_id', $idea_id);
+        $updates_posts = DB::table('updates_posts')->orderBy('created_at', 'desc')->where('idea_id', $idea_id)->get();
 
         return $updates_posts;
     }
@@ -37,6 +38,7 @@ class UpdatesPostController extends Controller
         $new_updates_post = new UpdatesPost([
             'user_id' => Auth::id(),
             'idea_id' => $id,
+            'title' => $request->title,
             'message' => $request->message
         ]);
 

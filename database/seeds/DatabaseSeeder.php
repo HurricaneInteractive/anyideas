@@ -251,6 +251,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '1120',
+            'title' => 'updates title',
             'message' => 'updates message',
             'created_at' => '2018-11-03 20:02:18',
             'updated_at' => '2018-11-03 20:02:18'
@@ -260,6 +261,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => '1234',
             'idea_id' => '5678',
             'id' => '1121',
+            'title' => 'updates title',
             'message' => 'updates message number two',
             'created_at' => '2018-11-03 20:02:18',
             'updated_at' => '2018-11-03 20:02:18'

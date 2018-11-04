@@ -21,6 +21,7 @@ class CreateUpdatesPostsTable extends Migration
             $table->foreign('idea_id')->references('id')->on('ideas');
             
             $table->increments('id');
+            $table->string('title');
             $table->mediumText('message');
             $table->mediumInteger('darts')->default('0');
             $table->timestamps();
