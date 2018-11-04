@@ -25,11 +25,14 @@
                 </div>
             </header>
 
-            <TabNav v-bind:props="tab_nav"/>
+            <div class="page-wrapper">
+                <TabNav v-bind:props="tab_nav"/>
 
-            <router-view>
-                <!-- Description / Timeline / Discussion / Updates here -->
-            </router-view>
+                <router-view>
+                    <!-- Description / Timeline / Discussion / Updates here -->
+                </router-view>
+            </div>
+            
         </div>
     </div>
 </template>
