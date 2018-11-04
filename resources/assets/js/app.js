@@ -1,5 +1,5 @@
 window.axios = require('axios')
-window.axios.defaults.baseURL = 'https://anyideas.herokuapp.com'
+// window.axios.defaults.baseURL = 'https://anyideas.herokuapp.com'
 
 import Vue from 'vue';
 import Vuex from 'vuex';

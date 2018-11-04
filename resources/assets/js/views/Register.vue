@@ -209,7 +209,7 @@
                         password: this.password,
                         password_confirmation: this.password_confirmation
                     },
-                    url: '/register/',
+                    url: '/ai/user/register',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                     }
@@ -217,7 +217,7 @@
                 .then(response => {
                     console.log("register response")
                     console.log(response)
-                    if (response.status === 200) {
+                    if (response.status === 200 || response.status === 201) {
                         window.location = '/';
                     }
                 })
