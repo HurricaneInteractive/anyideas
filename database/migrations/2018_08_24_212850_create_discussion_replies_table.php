@@ -17,16 +17,18 @@ class CreateDiscussionRepliesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             
-            $table->unsignedInteger('idea_id');
-            $table->foreign('idea_id')->references('id')->on('ideas');
+            // $table->unsignedInteger('idea_id');
+            // $table->foreign('idea_id')->references('id')->on('ideas');
 
             $table->unsignedInteger('discussions_id');
             $table->foreign('discussions_id')->references('id')->on('discussions');
 
             $table->increments('id');
             $table->mediumText('message');
-            $table->mediumInteger('darts')->default('0');
+            $table->mediumInteger('darts')->default(0);
             $table->timestamps();
+
+            $table->index(['user_id', 'discussions_id']);
         });
     }
 

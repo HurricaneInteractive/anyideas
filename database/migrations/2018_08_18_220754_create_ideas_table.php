@@ -19,15 +19,18 @@ class CreateIdeasTable extends Migration
             
             $table->increments('id');
             $table->string('title');
-            $table->boolean('success');
+            $table->boolean('success')->default(false);
             $table->mediumText('pitch');
             $table->string('status');
             $table->string('category');
-            $table->mediumText('tags')->nullable($value = true);
+            $table->mediumText('tags')->nullable();
             $table->longText('description');
-            $table->mediumInteger('darts')->default('0');
-            $table->string('image')->nullable($value = true);
+            $table->mediumInteger('darts')->default(0);
+            $table->string('image')->nullable();
             $table->timestamps();
+
+            // Indexes
+            $table->index(['category', 'user_id']);
         });
     }
 

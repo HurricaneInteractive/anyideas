@@ -19,11 +19,14 @@ class CreateDiscussionsTable extends Migration
 
             $table->unsignedInteger('idea_id');
             $table->foreign('idea_id')->references('id')->on('ideas');
+
             $table->increments('id');
             $table->longText('message');
             $table->string('title');
-            $table->mediumInteger('replies')->default('0');
+            $table->mediumInteger('replies')->default(0);
             $table->timestamps();
+
+            $table->index(['user_id', 'idea_id']);
         });
     }
 

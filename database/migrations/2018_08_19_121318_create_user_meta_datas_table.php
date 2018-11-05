@@ -18,16 +18,18 @@ class CreateUserMetaDatasTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             
             $table->increments('id');
-            $table->string('occupation')->nullable($value = true);
-            $table->string('website')->nullable($value = true);
-            $table->mediumText('bio')->nullable($value = true);
-            $table->string('avatar')->nullable($value = true);
-            $table->mediumText('following')->nullable($value = true); // IDEAS YOU FOLLOW
-            $table->mediumText('followers')->nullable($value = true); // PEOPLE FOLLOWING YOUR IDEAS / SUPPORTERS
-            $table->mediumText('likes')->nullable($value = true); // object of [discussion, discussion replies, updates, timelines, ideas] likes
-            $table->mediumText('social_media')->nullable($value = true);
-            $table->mediumText('interests')->nullable($value = true);
+            $table->string('occupation')->nullable();
+            $table->string('website')->nullable();
+            $table->mediumText('bio')->nullable();
+            $table->string('avatar')->nullable();
+            $table->mediumText('following')->nullable(); // IDEAS YOU FOLLOW
+            $table->mediumText('followers')->nullable(); // PEOPLE FOLLOWING YOUR IDEAS / SUPPORTERS
+            $table->mediumText('likes')->nullable(); // object of [discussion, discussion replies, updates, timelines, ideas] likes
+            $table->mediumText('social_media')->nullable();
+            $table->mediumText('interests')->nullable();
             $table->timestamps();
+
+            $table->index(['user_id']);
         });
     }
 
