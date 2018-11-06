@@ -11,36 +11,36 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.options({
-    uglify: {
-        uglifyOptions: {
-            compress: {
-                drop_console: true
-            }
+if (!mix.inProduction()) {
+    if (process.env.MIX_BROWSER_SYNC) {
+        mix.browserSync(process.env.MIX_BROWSER_SYNC);
+    }
+}
+
+if (mix.inProduction()) {
+    mix.options({
+        uglify: {
+            uglifyOptions: {
+                compress: {
+                    drop_console: true
+                }
+            },
+            extractComments: true
+        }
+    });
+}
+
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            '@': path.resolve('resources/assets/sass')
         }
     }
 });
 
-mix.js('resources/assets/js/App.js', 'public/js')
-  .webpackConfig({
-    module: {
-        rules: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules(?!\/foundation-sites)|bower_components/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: Config.babel()
-                    }
-                ]
-            }
-        ]
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve('resources/assets/sass')
-      }
-    }
-  })
-  .sass('resources/assets/sass/App.scss', 'public/css');
+mix.version();
+
+mix.js('resources/assets/js/app.js', 'public/js')
+    .extract(['vue']);
+
+mix.sass('resources/assets/sass/App.scss', 'public/css');
