@@ -10,17 +10,17 @@ import vSelect from 'vue-select'
 import InputTag from 'vue-input-tag'
 
 import storePlugin from './storePlugin'
-import LoadingComp from './plugins/loading.js'
-import NoIdeasComp from './plugins/noideas.js'
 
 import VueAnime from './plugins/vue-anime';
 import capitalise from './plugins/capitalise';
 
+import RegiserGlobals from './global/registerGlobals'
+
+// Defines Custom Global Components
+RegiserGlobals()
+
 Vue.use( Vuex )
-// Vue.use( VueCookie )
 Vue.use( storePlugin )
-Vue.use( LoadingComp, { componentName: "loading" } )
-Vue.use( NoIdeasComp, { componentName: "noideas" } )
 Vue.use( VueAnime );
 Vue.use( capitalise );
 Vue.use( VueClipboard );
@@ -66,17 +66,10 @@ const app = new Vue({
     components: { App },
     router,
     ud_store,
-    data: {
-        user_data_app: 'placeholder user_data_app string',
-        // store_data: ud_store.state.data.user_data
-    },
     methods: {
         getUserAuth: function() {
             return ud_store.state.data.user_data
         }
-    },
-    mounted() {
-        // console.log("anime => ", anime);
     },
     computed: {
         store_data() {
