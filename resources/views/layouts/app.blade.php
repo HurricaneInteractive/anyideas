@@ -6,9 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>any.ideas</title>
-        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+
+        <link rel="stylesheet" href="{{ mix('/css/App.css') }}">
     </head>
     <body>
         @if(auth()->check())
@@ -22,6 +25,8 @@
         </div>
         
         @include ('footer')
-        <script src="{{ mix('js/App.js') }}"></script>
+        <script src="{{ mix('/js/manifest.js') }}"></script>
+        <script src="{{ mix('/js/vendor.js') }}"></script>
+        <script src="{{ mix('/js/app.js') }}"></script>
     </body>
 </html>
