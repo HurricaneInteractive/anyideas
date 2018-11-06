@@ -21,10 +21,14 @@
                                 <input @keyup.enter="handleSearch" placeholder="search" value="search" id="search_text" type="text" class="form-control" v-model="search_text" />
                             </div>
                         </li>
-                        <li v-if="this.openSearchState === false" class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
-                        </li>
-                        <li v-else class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
-                        </li>
+                        <template v-if="this.openSearchState === false">
+                            <li class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.search">
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li class="navbar-icon" v-on:click="openSearch()" v-html="this.$ud_store.state.icons.marks_the_spot">
+                            </li>
+                        </template>
                     </li>
                     <li>
                         <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
