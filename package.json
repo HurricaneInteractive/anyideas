@@ -20,6 +20,7 @@
         "axios": "^0.18",
         "hero-patterns": "^2.0.1",
         "laravel-mix": "^2.0",
+        "lodash": "^4.17.11",
         "marked": "^0.5.1",
         "node-sass": "^4.9.3",
         "typeface-pt-sans": "0.0.54",
