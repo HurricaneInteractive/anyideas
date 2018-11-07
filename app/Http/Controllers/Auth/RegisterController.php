@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\UserMeta as UserMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -82,6 +83,7 @@ class RegisterController extends Controller
         }
         
         $user = User::create($user_data);
+        $user_meta = UserMeta::create(['user_id' => $user->id]);
 
         Auth::attempt(array(
             'email' => $request['email'],
