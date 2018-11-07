@@ -34,4 +34,8 @@ class User extends Authenticatable
     public function ideas() {
         return $this->hasMany(Ideas::class);
     }
+
+    public function user_meta() {
+        return $this->hasOne(UserMeta::class);
+    }
 }
