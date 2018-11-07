@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Ideas;
+use App\Http\Resources\Ideas as IdeasResource;
+
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +15,14 @@ use Illuminate\Support\Facades\DB;
 
 class IdeasController extends Controller
 {
+    public function getResourceById(Request $request, $id) {
+        return new IdeasResource(Ideas::find($id));
+    }
+
+    public function getAllResourceData(Request $request) {
+        return IdeasResource::collection(Ideas::all());
+    }
+
     // get currently logged in user
     public function getUser(Request $request) { 
         $user = Auth::user();
@@ -23,6 +33,7 @@ class IdeasController extends Controller
         };
         return ['user' => $user, 'id' => $id];
     }
+
     public function getUserById($id) {
         $user = User::all()->where('id', $id)->first();
         $meta = DB::table('user_meta_datas')->where('user_id', $id)->first();
@@ -43,11 +54,13 @@ class IdeasController extends Controller
         $ideas = Ideas::all();
         return $ideas;
     }
+
     public function getByTitle($title)
     {
         $ideas = Ideas::all()->where('title', $title);
         return $ideas;
     }
+
     public function getByCategory($category)
     {
         $ideas_with_category = Ideas::all()->where('category', $category);
@@ -79,11 +92,13 @@ class IdeasController extends Controller
         $ideas = $collection->get();
         return ['ideas' => $ideas];
     }
+
     // single idea functions
     public function getById($id) {
         $idea = Ideas::all()->where('id', $id)->first();
         return $idea;
     }
+
     public function createIdea(Request $request)
     {
         $user_id = Auth::id();
@@ -103,6 +118,7 @@ class IdeasController extends Controller
         $idea->save();
         return $idea;
     }
+
     public function updateIdea(Request $request, $id)
     {
         $filtered_idea_data = collect(request()->all())->filter()->all();
@@ -119,6 +135,7 @@ class IdeasController extends Controller
             'message' => $new_idea_data ? 'Idea updated' : 'Error updating Idea'
         ]);
     }
+
     public function deleteIdea($idea)
     {
         $idea = $this->getById($idea);
@@ -129,6 +146,7 @@ class IdeasController extends Controller
         $updates_posts_id = DB::table('updates_posts')->where('idea_id', $idea->id)->delete();
 
         $status = $idea->delete();
+
         return response()->json([
             'discussion_replies_id' => $discussion_replies_id,
             'discussion_id' => $discussion_id,
