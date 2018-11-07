@@ -1,6 +1,14 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Middleware\SecureApi;
+
+use App\Ideas;
+use App\Http\Resources\Ideas as IdeasResource;
+use App\Http\Resources\IdeasCollection;
+
+use App\User;
+use App\Http\Resources\User as UserResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,43 +25,9 @@ use Illuminate\Http\Request;
 
 Auth::routes();
 
-// Route::middleware('api', 'throttle:60,1')->group(function () {
-//     Route::get('/user', 'IdeasController@getUser')->name('user');
-// });
+Route::group(['prefix' => 'v1'], function() {
 
-// Route::apiResources([
-//     'user' => 'IdeasController@getUser'
-// ]);
+    Route::get('ideas.get', 'IdeasController@getAllResourceData');
+    Route::get('idea.get/{id}', 'IdeasController@getResourceById');
 
-// Route::get('/user', 'IdeasController@getUser')->middleware('auth');
-
-// user routes
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Route::group(['middleware' => ['auth:api']], function () {
-// 	Route::get('/idea/user/get', 'IdeasController@getUser');
-// });
-
-
-// idea routes
-// Route::get('/idea/get/all', 'IdeasController@getAll');
-// Route::get('/user/get', 'IdeasController@getUser');
-
-// // put id/params at the end
-
-// Route::post('/idea/create', 'IdeasController@createIdea');
-// Route::post('/idea/delete/{id}', 'IdeasController@deleteIdea');
-// Route::post('/idea/update/{id}', 'IdeasController@updateIdea');
-
-// Route::get('/idea/get/{id}', 'IdeasController@getById');
-// Route::get('/idea/get-by-user/{id}', 'IdeasController@getByUser');
-// Route::get('/idea/get-by-title/{title}', 'IdeasController@getByTitle');
-// Route::get('/idea/get-by-category/{category}', 'IdeasController@getByCategory');
-// Route::get('/idea/get-by-tags', 'IdeasController@getByTags');
-
-// // timeline routes
-// Route::get('/idea/timeline/{idea_id}/get', 'TimelineController@getAll');
-
-// darts routes 
+});
