@@ -140,6 +140,8 @@
         },
         mounted() {
             this.getInterestedInPosts();
+
+            this.getIdeasResource();
         },
         methods: {
             searchDatabase() {
@@ -219,6 +221,14 @@
                 this.not_in = response.data.not_in
                 this.getInterestedInPostsState = false
                 this.loading = false
+            },
+            getIdeasResource() {
+                axios({
+                    method: 'GET',
+                    url: '/api/v1/idea.get/1',
+                })
+                .then(res => console.log('Resource ->', res))
+                .catch(e => console.error(e))
             }
         }
 
