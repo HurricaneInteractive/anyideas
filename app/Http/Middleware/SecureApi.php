@@ -16,8 +16,7 @@ class SecureApi
     public function handle($request, Closure $next)
     {
         $approved = array(
-            '127.0.0.1:8000',
-            'anyideas.herokuapp.com'
+            env('HOST')
         );
 
         $host = $request->header('host');
