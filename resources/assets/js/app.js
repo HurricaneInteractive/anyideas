@@ -8,33 +8,31 @@ import VueClipboard from 'vue-clipboard2'
 import App from './App.vue';
 import vSelect from 'vue-select'
 import InputTag from 'vue-input-tag'
+import Fragment from 'vue-fragment'
 
 import storePlugin from './storePlugin'
 
 import VueAnime from './plugins/vue-anime';
 import capitalise from './plugins/capitalise';
+import classNames from './plugins/classNames';
 
 import RegiserGlobals from './global/registerGlobals'
+import RegisterBase from './base/registerBase'
 
 // Defines Custom Global Components
 RegiserGlobals()
+RegisterBase()
 
 Vue.use( Vuex )
 Vue.use( storePlugin )
-Vue.use( VueAnime );
-Vue.use( capitalise );
-Vue.use( VueClipboard );
+Vue.use( VueAnime )
+Vue.use( capitalise )
+Vue.use( VueClipboard )
+Vue.use( classNames )
+Vue.use( Fragment.Plugin )
 
 Vue.component('input-tag', InputTag)
 Vue.component('v-select', vSelect)
-
-// global components
-// <loading/>
-
-// global plugins (add 'this.$' to use in Vue)
-// ud_store
-// anime
-// capitalise
 
 router.beforeEach((to, from, next) => {
     let user = ud_store.state.data.user_data,
