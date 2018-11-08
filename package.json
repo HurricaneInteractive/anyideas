@@ -13,7 +13,8 @@
         "browser-sync": "^2.26.3",
         "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^5.1",
-        "sass-loader": "^7.1.0"
+        "sass-loader": "^7.1.0",
+        "webpack-jarvis": "^0.3.2"
     },
     "dependencies": {
         "animejs": "^2.2.0",
@@ -27,6 +28,7 @@
         "vue": "^2.5.7",
         "vue-clipboard2": "^0.2.1",
         "vue-cookie": "^1.1.4",
+        "vue-fragment": "^1.1.0",
         "vue-input-tag": "^2.0.1",
         "vue-lottie": "^0.2.1",
         "vue-perfect-scrollbar": "^0.1.0",
