@@ -1,0 +1,32 @@
+$colors: (
+    'pure': #FFFFFF,
+    'light-grey': #FAFAFA,
+    'medium-grey': #BFBFBF,
+    'dark-grey': #707070,
+    'black': #010101,
+    'light-black': #2C2C2C,
+    'accent': #FFE6A0,
+    'primary': #FCB045,
+    'headings': #000000,
+    'content': #2C2C2C,
+    'error': #F03D3D
+);
+
+$categories: (
+    'ideation': #F45F5F,
+    'planning': #F5DB2F,
+    'creating': #7CCB1F,
+    'evaluating': #1FCBBE,
+    'refining': #3BABDD,
+    'completed': #C682D6,
+    'on-hold': #FC64D9,
+    'abandoned': #989898
+);
+
+@function get-color($color: 'pure') {
+    @return map-get($colors, $color);
+}
+
+@function get-category-color($key: 'ideation') {
+    @return map-get($categories, $key);
+}
