@@ -5,7 +5,6 @@
               <h1>Categories</h1>
             </div>
             <div v-for="(value, key) in this.$ud_store.state.categories" :key="key">
-              <!-- <h2>{{value}}</h2> -->
               <CategoryCard :props="value"/>
             </div>
 
@@ -33,11 +32,6 @@ import CategoryCard from '../components/CategoryCard'
         category: '',
       }
     },
-    mounted() {
-      // console.log("props of category => ", this.props)
-      // console.log('CategoriesPage.vue page');
-      // get ideas by category route
-      
-    },
+    mounted() {}
   }
 </script>

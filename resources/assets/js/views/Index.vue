@@ -3,7 +3,6 @@
         <div class="header-container" :style="{'background-image': `url(${require('../../images/anyideas-icon-pattern.svg')})`}">
             <div class="card card-default">
                 <div class="home-header">
-                    <!-- https://codepen.io/jerrylow/pen/KaPvNa -->
                     Turn Your Shower Thoughts Into <br>Power Thoughts
                     
                 </div>
@@ -11,7 +10,6 @@
         </div>
 
         <div class="row justify-content-center page-wrapper">
-            <!-- <button @click="searchDatabase">Run search query</button> -->
             <div class="idea_wrapper">
                 <div class="fixed_width" v-for="(value, key) in this.user_ideas" :key="key">
                     <IdeaCard key={{key}} :props='value'/>
@@ -90,7 +88,6 @@
         }
     }
     .idea_wrapper {
-        // margin-top: 48px;
         > div {
             max-width: 750px;
             margin: 0 auto;
@@ -151,9 +148,7 @@
                     data: {
                         search: "steve"
                     },
-                }).then( (response) => {
-                    console.log('TCL: search -> response', response);
-                });
+                }).then( (response) => {});
             },
             loadMore(e) {
                 e.preventDefault();
@@ -227,7 +222,7 @@
                     method: 'GET',
                     url: '/api/v1/idea.get/1',
                 })
-                .then(res => console.log('Resource ->', res))
+                .then(res => {})
                 .catch(e => console.error(e))
             }
         }

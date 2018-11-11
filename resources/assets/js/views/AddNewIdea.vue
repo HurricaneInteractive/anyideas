@@ -411,14 +411,7 @@
                     }
                 })
                 .then(res => {
-                    console.warn('​handleSubmit -> response', res);
-                    // if (response.status === 200) {
-                    //     window.location = '/';
-                    // }
                     this.$router.push({ path: `/idea/${res.data.id}`})
-                    
-                    // console.log('run this.handleGetIdeaData()');
-                    // this.handleGetIdeaData()
                 })
                 .catch(error => {
                     console.error(error);

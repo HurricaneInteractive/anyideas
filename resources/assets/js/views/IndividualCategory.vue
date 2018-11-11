@@ -42,41 +42,25 @@ import CategoryTitleCard from '../components/CategoryTitleCard'
       this.setRoute();
     },
     mounted() {
-      // console.log('this.$route.params.id => ', this.$route.params.id)
-      console.log('this.category_data => ', this.category_data)
-      console.log('this.category_data.length => ', this.category_data.length)
-      console.log('this.$ud_store.state.current_category_id => ', this.$ud_store.state.current_category_id)
-      
-      // this.handleGetIdeaByCategories(this.$route.params.id);
       if (this.category_data === null || this.category_data === undefined || this.category_data.length === 0) {
         this.setRoute();
       }
     },
     watch: {
-      // call again the method if the route changes
       '$route': ['setRoute']
     },
-    // updated() {
-    //   this.setRoute();
-    // },
     methods: {
       // get ideas by Categories functions
       setRoute() {
-        console.log('setRoute()')
         this.currentRoute = this.$ud_store.state.current_category_id;
         this.handleGetIdeaByCategories();
       },
       handleGetIdeaByCategories() {
-        console.log('this.$ud_store.state.current_category_id', this.$ud_store.state.current_category_id)
-        console.log(this.$ud_store.state.current_category_id)
         axios({
           method: 'POST',
           url: '/ai/idea/get-by-category/' + this.$ud_store.state.current_category_id,
         }).then( res => {
-          console.log('TCL: handleGetIdeaByCategories -> res', res);
-          console.log('TCL: handleGetIdeaByCategories -> res.data', res.data);
-            this.category_data = res.data;
-            console.warn('this.category_data => ', this.category_data)
+          this.category_data = res.data;
         });
       }
     }

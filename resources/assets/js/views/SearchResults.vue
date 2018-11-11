@@ -159,8 +159,6 @@ import IdeaCard from '../components/IdeaCard'
       }
     },
     mounted() {
-      // this.ideas = this.$ud_store.state.current_search.ideas.slice(1,3);
-      // this.users = this.$ud_store.state.current_search.users;
     },
     watch: {
       currentSearchData() {
@@ -169,22 +167,15 @@ import IdeaCard from '../components/IdeaCard'
           this.getSearchResults('luke');
         }
         
-      },
-      // $route() {
-      //   this.getSearchResults();
-      // }
+      }
     },
     methods: {
       getSearchResults(val) {
         let searchThis = this.currentSearchData;
-        console.log('val', val)
-        console.log('searchThis', searchThis)
         if (val === 'luke') {
           searchThis = 'luke'
         }
-        console.log('searchThis', searchThis)
         this.loaded = false;
-        console.log('this.currentSearchData => ', this.currentSearchData)
           axios({
               method: 'POST',
               url: '/ai/search',
@@ -213,13 +204,10 @@ import IdeaCard from '../components/IdeaCard'
                       user_array.push(addToAll)
                   })
               }
-              console.log('(all) user_array => ', user_array)
-
               this.ideas = res.data.ideasQuery;
               this.users = user_array;
 
               this.$ud_store.commit('SET_CURRENT_SEARCH_QUERY', '');
-              console.log('this.currentSearchData => ', this.currentSearchData)
               this.loaded = true;
           })
           .catch(error => {

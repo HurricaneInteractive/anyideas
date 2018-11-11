@@ -1,16 +1,10 @@
-<!-- App.vue acts as a wrapper for the whole application -->
-<!-- use this.$ud_store in child components -->
 <template>
     <div>
         <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isIdeaPage}" v-if="!isLoginOrRegister">
             <div class="container fixed_width">
-                <!-- Left Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-left">
                     <li><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.logo_small" class="logo-icon"/>
                     </li>
-                    <!-- display full logo on larger screens -->
-                    <!-- <li v-else><router-link :to="{name: 'index'}" v-html="this.$ud_store.state.icons.user" class="logo-icon"/>
-                    </li> -->
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-wrapper navbar-right">
@@ -34,16 +28,12 @@
                         <span :class="'navbar-icon ' + this.$ud_store.state.data.loggedIn" v-on:click="openUser()" v-html="this.$ud_store.state.icons.user">
                         </span>
                         <div v-if="$ud_store.state.data.loggedIn === false" :class="'user ' + this.openUserState">
-                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                            </span> -->
                             <div class="user_items" v-on:click="openUser()">
                                 <router-link v-on:click="menuState(false)" :to="{name: 'login' }">Log In</router-link>
                                 <router-link v-on:click="menuState(false)" :to="{name: 'register' }">Sign Up</router-link>
                             </div>
                         </div>
                         <div v-else :class="'user ' + this.openUserState">
-                            <!-- <span :class="'arrow ' + this.openUserState" v-html="this.$ud_store.state.icons.curve_square">
-                            </span> -->
                             <div class="user_items" v-on:click="openUser()">
                                 <router-link :to="`/user/${$ud_store.state.data.user_data.id}`">View Account</router-link>
                                 <a href="#logout" @click="handleSignOut">Sign Out</a>
@@ -404,30 +394,13 @@ import CategoriesSlider from './components/CategoriesSlider'
                 openSearchState: false,
                 user_id : null,
                 name : null,
-                // user_data: null,
                 search_text: '',
-                // store_state: this.$ud_store.state,
                 search_results: {}
             }
         },
         beforeMount: function() {
-            const p = ["background: rgb(11, 11, 13)", "color: #EF7D77", "border: 1px solid #EF7D77", "margin: 0", "padding: 0 8px 0 4px", "line-height: 32px"].join(";");
-            console.log("%c LoggedIn? " + this.$ud_store.state.data.loggedIn + "", p)
-            
-            if (this.user_data) {
-                console.log("%c User: " + this.user_data.name + "", p)
-            }
         },
         mounted: function(){
-            /** Check moved to app.js `beforeEach` */
-            // if (window.checkAuth === undefined) {
-            //     this.$ud_store.commit('SET_USER_DATA', "guest" );
-            //     this.$ud_store.commit('SET_USER_LOGGED_IN', false );
-            // } else {
-            //     this.$ud_store.commit('SET_USER_DATA', window.checkAuth );
-            //     this.$ud_store.commit('SET_USER_LOGGED_IN', true );
-            // }
-            
             if (this.user_data === null) {
                 this.user_id = null;
             } else {
@@ -447,13 +420,9 @@ import CategoriesSlider from './components/CategoriesSlider'
                     }
                 })
                 .then(res => {
-                    console.log('úser_logged out', res)
-
-                    // window.location('/')
                     if (res.status === 200) {
                         this.$ud_store.commit('SET_USER_DATA', 'guest');
                         this.$ud_store.commit('SET_USER_LOGGED_IN', false);
-                        // this.$router.push({name: 'home'})
                         window.location = '/'
                     }
                 })
@@ -468,10 +437,7 @@ import CategoriesSlider from './components/CategoriesSlider'
                 //SET_CURRENT_SEARCH_QUERY
                 this.$ud_store.commit('SET_CURRENT_SEARCH_QUERY', this.search_text);
                 
-                if (this.$route.name === 'search') {
-                    console.log('already on search page')
-                } else {
-                    console.log('go to search page on search page')
+                if (this.$route.name !== 'search') {
                     this.$router.push({name: 'search'})
                 }
             },
@@ -479,8 +445,6 @@ import CategoriesSlider from './components/CategoriesSlider'
                 this.openSearchState = toggle
             },
             openSearch() {
-                console.log('openSearch(this.openSearchState)  => ', this.openSearchState);
-                // console.log('openSearch(toggle)  => ', toggle);
                 if (this.openSearchState === true) {
                     this.$animie_js({
                         targets: '.search_text_container',
@@ -512,7 +476,6 @@ import CategoriesSlider from './components/CategoriesSlider'
                 this.openUserState = toggle
             },
             openUser() {
-                console.log('openUser(toggle) => ', this.openUserState);
                 if (this.openUserState === true) {
                     this.$animie_js({
                         targets: '.user',

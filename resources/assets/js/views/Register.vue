@@ -185,20 +185,6 @@
                 }
             },
             handleSubmit() {
-                // e.preventDefault()
-
-                console.log(this.name)
-                console.log(this.username)
-                console.log(this.email)
-                console.log(this.interests)
-                console.log(this.password)
-
-                // PATH TO REGISTER ROUTE app\Http\Controllers\Auth\RegisterController.php
-                // make sure validator items are met - if not, change them
-                
-                // data items need to be stringify'd before pushing to the DB
-                // return items need to be parsed back into arrays/objects
-
                 axios({
                     method: 'POST',
                     data: {
@@ -215,8 +201,6 @@
                     }
                 })
                 .then(response => {
-                    console.log("register response")
-                    console.log(response)
                     if (response.status === 200 || response.status === 201) {
                         window.location = '/';
                     }

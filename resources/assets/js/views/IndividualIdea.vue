@@ -194,18 +194,6 @@
                         route: '',
                         active: this.$route.name === 'timeline' ? true : false,
                     }
-                    // {
-                    //     id: 'discussion',
-                    //     label: 'Discussion',
-                    //     route: '',
-                    //     active: this.$route.name === 'discussion' ? true : false,
-                    // },
-                    // {
-                    //     id: 'updates',
-                    //     label: 'Updates',
-                    //     route: '',
-                    //     active: this.$route.name === 'updates' ? true : false,
-                    // }
                 ],
             }
         },
@@ -230,33 +218,22 @@
             },
         },
         beforeMount() {
-            console.log("%c IndividualIdea.vue beforeMount(start)", this.$ud_store.state.consoleLog.component)
-            console.warn('this.$ud_store.getters.getCurrentIdea => ', this.$ud_store.getters.getCurrentIdea)
-            console.warn('this.$ud_store.getters.getCurrentIdea => ', this.$ud_store.getters.getUserData)
-            console.warn('this.currentUser => ', this.currentUser)
             this.handleGetInitialData();
             this.setAsActive();
             this.allowEdit;
-            console.log('TCL: beforeMount -> this.allowEdit', this.allowEdit);
-            console.log("%c IndividualIdea.vue beforeMount(end)", this.$ud_store.state.consoleLog.component)
         },
         mounted() {
-             console.log("%c IndividualIdea.vue mounted(start)")
-             console.log("%c IndividualIdea.vue mounted(end)")
         },
         watch: {
             $route: function(to, from) {
                 if (to.params.id !== from.params.id) {
                     this.handleGetInitialData();
-                    // handle get more data here;
                 }
 
-                // this.copy_successful = false
                 this.setAsActive();
             }
         },
         methods: {
-            // re-sets the current active tab_nav item
             setAsActive() {
                 this.tab_nav = [
                     {
@@ -271,23 +248,9 @@
                         route: '',
                         active: this.$route.name === 'timeline' ? true : false,
                     }
-                    // {
-                    //     id: 'discussion',
-                    //     label: 'Discussion',
-                    //     route: '',
-                    //     active: this.$route.name === 'discussion' ? true : false,
-                    // },
-                    // {
-                    //     id: 'updates',
-                    //     label: 'Updates',
-                    //     route: '',
-                    //     active: this.$route.name === 'updates' ? true : false,
-                    // }
                 ];
             },
             handleGetInitialData() {
-                console.log("%c IndividualIdea.vue handleGetInitialData(start)", this.$ud_store.state.consoleLog.component)
-                // console.log('TCL: handleGetInitialData -> idea_id', this.$route.params.id);
                 axios({
                     method: 'POST',
                     url: '/ai/idea/get/' + this.$route.params.id,
@@ -305,7 +268,6 @@
 
 
                     let res_user = res.data.user_id;
-                    console.log('TCL: handleGetInitialData -> res_user', res_user);
                     let current_user = null;
                     
                     if (this.currentUser === null) {
@@ -314,7 +276,6 @@
 
                     if (res_user === current_user) {
                         this.isUsersIdea = true;
-                        console.log('TCL: handleGetInitialData -> this.isUsersIdea', this.isUsersIdea);
                     }
                     axios({
                         method: 'POST',
@@ -323,33 +284,21 @@
                             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                         }
                     }).then(res => {
-                        console.log('user of current idea');
-                        
                         this.$ud_store.commit('SET_IDEA_USER_INFO', res.data.user );
-                        
-                        console.warn(this.getCurrentIdeaUserId)
-                        console.warn(this.currentUser)
                         if (this.getCurrentIdeaUserId === this.currentUser) {
                             this.isUsersIdea = true;
                         }
-                        console.log('TCL: handleGetInitialData -> this.isUsersIdea', this.isUsersIdea);
                     })
                 });
-                console.log("%c IndividualIdea.vue handleGetInitialData(end)", this.$ud_store.state.consoleLog.component)
-
             },
             handleDeleteIdea(e) {
                 e.preventDefault();
                 axios.post('/ai/idea/delete/' + this.$route.params.id)
-                    .then(response => {
-                        console.log('TCL: handleDeleteIdea -> response', response);
-                });
+                    .then(response => {});
             },
             handleUpdateIdea(desc = null) {
-                console.log('handleUpdateIdea')
                 let updatedDescriptionVal = desc ? desc : this.description_to_update;
 
-                console.log('updatedDescriptionVal => ', updatedDescriptionVal)
                 axios({
                     method: 'POST',
                     url: '/ai/idea/update/' + this.$route.params.id,
@@ -360,9 +309,6 @@
                         'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                     }
                 }).then(res => {
-                    console.log('handleUpdateIdea res => ', res)
-                    console.log('handleUpdateIdea res.data => ', res.data)
-
                     this.$ud_store.commit('SET_IDEA_DATA', res.data.updated_idea );
                 })
                 .catch(e => console.error(e));
@@ -392,77 +338,7 @@
                 }).then( (response) => {
                     this.discussion_replies_data = response.data;
                 }); 
-            },
-
-            // timeline functions
-            // handleTimelineUpdate(e){
-            //     let value = this.timeline_update.id;
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/update/' + value,
-            //         data: {
-            //             title: this.timeline_update.title,
-            //             message: this.timeline_update.message,
-            //         },
-            //     }).then( (response) => {
-            //         if (response.data === "") {
-            //             alert('error creating timeline entry');
-            //         }
-            //     });
-            // },
-            // handleDartsAdd(value) {
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/darts/add/' + value,
-            //         headers: {
-            //             'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-            //         }
-            //     });
-            // },
-            // handleTimelineDelete(value) {
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/delete/' + value,
-            //     }).then( (response) => {
-            //         this.timeline_data = response.data;
-            //     });
-            // },
-            // getTimelineData(e) {
-            //     e.preventDefault();
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/get/' + this.$route.params.id,
-            //     }).then( (response) => {
-            //         this.timeline_data = response.data;
-            //     });
-            // },
-            // timeline functions
-            // hanldeGetTimelineData(e) {
-            //     e.preventDefault();
-            //     let idea_id = this.$route.params.id;
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/get/' + idea_id,
-            //     }).then( (response) => {
-            //         this.timeline_data = response.data;
-            //     });
-            // },
-            // handleTimelineSubmit(e){
-            //     e.preventDefault();
-            //     let idea_id = this.$route.params.id;
-            //     axios({
-            //         method: 'POST',
-            //         url: '/ai/idea/timeline/create/' + idea_id,
-            //         data: {
-            //             title: this.timeline.title,
-            //             message: this.timeline.message,
-            //         },
-            //     }).then( (response) => {
-            //         if (response.data === "") {
-            //             alert('error creating timeline entry');
-            //         }
-            //     });
-            // },
+            }
         }
     }
 </script>

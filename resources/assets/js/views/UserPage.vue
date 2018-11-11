@@ -324,8 +324,6 @@
                     url: '/ai/user/get/' + this.$route.params.id,
                 })
                 .then( (res) => {
-                    // this.user_data = res.data
-                    // push to viewing_user_state store
                     this.$ud_store.commit('SET_CURRENT_USER_DATA', res.data);
                     this.user_meta_update.name = this.user_data.user.name
                 })
@@ -373,7 +371,6 @@
                     }
                 }).then( (response) => {
                     this.user_ideas = response.data
-                    // console.warn('TCL: handleUpdateUserMeta -> this.user_ideas', this.user_ideas);
                 });
             },
             doCopy(e) {
@@ -410,7 +407,6 @@
                     }
                 })
                 .then(({data}) => {
-                    console.log('Data -> ', data)
                     if (!data.success) {
                         alert(data.msg);
                     }

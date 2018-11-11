@@ -4,7 +4,6 @@
 
         <div v-if="currentUser" class="new_discussion_box">
             <div class="profile-image-wrapper">
-                <!-- <div class="profile-image" :style="{ 'background-image': `url(${$ud_store.getter.getUserMeta.avatar})` }"></div> -->
             </div>
             <div class="input_discussion_container">
                 <label for="discussion.title">Title</label>
@@ -18,11 +17,9 @@
         </div>
 
         <div v-if="showIdeaData && discussion_data && users_that_posted" id="discussion_data" class="all_discussion_posts">
-            <!-- @{{ discussion_data }} -->
             <div class="discussion_item" v-for="(value, key) in this.getDiscussion.discussions" :key="key">
                 <router-link :to="'/user/' + getDiscussion.all_user[value.id][0].user_id" class="profile-image-wrapper">
                     <div class="profile-image" :style="{ 'background-image': `url(${getDiscussion.all_user[value.id][0].avatar})` }"></div>
-                    <!-- <div class="profile-image" :style="{ 'background-image': `url()` }"></div> -->
                 </router-link>
                 <div class="discussion_data">
                     <h2 id="title" >{{value.title}}</h2>
@@ -32,27 +29,6 @@
                     <p>Delete</p>
                 </div>
                 
-                <!-- <div class="post_button" @click="openReplies(value.id)">
-                    <p>({{value.replies}}) replies</p>
-                </div> -->
-
-                <!-- <section v-if="getReplies !== undefined && currently_viewed_reply_id === value.id" class="discussion_replies" v-bind:style="{ paddingLeft: '48px'}">
-                    <ul>
-                        <li v-for="(reply_val, key) in this.getReplies" :key="key">
-                            <p>{{reply_val}}</p>
-                            <p>{{key}}</p>
-                            <p>{{this.getReplies}}</p>
-                            <h4>{{reply_val.title}}</h4>
-                            <h6>{{reply_val.id}}</h6>
-                            <p>{{reply_val.message}}</p>
-                            <button @click="handleDiscussionReplyDelete(reply_val.id)">Delete entry</button>
-                            <button @click="handleDiscussionReplyVote(reply_val.id)">{{reply_val.darts}} | Darts</button>
-                        </li>
-                    </ul>
-                </section>
-                <section v-else>
-                    <p>hide replies</p>
-                </section> -->
             </div>
         </div>
     </div>
@@ -61,10 +37,6 @@
 
 <style lang="scss">
 @import '~@/_variables.scss';
-
-/* .discussion-container {
-
-} */
 .new_discussion_box {
     position: relative;
     display: grid;
@@ -221,7 +193,6 @@
             #message {
                 color: $grey-dark;
                 font-size: 1rem;
-                /* min-height: 124px; */
             }
         }
     }
@@ -247,17 +218,7 @@
                 discussion: {
                     title: '',
                     message: ''
-                },
-                // discussion_update: {
-                //     id: '',
-                //     title: '',
-                //     message: '',
-                // },
-                // update_post_update: {
-                //     id: '',
-                //     title: '',
-                //     message: ''
-                // }
+                }
             }
         },
         computed: {
@@ -282,9 +243,7 @@
             }
         },
         mounted() {
-            console.log("%c Discussion.vue", this.$ud_store.state.consoleLog.component)
             this.hanldeGetDiscussionData();
-            console.warn('this.currentUser => ', this.currentUser)
         },
         methods: {
             showReplyToggle(e) {
@@ -297,12 +256,8 @@
                     method: 'POST',
                     url: '/ai/idea/discussion/get/' + idea_id
                 }).then( (res) => {
-
-                    console.warn('res.data => ', res.data)
                     this.discussion_data = res.data;
                     this.$ud_store.commit('SET_IDEA_DISCUSSION', res.data);
-
-                    console.warn('this.$ud_store.state.current_page_idea.discussion => ', this.$ud_store.state.current_page_idea.discussion)
                     this.showIdeaData = true;
                 });   
             },

@@ -120,12 +120,6 @@
     }
   }
 }
-/* .about {
-  .about-wrapper {
-    max-width: 760px;
-    margin: 0 auto; 
-  }
-} */
 
 </style>
 
@@ -295,7 +289,6 @@
           }
         })
         .then(({data}) => {
-          console.log('Data -> ', data)
           if (!data.success) {
               alert(data.msg);
           }

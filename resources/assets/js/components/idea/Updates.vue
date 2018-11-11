@@ -1,7 +1,6 @@
 <template>
   <section class="updates fixed_width">
       <div class="timeline_item_container sub_width">
-        <!-- <button @click="hanldeGetUpdateData">get update_posts data from (pre filled) idea_id</button><br/><br/>    -->
     
         <div v-if="$parent.isUsersIdea" class="timeline_item timeline_add_new">
             <div class="timeline_box">
@@ -19,18 +18,6 @@
             </div>
         </div>
 
-        <!-- <div v-if="getUpdatesData" id="updates_post_data">
-            <p>{{getUpdatesData}}</p>
-            <ul v-for="(value, key) in this.getUpdatesData" :key="key">
-                <li key={{key}}>
-                    <h4>{{value.title}}</h4>
-                    <p>{{value.message}}</p>
-                    <button @click="handleUpdatePostDelete(value.id)">Delete entry</button>
-                    <button @click="handleUpdatePostDarts(value.id)">{{value.darts}}</button>
-                </li>
-            </ul>
-        </div> -->
-
         <template v-if="this.currentTimelineData.length > 0">
         <div class="timeline_item" v-for="(value, key) in this.getUpdatesData" :key="key">
             <div class="timeline_box">
@@ -43,7 +30,6 @@
                 <p class="timeline_message">{{value.message}}</p>
                 <div class="timeline_item_footer">
                     <span></span>
-                    <!-- <span class="timeline_button" @click="handleTimelineSubmit" v-html="icons.dart"></span> -->
                     <div v-if="$parent.isUsersIdea" class="delete total-likes"  @click="handleTimelineDelete(value.id)">
                         <p>Delete</p><span v-html="icons.trash" />
                     </div>
@@ -276,18 +262,10 @@
     watch: {
         getUpdatesData: function(val) {
             if (this.viewInitialsed) return false
-
-            // if (val.user_meta && val.user_meta.bio) {
-            //     this.inititaliseViewer();
-            // }
-            console.log('updates_post_data => ', this.updates_post_data)
-            console.log('parent.isUsersIdea => ', this.$parent.isUsersIdea)
         }
     },
     mounted() {
-        console.log("%c Updates.vue", this.$ud_store.state.consoleLog.component)
         this.hanldeGetUpdateData();
-        console.log('this.$parent => ', this.$parent)
     },
       methods: {
         // updates post functions
@@ -296,7 +274,6 @@
                 method: 'POST',
                 url: '/ai/idea/update_post/get/all/' + this.$route.params.id
             }).then( (res) => {
-                console.log('TCL: hanldeGetUpdateData -> res.data', res.data);
                 this.updates_post_data = res.data;
                 this.$ud_store.commit('SET_IDEA_UPDATES', res.data)
             }); 
@@ -309,7 +286,6 @@
                     'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                 }
             }).then(res => {
-                console.log('res => ', res.data);
                 this.hanldeGetUpdateData()
             });
         },

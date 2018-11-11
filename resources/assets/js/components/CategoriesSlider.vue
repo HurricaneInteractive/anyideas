@@ -18,7 +18,6 @@
   @import '~@/App.scss';
     .categories {
         width: 100%;
-        /* overflow-x: scroll; */
         .categories_wrapper {
             margin: 0;
             border-bottom: 1px solid $black;
@@ -64,7 +63,6 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar'
         },
         methods: {
           scrollHanle(evt) {
-            console.log(evt)
           }
         }
     }

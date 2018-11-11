@@ -1,5 +1,4 @@
 <template>
-<!-- &#183 -->
     <div class="idea-card-container" >
         <router-link :to="`/idea/${this.props.id}`">
             <div class="card card-default" v-on:mouseover="play" v-on:mouseleave="stop">
@@ -97,9 +96,7 @@
                 animationSpeed: 2
             }
         },
-        // figure out passing MySQL data to Vue
         mounted() {
-            // console.log('idea-card.vue mounted (this.props) => ', this.props);
         },
         methods: {
             handleAnimation: function (anim) {
@@ -112,11 +109,7 @@
         
             play: function () {
                 this.anim.play();
-            },
-        
-            // pause: function () {
-            //     this.anim.pause();
-            // }
+            }
         }
 
     }

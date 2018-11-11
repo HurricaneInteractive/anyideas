@@ -8,7 +8,6 @@
           :key="props[key].id"
         >
           <div class='tab-nav-item'  >
-          <!-- <router-link :to="props[key].route"> -->
             {{props[key].label}}
           </div>
         </router-link>

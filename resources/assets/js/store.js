@@ -13,14 +13,6 @@ export default new Vuex.Store({
             user_data: null,
             loggedIn: false
         },
-        // idea: {
-        //     id: '',
-        //     title: '',
-        //     status: '',
-        //     category: '',
-        //     tags: '',
-        //     description: '',
-        // },
         current_page_idea: {
             user_id: '0',
             user_data: {},
@@ -134,7 +126,6 @@ export default new Vuex.Store({
         getCurrentIdeaTimeline: (state) => state.current_page_idea.timeline,
         getCurrentIdeaDiscussion: (state) => state.current_page_idea.discussion,
         getCurrentIdeaUpdates: (state) => state.current_page_idea.updates,
-        // getCurrentSearch: (state) => state.current_search,
         getCurrentSearch: (state) => state.current_search,
         getCurrentSearchUsers: (state) => state.current_search.users,
         getCurrentSearchIdeas: (state) => state.current_search.ideas

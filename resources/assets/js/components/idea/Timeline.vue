@@ -3,22 +3,17 @@
         <div class="timeline-wrapper">
 
             <div class="timeline_item_container">
-                <!-- add new item form -->
                 <div v-if="$parent.isUsersIdea" class="timeline_item timeline_add_new">
                     <div class="side_line">
                         <div class="icon">
-                            <!-- <span v-html="this.$ud_store.state.icons.x" /> -->
                         </div>
                     </div>
                     <div class="timeline_box">
                         <h5 class="timeline_date">Day / Month / Year</h5>
-                        <!-- <h2 class="timeline_title">Milestone Title</h2> -->
                         <label for="timeline.title">Title</label>
                         <input class="timeline_title" placeholder="Milestone Title" v-model="timeline.title" type="text" required/>
-                        <!-- <p class="timeline_message">Description (240 characters)</p> -->
                         <label for="timeline.message">Description</label>
                         <textarea placeholder="Description (240 characters)" class="timeline_message" v-model="timeline.message" type="text" required/>
-                        <!-- <a class="timeline_link" target="_blank">add URL link</a> -->
                         <div class="timeline_item_footer">
                             <div class="timeline_link">
                                 <span v-html="this.$ud_store.state.icons.share"></span>
@@ -50,7 +45,6 @@
                             <p class="timeline_message">{{value.message}}</p>
                             <div class="timeline_item_footer">
                                 <span></span>
-                                <!-- <span class="timeline_button" @click="handleTimelineSubmit" v-html="icons.dart"></span> -->
                                 <div v-if="$parent.isUsersIdea" class="delete total-likes"  @click="handleTimelineDelete(value.id)">
                                     <p>Delete</p><span v-html="icons.trash" />
                                 </div>
@@ -322,9 +316,7 @@ export default {
         }
     },
     mounted() {
-        console.log("%c Timeline.vue", this.$ud_store.state.consoleLog.component)
         this.hanldeGetTimelineData();
-        console.log('this.$ud_store.state.icons.x => ', this.$ud_store.state.icons.x)
     },
     methods: {
           deleteLink() {
@@ -335,7 +327,6 @@ export default {
                     method: 'POST',
                     url: '/ai/idea/timeline/get/' + this.$route.params.id,
                 }).then( (res) => {
-                    console.log('TCL: hanldeGetTimelineData -> res', res);
                     // push to store getter
                     this.$ud_store.commit('SET_IDEA_TIMELINE', res.data );
                     this.timeline_data = res.data;
@@ -356,7 +347,6 @@ export default {
                         link: this.timeline.link
                     },
                 }).then( (res) => {
-                    console.log('TCL: hanldeGetTimelineData -> res', res.data);
                     this.hanldeGetTimelineData()
                 });
             },
@@ -371,7 +361,6 @@ export default {
                         lnik: this.timeline_update.link
                     },
                 }).then( (res) => {
-                    console.log('TCL: hanldeGetTimelineData -> res', res);
                     this.hanldeGetTimelineData()
                 });
             },
@@ -380,7 +369,6 @@ export default {
                     method: 'POST',
                     url: '/ai/idea/timeline/delete/' + value,
                 }).then( (res) => {
-                    console.log('delete => ', res)
                     this.hanldeGetTimelineData()
                 });
             },
@@ -392,7 +380,6 @@ export default {
                         'X-CSRF-TOKEN': document.querySelector("meta[name='csrf-token']").getAttribute('content')
                     }
                 }).then(res => {
-                    console.log('dartsAdd => ', res)
                     this.hanldeGetTimelineData()
                 });
             },
