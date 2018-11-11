@@ -58,30 +58,33 @@
 </style>
 
 <script>
-import * as hero from 'hero-patterns'
-    export default {
-        name: 'CategoryCard',
-        props: ['props'],
-        data() {
-            return {
-                categoryData: null,
-                categoryBackground: null
-            }
-        },
-        watch: {
-            '$route': ['setBackground']
-        },
-        mounted() {
-            // console.log('CategoryCard.vue mounted (this) => ', this);
-            // console.log('CategoryCard.vue mounted (this.props) => ', this.props)z;
-            this.setBackground();
-        },
-        methods: {
-            setBackground() {
-                this.categoryData = '#' + this.props.toLowerCase();
-                // this.categoryBackground = this.$ud_store.state.svgBackground[this.props.toLowerCase()];
-                document.querySelector('#header').style.backgroundImage = hero[this.$ud_store.state.svgBackground[this.props.toLowerCase()]]('#222');
-            }
+// import * as hero from 'hero-patterns'
+import svgBackground from '../data/svgBackground'
+
+export default {
+    name: 'CategoryCard',
+    props: ['props'],
+    data() {
+        return {
+            categoryData: null,
+            categoryBackground: null
+        }
+    },
+    watch: {
+        '$route': ['setBackground']
+    },
+    mounted() {
+        // console.log('CategoryCard.vue mounted (this) => ', this);
+        // console.log('CategoryCard.vue mounted (this.props) => ', this.props);
+        this.setBackground();
+    },
+    methods: {
+        setBackground() {
+            this.categoryData = '#' + this.props.toLowerCase();
+            // this.categoryBackground = this.$ud_store.state.svgBackground[this.props.toLowerCase()];
+            // document.querySelector('#header').style.backgroundImage = hero[this.$ud_store.state.svgBackground[this.props.toLowerCase()]]('#222');
+            document.querySelector('#header').style.backgroundImage = svgBackground[this.props.toLowerCase()]('#222');
         }
     }
+}
 </script>
