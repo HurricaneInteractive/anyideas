@@ -30,4 +30,6 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('ideas.get', 'IdeasController@getAllResourceData');
     Route::get('idea.get/{id}', 'IdeasController@getResourceById');
 
+    Route::get('feed.get', 'HomeController@getFeedData');
+
 });
