@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<style lang="scss">
-  @import '~@/App.scss';
+<style lang="scss" scoped>
+  @import '~@/_variables.scss';
     .categories {
         width: 100%;
         .categories_wrapper {

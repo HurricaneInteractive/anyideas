@@ -35,7 +35,7 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~@/_variables.scss';
 .new_discussion_box {
     position: relative;

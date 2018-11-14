@@ -59,9 +59,9 @@
   }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/_variables.scss';
-  .no-ideas {
+  /deep/ .no-ideas {
     span {
       svg g * {
         stroke: $grey-med !important;

@@ -68,7 +68,7 @@
     </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/_variables.scss';
   .no-timeline-found {
     text-align: center;
@@ -76,7 +76,7 @@
       max-width: 300px;
       display: block;
       margin: 0 auto;
-      svg * {
+      /deep/ svg * {
         fill: $grey-med !important;
       }
     }
@@ -86,7 +86,7 @@
   }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~@/_variables.scss';
 
 .timeline_item_container {

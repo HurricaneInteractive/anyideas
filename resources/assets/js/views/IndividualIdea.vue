@@ -37,8 +37,8 @@
     </div>
 </template>
 
-<style lang="scss">
-@import '~@/App.scss';
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 
 .meta_data {
     display: flex;

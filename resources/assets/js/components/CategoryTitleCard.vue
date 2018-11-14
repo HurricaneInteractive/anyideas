@@ -10,8 +10,8 @@
     </div>
 </template>
 
-<style lang="scss">
-@import '~@/App.scss';
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 
 .card-container {
     background-color: rgba(221, 221, 221, .95);

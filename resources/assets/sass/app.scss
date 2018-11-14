@@ -34,3 +34,94 @@ p {
   width: 100%;
   height: auto;
 }
+
+// global classes
+.fixed_width {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+}
+// used on sub routes on the idea page (not timeline)
+.sub_width {
+  width: 60%;
+  margin: 48px auto;
+}
+// to be placed on the element directly above the IdeaCard component (usually in a loop)
+.idea_wrapper {
+  max-width: 750px;
+  width: 100%;
+  margin: 0 auto;
+}
+.page-wrapper {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+@mixin fontSize($size) {
+  font-size: $size; //Fallback in px
+  font-size: $size / 16px;
+}
+
+@mixin category($color) {
+  color: $color;
+  * {
+    fill: $color;
+    stroke: $color;
+  }
+}
+
+@mixin bg_category($color) {
+  background-color: $color;
+}
+
+
+
+.Ideation, .ideation {
+  @include category($ideation)
+};
+.Planning, .planning {
+  @include category($planning)
+};
+.Creating, .creating {
+    @include category($creating)
+};
+.Evaluating, .evaluating {
+  @include category($evaluating)
+};
+.Refining, .refining {
+  @include category($refining)
+};
+.Completed, .completed {
+  @include category($completed)
+};
+.On-hold, .on-hold {
+  @include category($on-hold)
+};
+.Abandoned, .abandoned {
+  @include category($abandoned)
+};
+
+.bg_ideation {
+  @include bg_category($ideation)
+};
+.bg_planning {
+  @include bg_category($planning)
+};
+.bg_creating {
+    @include bg_category($creating)
+};
+.bg_evaluating {
+  @include bg_category($evaluating)
+};
+.bg_refining {
+  @include bg_category($refining)
+};
+.bg_completed {
+  @include bg_category($completed)
+};
+.bg_on-hold {
+  @include bg_category($on-hold)
+};
+.bg_abandoned {
+  @include bg_category($abandoned)
+};

@@ -12,7 +12,7 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '~@/_variables.scss';
   @import '~@/components/_viewer.scss';
 </style>

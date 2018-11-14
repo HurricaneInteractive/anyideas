@@ -85,7 +85,7 @@
     }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '~@/_variables.scss';
 
     .please_log_in {

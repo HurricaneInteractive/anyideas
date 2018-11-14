@@ -71,7 +71,7 @@
   </section>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~@/_variables.scss';
 @import '~@/components/_viewer.scss';
 
@@ -112,7 +112,7 @@
   }
 }
 .bio-wrapper {
-  .no-bio {
+  /deep/ .no-bio {
     span {
       svg g * {
         stroke: $grey-med !important;

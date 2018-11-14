@@ -16,7 +16,7 @@
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .header{
     h1 {
       text-transform: capitalize;

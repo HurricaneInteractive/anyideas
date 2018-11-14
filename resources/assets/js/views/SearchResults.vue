@@ -60,8 +60,8 @@
     </div>
 </template>
 
-<style lang="scss">
-@import '~@/App.scss';
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 .profile-image-wrapper {
   position: relative;
   .profile-image {

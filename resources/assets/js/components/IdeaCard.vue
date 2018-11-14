@@ -17,8 +17,8 @@
     </div>
 </template>
 
-<style lang="scss">
-@import '~@/App.scss';
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 
 .idea-card-container {
     background-color: white;
