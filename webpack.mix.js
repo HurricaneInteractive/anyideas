@@ -50,8 +50,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'vue',
         'axios',
         'vuex',
-        'lodash',
-        'hero-patterns'
+        'lodash'
     ]);
 
 mix.sass('resources/assets/sass/App.scss', 'public/css');
