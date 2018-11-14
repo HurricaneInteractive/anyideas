@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isIdeaPage}" v-if="!isLoginOrRegister">
+    <nav class="navbar" v-bind:class="{profile: isUserProfilePage, addidea: isIdeaPage}">
         <div class="container fixed_width">
             <ul class="navbar-wrapper navbar-left">
                 <li>
@@ -195,11 +195,6 @@
             },
             user_data() {
                 return this.$ud_store.getters.getUserData
-            },
-            isLoginOrRegister() {
-                return this.$route.matched.some(route => {
-                    return route.name === 'login' || route.name === 'register'
-                })
             }
         }
     }
