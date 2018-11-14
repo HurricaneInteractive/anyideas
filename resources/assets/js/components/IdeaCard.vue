@@ -1,11 +1,9 @@
 <template>
     <div class="idea-card-container" >
         <router-link :to="`/idea/${this.props.id}`">
-            <div class="card card-default" v-on:mouseover="play" v-on:mouseleave="stop">
+            <div class="card card-default" >
                 <h2 class="bold">
-                    <span :class="'dot ' + this.props.status">
-                        <lottie :options="defaultOptions" :height="20" :width="20" v-on:animCreated="handleAnimation"/>
-                    </span>{{this.props.title}}
+                    <span :class="'dot ' + this.props.status"></span>{{this.props.title}}
                 </h2>
                 <div class="status_category">
                     <h6 :class="'bold status ' + this.props.status">{{this.props.status}}</h6>
@@ -77,40 +75,17 @@
 </style>
 
 <script>
-    import Lottie from 'vue-lottie';
-    import * as animationData from '../data/lottie/hover.json';
+    // import Lottie from 'vue-lottie';
+    // import * as animationData from '../data/lottie/hover.json';
     export default {
         name: 'IdeaCard',
-        components: {
-            'lottie': Lottie
-        },
         props: ['props'],
         data() {
-            return {
-                defaultOptions: {
-                    animationData: animationData,
-                    autoplay: false,
-                    renderer: 'svg',
-                    loop: false,
-                },
-                animationSpeed: 2
-            }
+            return {}
         },
         mounted() {
         },
-        methods: {
-            handleAnimation: function (anim) {
-                this.anim = anim;
-            },
-        
-            stop: function () {
-                this.anim.stop();
-            },
-        
-            play: function () {
-                this.anim.play();
-            }
-        }
+        methods: {}
 
     }
 </script>

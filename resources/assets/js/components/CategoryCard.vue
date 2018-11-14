@@ -58,7 +58,8 @@
 </style>
 
 <script>
-import * as hero from 'hero-patterns'
+// import * as hero from 'hero-patterns'
+import svgBackground from '../data/svgBackground'
     export default {
         name: 'CategoryCard',
         props: ['props'],
@@ -75,7 +76,7 @@ import * as hero from 'hero-patterns'
             setBackground() {
                 this.categoryData = '#' + this.props.toLowerCase();
                 this.categoryBackground = this.$ud_store.state.svgBackground[this.props.toLowerCase()];
-                document.querySelector(this.categoryData).style.backgroundImage = hero[this.categoryBackground]('#222');
+                document.querySelector(this.categoryData).style.backgroundImage = svgBackground[this.props.toLowerCase()]('#222')
             }
         }
     }

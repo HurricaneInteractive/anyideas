@@ -25,7 +25,7 @@
 </style>
 
 <script>
-import * as hero from 'hero-patterns'
+// import * as hero from 'hero-patterns'
 import IdeaCard from '../components/IdeaCard'
 import CategoryTitleCard from '../components/CategoryTitleCard'
   export default {

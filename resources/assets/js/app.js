@@ -12,7 +12,7 @@ import Fragment from 'vue-fragment'
 
 import storePlugin from './storePlugin'
 
-import VueAnime from './plugins/vue-anime';
+// import VueAnime from './plugins/vue-anime';
 import capitalise from './plugins/capitalise';
 import classNames from './plugins/classNames';
 
@@ -25,7 +25,7 @@ RegisterBase()
 
 Vue.use( Vuex )
 Vue.use( storePlugin )
-Vue.use( VueAnime )
+// Vue.use( VueAnime )
 Vue.use( capitalise )
 Vue.use( VueClipboard )
 Vue.use( classNames )

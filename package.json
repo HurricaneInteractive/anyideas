@@ -14,13 +14,12 @@
         "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^5.1",
         "sass-loader": "^7.1.0",
-        "webpack-jarvis": "^0.3.2"
+        "webpack-jarvis": "^0.3.2",
+        "laravel-mix": "^2.0"
     },
     "dependencies": {
-        "animejs": "^2.2.0",
         "axios": "^0.18",
         "hero-patterns": "^2.0.1",
-        "laravel-mix": "^2.0",
         "lodash": "^4.17.11",
         "marked": "^0.5.1",
         "node-sass": "^4.9.3",
@@ -28,7 +27,6 @@
         "vue-clipboard2": "^0.2.1",
         "vue-fragment": "^1.1.0",
         "vue-input-tag": "^2.0.1",
-        "vue-lottie": "^0.2.1",
         "vue-perfect-scrollbar": "^0.1.0",
         "vue-router": "^3.0.1",
         "vue-select": "^2.5.1",
