@@ -64,7 +64,7 @@
             margin: 0 4px;
             border-radius: 25px;
             color: $white;
-            @include fontSize(12px);
+            font-size: 12px
             a {
                 text-decoration: none;
                 color: $white;
