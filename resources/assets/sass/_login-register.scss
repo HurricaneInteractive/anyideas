@@ -25,7 +25,7 @@
         > header {
             max-width: 170px;
             margin: 0 auto 50px;
-            a, svg {
+            a, /deep/ svg {
                 display: block;
             }
         }
@@ -68,7 +68,7 @@
                     > div {
                         width: 25px !important;
                         height: 25px !important;
-                        svg {
+                        /deep/ svg {
                             fill: $primary !important;
                         }
                     }
